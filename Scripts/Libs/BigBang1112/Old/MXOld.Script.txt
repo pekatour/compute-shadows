@@ -1,0 +1,311 @@
+// MX.Script.txt
+// Library by BigBang1112
+//
+// Provides functions usable for receiving information from the site Mania-Exchange.
+// https://www.mania-exchange.com/
+//
+// API INFO: https://api.mania-exchange.com/documents/reference
+
+// Avaliable functions:
+//
+// SMXResult Search(SMXSearchFilter _Filter)
+// SMXResult TrackInfo(Text _Site, Integer _TrackId)
+// SMXResult TrackInfoMultiple(Text _Site, Integer[] _TrackId)
+// SMXResult TrackWorldRecord(Text _Site, Integer _TrackId)
+// SMXResult TrackReplays(Text _Site, Integer _TrackId, Integer _Amount)
+// SMXResult TrackEmbeddedObjects(Text _Site, Integer _TrackId)
+// SMXResult TrackScreenshot(Text _Site, Integer _TrackId, Text _Type)
+// SMXResult TrackThumbnail(Text _Site, Integer _TrackId)
+// Boolean SearchAsync(SMXSearchFilter _Filter)
+// Boolean TrackInfoAsync(Text _Name, Text _Site, Integer _TrackId)
+// Boolean TrackInfoMultipleAsync(Text _Name, Text _Site, Integer _TrackId)
+// Boolean TrackWorldRecordAsync(Text _Name, Text _Site, Integer _TrackId)
+// Boolean TrackReplaysAsync(Text _Name, Text _Site, Integer _TrackId, Integer _Amount)
+// Boolean TrackEmbeddedObjectsAsync(Text _Name, Text _Site, Integer _TrackId)
+// Boolean TrackScreenshotAsync(Text _Name, Text _Site, Integer _TrackId, Text _Type)
+// Boolean TrackThumbnailAsync(Text _Name, Text _Site, Integer _TrackId)
+// Boolean IsAsyncMXRequestCompleted(Text _Name)
+// Async::SAsyncHttpRequest GetAsyncMXRequest(Text _Name)
+// Void DestroyAsyncMXRequest(Text _Name)
+// Void Loop()
+
+#Include "TextLib" as TextLib
+
+#Include "Libs/BigBang1112/Async.Script.txt" as Async
+
+///////////////////////////////////////////////////
+// Struct SMXResult
+// ------------------------------------------------
+// Provides result of the MX request with additional information
+///////////////////////////////////////////////////
+#Struct SMXResult {
+    CXmlDocument Xml;
+    Boolean Successful;
+    Text Response;
+}
+
+///////////////////////////////////////////////////
+// Struct SMXSearchFilter
+// ------------------------------------------------
+// Search filter for Search functions
+///////////////////////////////////////////////////
+#Struct SMXSearchFilter {
+	Integer Mode;
+	Text TrackName;
+	Text Author;
+	Text MPAuthor;
+	Text AnyAuthor;
+	Text Mod;
+	Integer AuthorID;
+	Text[] MapType;
+	Text[] TitlePack;
+	Integer ReplayType;
+	Integer Style;
+	Integer Length;
+	Integer LengthOperator;
+	Integer PrimaryOrder;
+	Integer SecondaryOrder;
+	Text[] Environments;
+	Text[] Vehicles;
+	Boolean Unlimiter;
+	Integer Page;
+	Integer Limit;
+	Boolean Unreleased;
+	Integer MapGroup;
+	Integer AuthorCommentMinLength;
+}
+
+SMXResult Private_ProcessSyncRequest(Text _Url) {
+    declare SMXResult Result;
+
+    if(Http.SlotsAvailable == 0) {
+        Result.Response = "REQUEST_MAX_AMOUNT";
+        return Result;
+    }
+    
+    declare Request = Http.CreateGet(_Url, False, "Content-Type: application/xml");
+    wait(Request.IsCompleted);
+    if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
+        Result.Xml = Xml.Create(Request.Result);
+        Result.Response = "REQUEST_SUCESSFUL";
+        Result.Successful = True;
+    }
+    else Result.Response = "REQUEST_UNSUCCESSFUL";
+    Http.Destroy(Request);
+    return Result;
+}
+
+Boolean Private_ProcessAsyncRequest(Text _Name, Text _Url) {
+    return Async::HttpRequestGET(_Name, _Url, False, "Content-Type: application/xml");
+}
+
+///////////////////////////////////////////////////
+// SMXResult Search(Text _Site, SMXSearchFilter _Filter)
+// ------------------------------------------------
+// Text _Site - MX site to use, TM or SM
+// SMXSearchFilter _Filter - Specific search filter to use
+// ------------------------------------------------
+// Returns MX result including XML containing all found tracks.
+///////////////////////////////////////////////////
+SMXResult Search(Text _Site, SMXSearchFilter _Filter) {
+    declare SMXResult Result;
+    return Result;
+}
+
+///////////////////////////////////////////////////
+// SMXResult TrackInfo(Text _Site, Integer _TrackId)
+// ------------------------------------------------
+// Text _Site - MX site to use, TM or SM
+// Integer _TrackId - Track ID
+// ------------------------------------------------
+// Returns MX result including XML containing track info.
+///////////////////////////////////////////////////
+SMXResult TrackInfo(Text _Site, Integer _TrackId) {
+    return Private_ProcessSyncRequest("""https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/maps/{{{_TrackId}}}""");
+}
+
+///////////////////////////////////////////////////
+// SMXResult TrackInfoMultiple(Text _Site, Integer[] _TrackId)
+// ------------------------------------------------
+// Text _Site - MX site to use, TM or SM
+// Integer[] _TrackId - Multiple track IDs
+// ------------------------------------------------
+// Returns MX result including XML containing multiple track infos.
+///////////////////////////////////////////////////
+SMXResult TrackInfoMultiple(Text _Site, Integer[] _TrackId) {
+    return Private_ProcessSyncRequest("""https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/maps/{{{_TrackId}}}""");
+}
+
+///////////////////////////////////////////////////
+// SMXResult TrackWorldRecord(Text _Site, Integer _TrackId)
+// ------------------------------------------------
+// Text _Site - MX site to use, TM or SM
+// Integer _TrackId - Track ID
+// ------------------------------------------------
+// Returns MX result including XML containing information about a world record.
+///////////////////////////////////////////////////
+SMXResult TrackWorldRecord(Text _Site, Integer _TrackId) {
+    return Private_ProcessSyncRequest("""https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/tracks/worldrecord/{{{_TrackId}}}""");
+}
+
+///////////////////////////////////////////////////
+// SMXResult TrackReplays(Text _Site, Integer _TrackId, Integer _Amount)
+// ------------------------------------------------
+// Text _Site - MX site to use, TM or SM
+// Integer _TrackId - Track ID
+// Integer _Amount - Amount of replays to download (max 20)
+// ------------------------------------------------
+// Returns MX result including XML containing information about uploaded replays.
+///////////////////////////////////////////////////
+SMXResult TrackReplays(Text _Site, Integer _TrackId, Integer _Amount) {
+    return Private_ProcessSyncRequest("""https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/replays/{{{_TrackId}}}/{{{_Amount}}}""");
+}
+
+///////////////////////////////////////////////////
+// SMXResult TrackEmbeddedObjects(Text _Site, Integer _TrackId)
+// ------------------------------------------------
+// Text _Site - MX site to use, TM or SM
+// Integer _TrackId - Track ID
+// ------------------------------------------------
+// Returns MX result including XML containing information about embedded objects.
+///////////////////////////////////////////////////
+SMXResult TrackEmbeddedObjects(Text _Site, Integer _TrackId) {
+    return Private_ProcessSyncRequest("""https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/tracks/embeddedobjects/{{{_TrackId}}}""");
+}
+
+//Binary
+SMXResult TrackScreenshot(Text _Site, Integer _TrackId, Text _Type) {
+    return Private_ProcessSyncRequest("""https://{{{TextLib::ToLowerCase(_Site)}}}.mania-exchange.com/tracks/screenshot/{{{TextLib::ToLowerCase(_Type)}}}/{{{_TrackId}}}""");
+}
+
+//Binary
+SMXResult TrackThumbnail(Text _Site, Integer _TrackId) {
+    return Private_ProcessSyncRequest("""https://{{{TextLib::ToLowerCase(_Site)}}}.mania-exchange.com/tracks/thumbnail/{{{_TrackId}}}""");
+}
+
+///////////////////////////////////////////////////
+// Boolean SearchAsync(Text _Name, Text _Site, SMXSearchFilter _Filter)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request to use for later actions
+// Text _Site - MX site to use, TM or SM
+// SMXSearchFilter _Filter - Specific search filter to use
+// ------------------------------------------------
+// Returns True if the request was submitted without problems, otherwise false.
+///////////////////////////////////////////////////
+Boolean SearchAsync(Text _Name, Text _Site, SMXSearchFilter _Filter) {
+    return False;
+}
+
+///////////////////////////////////////////////////
+// Boolean TrackInfoAsync(Text _Name, Text _Site, Integer _TrackId)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request to use for later actions
+// Text _Site - MX site to use, TM or SM
+// SMXSearchFilter _Filter - Specific search filter to use
+// ------------------------------------------------
+// Returns True if the request was submitted without problems, otherwise false.
+///////////////////////////////////////////////////
+Boolean TrackInfoAsync(Text _Name, Text _Site, Integer _TrackId) {
+    return Private_ProcessAsyncRequest(_Name, """https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/maps/{{{_TrackId}}}""");
+}
+
+///////////////////////////////////////////////////
+// Boolean TrackInfoMultipleAsync(Text _Name, Text _Site, Integer _TrackId)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request to use for later actions
+// Text _Site - MX site to use, TM or SM
+// Integer _TrackId - Track ID
+// ------------------------------------------------
+// Returns True if the request was submitted without problems, otherwise false.
+///////////////////////////////////////////////////
+Boolean TrackInfoMultipleAsync(Text _Name, Text _Site, Integer _TrackId) {
+    return Private_ProcessAsyncRequest(_Name, """https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/maps/{{{_TrackId}}}""");
+}
+
+///////////////////////////////////////////////////
+// Boolean TrackWorldRecordAsync(Text _Name, Text _Site, Integer _TrackId)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request to use for later actions
+// Text _Site - MX site to use, TM or SM
+// Integer _TrackId - Track ID
+// ------------------------------------------------
+// Returns True if the request was submitted without problems, otherwise false.
+///////////////////////////////////////////////////
+Boolean TrackWorldRecordAsync(Text _Name, Text _Site, Integer _TrackId) {
+    return Private_ProcessAsyncRequest(_Name, """https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/tracks/worldrecord/{{{_TrackId}}}""");
+}
+
+///////////////////////////////////////////////////
+// Boolean TrackReplaysAsync(Text _Name, Text _Site, Integer _TrackId, Integer _Amount)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request to use for later actions
+// Text _Site - MX site to use, TM or SM
+// Integer _TrackId - Track ID
+// Integer _Amount - Amount of replays to download (max 20)
+// ------------------------------------------------
+// Returns True if the request was submitted without problems, otherwise false.
+///////////////////////////////////////////////////
+Boolean TrackReplaysAsync(Text _Name, Text _Site, Integer _TrackId, Integer _Amount) {
+    return Private_ProcessAsyncRequest(_Name, """https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/replays/{{{_TrackId}}}/{{{_Amount}}}""");
+}
+
+///////////////////////////////////////////////////
+// Boolean TrackEmbeddedObjectsAsync(Text _Name, Text _Site, Integer _TrackId)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request to use for later actions
+// Text _Site - MX site to use, TM or SM
+// Integer _TrackId - Track ID
+// ------------------------------------------------
+// Returns True if the request was submitted without problems, otherwise false.
+///////////////////////////////////////////////////
+Boolean TrackEmbeddedObjectsAsync(Text _Name, Text _Site, Integer _TrackId) {
+    return Private_ProcessAsyncRequest(_Name, """https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/tracks/embeddedobjects/{{{_TrackId}}}""");
+}
+
+//Binary
+Boolean TrackScreenshotAsync(Text _Name, Text _Site, Integer _TrackId, Text _Type) {
+    return Private_ProcessAsyncRequest(_Name, """https://{{{TextLib::ToLowerCase(_Site)}}}.mania-exchange.com/tracks/screenshot/{{{TextLib::ToLowerCase(_Type)}}}/{{{_TrackId}}}""");
+}
+
+//Binary
+Boolean TrackThumbnailAsync(Text _Name, Text _Site, Integer _TrackId) {
+    return Private_ProcessAsyncRequest(_Name, """https://{{{TextLib::ToLowerCase(_Site)}}}.mania-exchange.com/tracks/thumbnail/{{{_TrackId}}}""");
+}
+
+///////////////////////////////////////////////////
+// Boolean IsAsyncMXRequestCompleted(Text _Name)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request
+// ------------------------------------------------
+// Returns True if the request is completed.
+///////////////////////////////////////////////////
+Boolean IsAsyncMXRequestCompleted(Text _Name) {
+    return Async::IsHttpRequestCompleted(_Name);
+}
+
+///////////////////////////////////////////////////
+// Async::SAsyncHttpRequest GetAsyncMXRequest(Text _Name)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request
+// ------------------------------------------------
+// Returns everything known about the request.
+///////////////////////////////////////////////////
+Async::SAsyncHttpRequest GetAsyncMXRequest(Text _Name) {
+    return Async::GetHttpRequest(_Name);
+}
+
+///////////////////////////////////////////////////
+// Void DestroyAsyncMXRequest(Text _Name)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request
+///////////////////////////////////////////////////
+Void DestroyAsyncMXRequest(Text _Name) {
+    Async::DestroyHttpRequest(_Name);
+}
+
+///////////////////////////////////////////////////
+// Void Loop()
+///////////////////////////////////////////////////
+Void Loop() {
+    Async::Loop();
+}

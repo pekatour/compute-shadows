@@ -1,0 +1,53 @@
+#RequireContext CManiaAppTitle
+
+#Include "TextLib" as TextLib
+
+#Include "Libs/BigBang1112/Layers.Script.txt" as Layers
+#Include "Libs/BigBang1112/Task.Script.txt" as Task
+
+main() {	
+	Layers::Create("UI", "file://Media/Manialinks/UI.xml", True);
+	
+	declare MapType = "";
+
+	while(True) {
+		foreach(Event,PendingEvents) {
+			if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
+				switch(Event.CustomEventType) {
+					case "ComputeAll": {
+						declare Maps = Event.CustomEventData[0];
+						MapType = Event.CustomEventData[1];
+					
+						if(TextLib::EndsWith(".Gbx",Maps)) {
+							if(TitleControl.IsReady)
+								TitleControl.EditMap(Event.CustomEventData[0], "Shadow.Script.txt", """<settings>
+		<setting name="S_Enable" type="boolean" value="True"/>
+		<setting name="S_MapType" type="text" value="{{{MapType}}}"/>
+	</settings>""");
+						}
+						else
+							Task::Async_DataFileMgr("MAPS", DataFileMgr.Map_GetFilteredGameList(4, Maps, True));
+					}
+				}
+			}
+		}
+		
+		if(Task::IsCompleted("MAPS")) {
+			declare Task = Task::ToMapList(Task::Get("MAPS"));
+			if(Task::IsSuccessful("MAPS")) {
+				foreach(MapInfo,Task.MapInfos) {
+					wait(TitleControl.IsReady);
+					TitleControl.EditMap(MapInfo.FileName, "Shadow.Script.txt", """<settings>
+		<setting name="S_Enable" type="boolean" value="True"/>
+	</settings>""");
+				}
+			}
+			else {
+			
+			}
+			Task::Destroy_DataFileMgr("MAPS");
+		}
+		
+		yield;
+	}
+}

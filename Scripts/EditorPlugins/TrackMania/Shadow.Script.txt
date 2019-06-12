@@ -1,0 +1,42 @@
+#RequireContext CMapEditorPlugin
+
+#Include "TextLib" as TextLib
+
+#Setting S_Enable False
+#Setting S_MapType ""
+
+main() {
+	if(S_Enable) {
+		wait(IsEditorReadyForRequest);
+
+		if(TextLib::Find(".", MapName, False, False)
+		|| TextLib::Find("\\", MapName, False, False)) {
+			Dialog_Message("Map name contains invalid characters. Skipping in 3 seconds...");
+			sleep(3000);
+			QuickQuit();
+		}
+		else {
+			if(CurrentShadowsQuality == ::ShadowsQuality::High || CurrentShadowsQuality == ::ShadowsQuality::Ultra) {
+				Dialog_Message("Map is already calculated on High or Ultra in your cache. These qualities can't be stored in a map file. If you need them to be stored, follow the steps.\nFind and delete the lightmap file (.Bump.LightMap.zip) from ProgramData/ManiaPlanet/Cache and try this map again.\n");
+				sleep(15000);
+				QuickQuit();
+			}
+			else {
+				wait(IsEditorReadyForRequest);
+				ComputeShadows(::ShadowsQuality::Default);
+				
+				wait(IsEditorReadyForRequest);
+				if(S_MapType != "")
+					declare SuccessfulMapTypeIGuess = SetMapType("TrackMania\\"^S_MapType);
+				
+				wait(IsEditorReadyForRequest);
+				declare Folders = TextLib::Split("\\",MapFileName);
+				declare Removed = Folders.removekey(Folders.count-1);
+				SaveMap(MapName, TextLib::Join("\\",Folders)^"\\");
+	
+				wait(IsEditorReadyForRequest);
+				QuickQuit();
+			}
+		}
+	}
+}

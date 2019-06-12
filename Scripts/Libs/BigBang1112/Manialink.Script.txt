@@ -1,0 +1,24 @@
+#Include "TextLib" as TextLib
+
+#Include "Libs/BigBang1112/File.Script.txt" as File
+#Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
+
+Text Construct(Text _Markup, Text _Script) {		
+	return """<manialink version="3">
+			{{{_Markup}}}
+			<script>
+			<![CDATA[{{{_Script}}}
+			]]>
+			</script>
+		</manialink>""";
+}
+
+Text FromFile(Text _ManialinkName) {
+	declare Markup = File::Read(_ManialinkName^".xml");
+	declare Script = File::Read(_ManialinkName^".Script.txt");
+	
+	Markup = Dictionary::TranslateAllPhrases(Markup);
+	Script = Dictionary::TranslateAllPhrases(Script);
+
+	return Construct(Markup, Script);
+}

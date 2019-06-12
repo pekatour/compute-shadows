@@ -1,0 +1,99 @@
+#Struct SPause {
+	Integer Start;
+	Integer Time;
+}
+
+#Struct SWatch {
+	Integer StartTime;
+	SPause[] Pauses;
+}
+
+#Struct SStamp {
+	Integer Time;
+}
+
+declare SWatch[Text] Watches;
+declare SStamp[Text] Stamps;
+
+Void Watch_Create(Text _WatchName) {
+	declare SWatch Watch;
+	Watch.StartTime = -1;
+	Watches[_WatchName] = Watch;
+}
+
+Void Watch_Remove(Text _WatchName) {
+	declare Removed = Watches.removekey(_WatchName);
+}
+
+Boolean Watch_Start(Text _WatchName) {
+	if(Watches[_WatchName].StartTime == -1)
+		Watches[_WatchName].StartTime = Now;
+	else return False;
+	return True;
+}
+
+Integer Watch_Track(Text _WatchName) {
+	declare Time = Now - Watches[_WatchName].StartTime;
+	foreach(Pause, Watches[_WatchName].Pauses) Time -= Pause.Time;
+	return Time;
+}
+
+Integer Watch_Stop(Text _WatchName) {
+	declare EndTime = Watch_Track(_WatchName);
+	Watch_Create(_WatchName);
+	return EndTime;
+}
+
+Boolean Watch_Pause(Text _WatchName) {
+	if(Watches[_WatchName].Pauses.count > 0 && Watches[_WatchName].Pauses[Watches[_WatchName].Pauses.count-1].Time != -1) {
+		declare SPause Pause;
+		Pause.Start = Now;
+		Pause.Time = -1;
+		Watches[_WatchName].Pauses.add(Pause);
+		return True;
+	}
+
+	return False;
+}
+
+Boolean Watch_Unpause(Text _WatchName) {
+	if(Watches[_WatchName].Pauses.count > 0 && Watches[_WatchName].Pauses[Watches[_WatchName].Pauses.count-1].Time == -1) {
+		declare LastPause = Watches[_WatchName].Pauses[Watches[_WatchName].Pauses.count-1];
+		LastPause.Time = Now - LastPause.Start;
+		return True;
+	}
+
+	return False;
+}
+
+Void Stamp_Create(Text _StampName, Integer _Offset) {
+	declare SStamp Stamp;
+	Stamp.Time = Now + _Offset;
+	Stamps[_StampName] = Stamp;
+}
+
+Void Stamp_Create(Text _StampName) {
+	Stamp_Create(_StampName, 0);
+}
+
+Boolean Stamp_CreateOnce(Text _StampName, Integer _Offset) {
+	if(Stamps.existskey(_StampName)) return False;
+	Stamp_Create(_StampName, _Offset);
+	return True;
+}
+
+Boolean Stamp_CreateOnce(Text _StampName) {
+	return Stamp_CreateOnce(_StampName, 0);
+}
+
+Void Stamp_Remove(Text _StampName) {
+	declare Removed = Stamps.removekey(_StampName);
+}
+
+Boolean Stamp_Reached(Text _StampName) {
+	if(Now >= Stamps[_StampName].Time) {
+		Stamp_Remove(_StampName);
+		return True;
+	}
+	return False;
+}

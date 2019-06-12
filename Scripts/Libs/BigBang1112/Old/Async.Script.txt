@@ -1,0 +1,175 @@
+// Async.Script.txt
+// Library by BigBang1112
+//
+// Library that serves asynchronous things for you. Instead of creating bunch of variables, assign an unique name to the request.
+//
+// Features:
+// - HTTP requests
+// - TaskResult management
+// - Can handle HTTP requests going over the amount limit
+// - Detailed information about the request avaliable all the time
+
+// Avaliable functions:
+//
+// Boolean HttpRequestGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
+// Boolean HttpRequestGET(Text _Name, Text _Url, Boolean _UseCache)
+// Boolean HttpRequestGET(Text _Name, Text _Url)
+// Boolean HttpRequestPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders)
+// Boolean HttpRequestPOST(Text _Name, Text _Url, Text _Resource)
+// Boolean IsHttpRequestCompleted(Text _Name)
+// SAsyncHttpRequest GetHttpRequest(Text _Name)
+// Void DestroyHttpRequest(Text _Name)
+// Void Start()
+// Void Loop()
+
+///////////////////////////////////////////////////
+// Struct SAsyncHttpRequest
+// ------------------------------------------------
+// Used for storing result and progress information about HTTP request.
+///////////////////////////////////////////////////
+#Struct SAsyncHttpRequest {
+    Text Type;
+    Text Url;
+    Text Resource;
+    Boolean UseCache;
+    Text AdditionalHeaders;
+    CHttpRequest HttpRequest;
+    Boolean Finished;
+    Text Result; // The result that will stay even after request destruction
+    Text Response;
+}
+
+#Struct SAsyncTaskResult {
+    CTaskResult TaskResult;
+    Text Response;
+}
+
+declare SAsyncHttpRequest[Text] Async_HttpRequests;
+declare SAsyncTaskResult[Text] Async_TaskResults;
+
+///////////////////////////////////////////////////
+// Boolean HttpRequestGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request
+// Text _Url - URL of the request
+// Text _UseCache
+// Text _AdditionalHeaders - Headers to send with the request
+// ------------------------------------------------
+// Returns True if the request was submitted without problems, otherwise false.
+///////////////////////////////////////////////////
+Boolean HttpRequestGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
+    if(Async_HttpRequests.existskey(_Name)) return False;
+
+    declare SAsyncHttpRequest Request;
+    Request.Type = "GET";
+    Request.Url = _Url;
+    Request.UseCache = _UseCache;
+    Request.AdditionalHeaders = _AdditionalHeaders;
+    Async_HttpRequests[_Name] = Request;
+
+    return True;
+}
+
+Boolean HttpRequestGET(Text _Name, Text _Url, Boolean _UseCache) {
+    return HttpRequestGET(_Name, _Url, _UseCache, "");
+}
+
+Boolean HttpRequestGET(Text _Name, Text _Url) {
+    return HttpRequestGET(_Name, _Url, False, "");
+}
+
+///////////////////////////////////////////////////
+// Boolean HttpRequestPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request
+// Text _Url - URL of the request
+// Text _Resource - POST data to send
+// Text _AdditionalHeaders - Headers to send with the request
+// ------------------------------------------------
+// Returns True if the request was submitted without problems, otherwise false.
+///////////////////////////////////////////////////
+Boolean HttpRequestPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders) {
+    if(Async_HttpRequests.existskey(_Name)) return False;
+
+    declare SAsyncHttpRequest Request;
+    Request.Type = "POST";
+    Request.Url = _Url;
+    Request.Resource = _Resource;
+    Request.AdditionalHeaders = _AdditionalHeaders;
+    Async_HttpRequests[_Name] = Request;
+
+    return True;
+}
+
+Boolean HttpRequestPOST(Text _Name, Text _Url, Text _Resource) {
+    return HttpRequestPOST(_Name, _Url, _Resource, "");
+}
+
+///////////////////////////////////////////////////
+// Boolean IsHttpRequestCompleted(Text _Name)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request
+// ------------------------------------------------
+// Returns True if the request is done processing and ready to use.
+///////////////////////////////////////////////////
+Boolean IsHttpRequestCompleted(Text _Name) {
+    return Async_HttpRequests[_Name].Response != "";
+}
+
+///////////////////////////////////////////////////
+// SAsyncHttpRequest GetHttpRequest(Text _Name)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request
+// ------------------------------------------------
+// Returns information about the finished or ongoing request
+///////////////////////////////////////////////////
+SAsyncHttpRequest GetHttpRequest(Text _Name) {
+    return Async_HttpRequests[_Name];
+}
+
+///////////////////////////////////////////////////
+// Void DestroyHttpRequest(Text _Name)
+// ------------------------------------------------
+// Text _Name - Name of the asynchronous request
+///////////////////////////////////////////////////
+Void DestroyHttpRequest(Text _Name) {
+    Http.Destroy(Async_HttpRequests[_Name].HttpRequest);
+    Async_HttpRequests.removekey(_Name);
+}
+
+Void TaskResult(Text _Name, CTaskResult _Task) {
+
+}
+
+///////////////////////////////////////////////////
+// Start()
+///////////////////////////////////////////////////
+Void Start() {
+
+}
+
+///////////////////////////////////////////////////
+// Loop()
+///////////////////////////////////////////////////
+Void Loop() {
+    foreach(Key => Value, Async_HttpRequests) {
+        if(Http.SlotsAvailable > 0 && Value.HttpRequest == Null && Value.Response == "") {
+            if(Value.Type == "GET")
+                Async_HttpRequests[Key].HttpRequest = Http.CreateGet(Value.Url, Value.UseCache, Value.AdditionalHeaders);
+            else if(Value.Type == "POST")
+                Async_HttpRequests[Key].HttpRequest = Http.CreatePost(Value.Url, Value.Resource, Value.AdditionalHeaders);
+        }
+
+        if(Value.HttpRequest.IsCompleted) {
+            if(Value.HttpRequest.StatusCode >= 200 && Value.HttpRequest.StatusCode < 300) {
+                Async_HttpRequests[Key].Result = Value.HttpRequest.Result;
+                Async_HttpRequests[Key].Response = "REQUEST_SUCCESSFUL";
+            }
+            else {
+                Async_HttpRequests[Key].Response = "REQUEST_FAILED";
+            }
+            Http.Destroy(Async_HttpRequests[Key].HttpRequest);
+            Async_HttpRequests[Key].HttpRequest = Null;
+        }
+    }
+}

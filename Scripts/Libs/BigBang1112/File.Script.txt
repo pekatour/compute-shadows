@@ -1,0 +1,15 @@
+#Include "Libs/BigBang1112/Http.Script.txt" as Http
+
+CParsingDocument XML(Text _FileName) {
+	declare Content = Http::SyncGET_Result("file://" ^ _FileName);
+	if(Content == "") return Null;
+	return Xml.Create(Content);
+}
+
+Text Read(Text _FileName) {
+	return Http::SyncGET_Result("file://" ^ _FileName);
+}
+
+Text Write(Text _FileName, Text _Content) {
+	return Http::SyncPOST_Result("file://" ^ _FileName, _Content);
+}

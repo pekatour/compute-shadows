@@ -1,0 +1,363 @@
+/*
+// Language.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Handles information about 263 languages.
+
+// This library does not depend on any other library from the Universe Library Set.
+// You can use this library independently, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin
+*/
+
+/*
+// SLanguage[] List()
+// SLanguage FromCode(Text _Code)
+// SLanguage FromEnglishName(Text _EnglishName)
+// SLanguage FromLocalName(Text _LocalName)
+*/
+
+#Struct SLanguage {
+	Text EnglishName;
+	Text LocalName;
+	Text Code;
+	Boolean Exists;
+}
+
+/*
+// SLanguage[] List()
+// Lists all of the known languages.
+
+// Returns an array of all known languages in SLanguage struct array
+*/
+SLanguage[] List() {
+	declare SLanguage[] List;
+	declare Text[Text][] Languages;
+	
+	Languages.add(["Code" => "aa", "EnglishName" => "Afar", "LocalName" => "Afar"]);
+	Languages.add(["Code" => "ab", "EnglishName" => "Abkhazian", "LocalName" => "Аҧсуа"]);
+	Languages.add(["Code" => "af", "EnglishName" => "Afrikaans", "LocalName" => "Afrikaans"]);
+	Languages.add(["Code" => "ak", "EnglishName" => "Akan", "LocalName" => "Akana"]);
+	Languages.add(["Code" => "als", "EnglishName" => "Alemannic", "LocalName" => "Alemannisch"]);
+	Languages.add(["Code" => "am", "EnglishName" => "Amharic", "LocalName" => "አማርኛ"]);
+	Languages.add(["Code" => "an", "EnglishName" => "Aragonese", "LocalName" => "Aragonés"]);
+	Languages.add(["Code" => "ang", "EnglishName" => "Angal", "LocalName" => "Angal Heneng"]);
+	Languages.add(["Code" => "ang", "EnglishName" => "Anglo-Saxon / Old English", "LocalName" => "Englisc"]);
+	Languages.add(["Code" => "ar", "EnglishName" => "Arabic", "LocalName" => "العربية"]);
+	Languages.add(["Code" => "arc", "EnglishName" => "Aramaic", "LocalName" => "ܣܘܪܬ"]);
+	Languages.add(["Code" => "as", "EnglishName" => "Assamese", "LocalName" => "অসমীয়া"]);
+	Languages.add(["Code" => "ast", "EnglishName" => "Asturian", "LocalName" => "Asturianu"]);
+	Languages.add(["Code" => "av", "EnglishName" => "Avar", "LocalName" => "Авар"]);
+	Languages.add(["Code" => "ay", "EnglishName" => "Aymara", "LocalName" => "Aymar"]);
+	Languages.add(["Code" => "az", "EnglishName" => "Azerbaijani", "LocalName" => "Azərbaycanca / آذربايجان"]);
+	Languages.add(["Code" => "ba", "EnglishName" => "Bashkir", "LocalName" => "Башҡорт"]);
+	Languages.add(["Code" => "bar", "EnglishName" => "Bavarian", "LocalName" => "Boarisch"]);
+	Languages.add(["Code" => "bat-smg", "EnglishName" => "Samogitian", "LocalName" => "Žemaitėška"]);
+	Languages.add(["Code" => "bcl", "EnglishName" => "Bikol", "LocalName" => "Bikol Central"]);
+	Languages.add(["Code" => "be", "EnglishName" => "Belarusian", "LocalName" => "Беларуская"]);
+	Languages.add(["Code" => "be-x-old", "EnglishName" => "Belarusian (Taraškievica)", "LocalName" => "Беларуская (тарашкевіца)"]);
+	Languages.add(["Code" => "bg", "EnglishName" => "Bulgarian", "LocalName" => "Български"]);
+	Languages.add(["Code" => "bh", "EnglishName" => "Bihari", "LocalName" => "भोजपुरी"]);
+	Languages.add(["Code" => "bi", "EnglishName" => "Bislama", "LocalName" => "Bislama"]);
+	Languages.add(["Code" => "bm", "EnglishName" => "Bambara", "LocalName" => "Bamanankan"]);
+	Languages.add(["Code" => "bn", "EnglishName" => "Bengali", "LocalName" => "বাংলা"]);
+	Languages.add(["Code" => "bo", "EnglishName" => "Tibetan", "LocalName" => "བོད་ཡིག / Bod skad"]);
+	Languages.add(["Code" => "bpy", "EnglishName" => "Bishnupriya Manipuri", "LocalName" => "ইমার ঠার/বিষ্ণুপ্রিয়া মণিপুরী"]);
+	Languages.add(["Code" => "br", "EnglishName" => "Breton", "LocalName" => "Brezhoneg"]);
+	Languages.add(["Code" => "bs", "EnglishName" => "Bosnian", "LocalName" => "Bosanski"]);
+	Languages.add(["Code" => "bug", "EnglishName" => "Buginese", "LocalName" => "ᨅᨔ ᨕᨘᨁᨗ / Basa Ugi"]);
+	Languages.add(["Code" => "bxr", "EnglishName" => "Buriat (Russia)", "LocalName" => "Буряад хэлэн"]);
+	Languages.add(["Code" => "ca", "EnglishName" => "Catalan", "LocalName" => "Català"]);
+	Languages.add(["Code" => "cdo", "EnglishName" => "Min Dong Chinese", "LocalName" => "Mìng-dĕ̤ng-ngṳ̄ / 閩東語"]);
+	Languages.add(["Code" => "ce", "EnglishName" => "Chechen", "LocalName" => "Нохчийн"]);
+	Languages.add(["Code" => "ceb", "EnglishName" => "Cebuano", "LocalName" => "Sinugboanong Binisaya"]);
+	Languages.add(["Code" => "ch", "EnglishName" => "Chamorro", "LocalName" => "Chamoru"]);
+	Languages.add(["Code" => "cho", "EnglishName" => "Choctaw", "LocalName" => "Choctaw"]);
+	Languages.add(["Code" => "chr", "EnglishName" => "Cherokee", "LocalName" => "ᏣᎳᎩ"]);
+	Languages.add(["Code" => "chy", "EnglishName" => "Cheyenne", "LocalName" => "Tsetsêhestâhese"]);
+	Languages.add(["Code" => "co", "EnglishName" => "Corsican", "LocalName" => "Corsu"]);
+	Languages.add(["Code" => "cr", "EnglishName" => "Cree", "LocalName" => "Nehiyaw"]);
+	Languages.add(["Code" => "cs", "EnglishName" => "Czech", "LocalName" => "Česky"]);
+	Languages.add(["Code" => "csb", "EnglishName" => "Kashubian", "LocalName" => "Kaszëbsczi"]);
+	Languages.add(["Code" => "cu", "EnglishName" => "Old Church Slavonic / Old Bulgarian", "LocalName" => "словѣньскъ / slověnĭskŭ"]);
+	Languages.add(["Code" => "cv", "EnglishName" => "Chuvash", "LocalName" => "Чăваш"]);
+	Languages.add(["Code" => "cy", "EnglishName" => "Welsh", "LocalName" => "Cymraeg"]);
+	Languages.add(["Code" => "da", "EnglishName" => "Danish", "LocalName" => "Dansk"]);
+	Languages.add(["Code" => "de", "EnglishName" => "German", "LocalName" => "Deutsch"]);
+	Languages.add(["Code" => "diq", "EnglishName" => "Dimli", "LocalName" => "Zazaki"]);
+	Languages.add(["Code" => "dsb", "EnglishName" => "Lower Sorbian", "LocalName" => "Dolnoserbski"]);
+	Languages.add(["Code" => "dv", "EnglishName" => "Divehi", "LocalName" => "ދިވެހިބަސް"]);
+	Languages.add(["Code" => "dz", "EnglishName" => "Dzongkha", "LocalName" => "ཇོང་ཁ"]);
+	Languages.add(["Code" => "ee", "EnglishName" => "Ewe", "LocalName" => "Ɛʋɛ"]);
+	Languages.add(["Code" => "el", "EnglishName" => "Greek", "LocalName" => "Ελληνικά"]);
+	Languages.add(["Code" => "en", "EnglishName" => "English", "LocalName" => "English"]);
+	Languages.add(["Code" => "eo", "EnglishName" => "Esperanto", "LocalName" => "Esperanto"]);
+	Languages.add(["Code" => "es", "EnglishName" => "Spanish", "LocalName" => "Español"]);
+	Languages.add(["Code" => "et", "EnglishName" => "Estonian", "LocalName" => "Eesti"]);
+	Languages.add(["Code" => "eu", "EnglishName" => "Basque", "LocalName" => "Euskara"]);
+	Languages.add(["Code" => "ext", "EnglishName" => "Extremaduran", "LocalName" => "Estremeñu"]);
+	Languages.add(["Code" => "fa", "EnglishName" => "Persian", "LocalName" => "فارسی"]);
+	Languages.add(["Code" => "ff", "EnglishName" => "Peul", "LocalName" => "Fulfulde"]);
+	Languages.add(["Code" => "fi", "EnglishName" => "Finnish", "LocalName" => "Suomi"]);
+	Languages.add(["Code" => "fiu-vro", "EnglishName" => "Võro", "LocalName" => "Võro"]);
+	Languages.add(["Code" => "fj", "EnglishName" => "Fijian", "LocalName" => "Na Vosa Vakaviti"]);
+	Languages.add(["Code" => "fo", "EnglishName" => "Faroese", "LocalName" => "Føroyskt"]);
+	Languages.add(["Code" => "fr", "EnglishName" => "French", "LocalName" => "Français"]);
+	Languages.add(["Code" => "frp", "EnglishName" => "Arpitan / Franco-Provençal", "LocalName" => "Arpitan / francoprovençal"]);
+	Languages.add(["Code" => "fur", "EnglishName" => "Friulian", "LocalName" => "Furlan"]);
+	Languages.add(["Code" => "fy", "EnglishName" => "West Frisian", "LocalName" => "Frysk"]);
+	Languages.add(["Code" => "ga", "EnglishName" => "Irish", "LocalName" => "Gaeilge"]);
+	Languages.add(["Code" => "gan", "EnglishName" => "Gan Chinese", "LocalName" => "贛語"]);
+	Languages.add(["Code" => "gbm", "EnglishName" => "Garhwali", "LocalName" => "गढ़वळी"]);
+	Languages.add(["Code" => "gd", "EnglishName" => "Scottish Gaelic", "LocalName" => "Gàidhlig"]);
+	Languages.add(["Code" => "gil", "EnglishName" => "Gilbertese", "LocalName" => "Taetae ni kiribati"]);
+	Languages.add(["Code" => "gl", "EnglishName" => "Galician", "LocalName" => "Galego"]);
+	Languages.add(["Code" => "gn", "EnglishName" => "Guarani", "LocalName" => "Avañe'ẽ"]);
+	Languages.add(["Code" => "got", "EnglishName" => "Gothic", "LocalName" => "gutisk"]);
+	Languages.add(["Code" => "gu", "EnglishName" => "Gujarati", "LocalName" => "ગુજરાતી"]);
+	Languages.add(["Code" => "gv", "EnglishName" => "Manx", "LocalName" => "Gaelg"]);
+	Languages.add(["Code" => "ha", "EnglishName" => "Hausa", "LocalName" => "هَوُسَ"]);
+	Languages.add(["Code" => "hak", "EnglishName" => "Hakka Chinese", "LocalName" => "客家語/Hak-kâ-ngî"]);
+	Languages.add(["Code" => "haw", "EnglishName" => "Hawaiian", "LocalName" => "Hawai`i"]);
+	Languages.add(["Code" => "he", "EnglishName" => "Hebrew", "LocalName" => "עברית"]);
+	Languages.add(["Code" => "hi", "EnglishName" => "Hindi", "LocalName" => "हिन्दी"]);
+	Languages.add(["Code" => "ho", "EnglishName" => "Hiri Motu", "LocalName" => "Hiri Motu"]);
+	Languages.add(["Code" => "hr", "EnglishName" => "Croatian", "LocalName" => "Hrvatski"]);
+	Languages.add(["Code" => "ht", "EnglishName" => "Haitian", "LocalName" => "Krèyol ayisyen"]);
+	Languages.add(["Code" => "hu", "EnglishName" => "Hungarian", "LocalName" => "Magyar"]);
+	Languages.add(["Code" => "hy", "EnglishName" => "Armenian", "LocalName" => "Հայերեն"]);
+	Languages.add(["Code" => "hz", "EnglishName" => "Herero", "LocalName" => "Otsiherero"]);
+	Languages.add(["Code" => "ia", "EnglishName" => "Interlingua", "LocalName" => "Interlingua"]);
+	Languages.add(["Code" => "id", "EnglishName" => "Indonesian", "LocalName" => "Bahasa Indonesia"]);
+	Languages.add(["Code" => "ie", "EnglishName" => "Interlingue", "LocalName" => "Interlingue"]);
+	Languages.add(["Code" => "ig", "EnglishName" => "Igbo", "LocalName" => "Igbo"]);
+	Languages.add(["Code" => "ii", "EnglishName" => "Sichuan Yi", "LocalName" => "ꆇꉙ / 四川彝语"]);
+	Languages.add(["Code" => "ik", "EnglishName" => "Inupiak", "LocalName" => "Iñupiak"]);
+	Languages.add(["Code" => "ilo", "EnglishName" => "Ilokano", "LocalName" => "Ilokano"]);
+	Languages.add(["Code" => "inh", "EnglishName" => "Ingush", "LocalName" => "ГӀалгӀай"]);
+	Languages.add(["Code" => "io", "EnglishName" => "Ido", "LocalName" => "Ido"]);
+	Languages.add(["Code" => "is", "EnglishName" => "Icelandic", "LocalName" => "Íslenska"]);
+	Languages.add(["Code" => "it", "EnglishName" => "Italian", "LocalName" => "Italiano"]);
+	Languages.add(["Code" => "iu", "EnglishName" => "Inuktitut", "LocalName" => "ᐃᓄᒃᑎᑐᑦ"]);
+	Languages.add(["Code" => "ja", "EnglishName" => "Japanese", "LocalName" => "日本語"]);
+	Languages.add(["Code" => "jbo", "EnglishName" => "Lojban", "LocalName" => "Lojban"]);
+	Languages.add(["Code" => "jv", "EnglishName" => "Javanese", "LocalName" => "Basa Jawa"]);
+	Languages.add(["Code" => "ka", "EnglishName" => "Georgian", "LocalName" => "ქართული"]);
+	Languages.add(["Code" => "kg", "EnglishName" => "Kongo", "LocalName" => "KiKongo"]);
+	Languages.add(["Code" => "ki", "EnglishName" => "Kikuyu", "LocalName" => "Gĩkũyũ"]);
+	Languages.add(["Code" => "kj", "EnglishName" => "Kuanyama", "LocalName" => "Kuanyama"]);
+	Languages.add(["Code" => "kk", "EnglishName" => "Kazakh", "LocalName" => "Қазақша"]);
+	Languages.add(["Code" => "kl", "EnglishName" => "Greenlandic", "LocalName" => "Kalaallisut"]);
+	Languages.add(["Code" => "km", "EnglishName" => "Cambodian", "LocalName" => "ភាសាខ្មែរ"]);
+	Languages.add(["Code" => "kn", "EnglishName" => "Kannada", "LocalName" => "ಕನ್ನಡ"]);
+	Languages.add(["Code" => "khw", "EnglishName" => "Khowar", "LocalName" => "کھوار"]);
+	Languages.add(["Code" => "ko", "EnglishName" => "Korean", "LocalName" => "한국어"]);
+	Languages.add(["Code" => "kr", "EnglishName" => "Kanuri", "LocalName" => "Kanuri"]);
+	Languages.add(["Code" => "ks", "EnglishName" => "Kashmiri", "LocalName" => "कश्मीरी / كشميري"]);
+	Languages.add(["Code" => "ksh", "EnglishName" => "Ripuarian", "LocalName" => "Ripoarisch"]);
+	Languages.add(["Code" => "ku", "EnglishName" => "Kurdish", "LocalName" => "Kurdî / كوردی"]);
+	Languages.add(["Code" => "kv", "EnglishName" => "Komi", "LocalName" => "Коми"]);
+	Languages.add(["Code" => "kw", "EnglishName" => "Cornish", "LocalName" => "Kernewek"]);
+	Languages.add(["Code" => "ky", "EnglishName" => "Kirghiz", "LocalName" => "Kırgızca / Кыргызча"]);
+	Languages.add(["Code" => "la", "EnglishName" => "Latin", "LocalName" => "Latina"]);
+	Languages.add(["Code" => "lad", "EnglishName" => "Ladino / Judeo-Spanish", "LocalName" => "Dzhudezmo / Djudeo-Espanyol"]);
+	Languages.add(["Code" => "lan", "EnglishName" => "Lango", "LocalName" => "Leb Lango / Luo"]);
+	Languages.add(["Code" => "lb", "EnglishName" => "Luxembourgish", "LocalName" => "Lëtzebuergesch"]);
+	Languages.add(["Code" => "lg", "EnglishName" => "Ganda", "LocalName" => "Luganda"]);
+	Languages.add(["Code" => "li", "EnglishName" => "Limburgian", "LocalName" => "Limburgs"]);
+	Languages.add(["Code" => "lij", "EnglishName" => "Ligurian", "LocalName" => "Líguru"]);
+	Languages.add(["Code" => "lmo", "EnglishName" => "Lombard", "LocalName" => "Lumbaart"]);
+	Languages.add(["Code" => "ln", "EnglishName" => "Lingala", "LocalName" => "Lingála"]);
+	Languages.add(["Code" => "lo", "EnglishName" => "Laotian", "LocalName" => "ລາວ / Pha xa lao"]);
+	Languages.add(["Code" => "lzz", "EnglishName" => "Laz", "LocalName" => "Lazuri / ლაზური"]);
+	Languages.add(["Code" => "lt", "EnglishName" => "Lithuanian", "LocalName" => "Lietuvių"]);
+	Languages.add(["Code" => "lv", "EnglishName" => "Latvian", "LocalName" => "Latviešu"]);
+	Languages.add(["Code" => "map-bms", "EnglishName" => "Banyumasan", "LocalName" => "Basa Banyumasan"]);
+	Languages.add(["Code" => "mg", "EnglishName" => "Malagasy", "LocalName" => "Malagasy"]);
+	Languages.add(["Code" => "man", "EnglishName" => "Mandarin", "LocalName" => "官話/官话"]);
+	Languages.add(["Code" => "mh", "EnglishName" => "Marshallese", "LocalName" => "Kajin Majel / Ebon"]);
+	Languages.add(["Code" => "mi", "EnglishName" => "Maori", "LocalName" => "Māori"]);
+	Languages.add(["Code" => "min", "EnglishName" => "Minangkabau", "LocalName" => "Minangkabau"]);
+	Languages.add(["Code" => "mk", "EnglishName" => "Macedonian", "LocalName" => "Македонски"]);
+	Languages.add(["Code" => "ml", "EnglishName" => "Malayalam", "LocalName" => "മലയാളം"]);
+	Languages.add(["Code" => "mn", "EnglishName" => "Mongolian", "LocalName" => "Монгол"]);
+	Languages.add(["Code" => "mo", "EnglishName" => "Moldovan", "LocalName" => "Moldovenească"]);
+	Languages.add(["Code" => "mr", "EnglishName" => "Marathi", "LocalName" => "मराठी"]);
+	Languages.add(["Code" => "ms", "EnglishName" => "Malay", "LocalName" => "Bahasa Melayu"]);
+	Languages.add(["Code" => "mt", "EnglishName" => "Maltese", "LocalName" => "bil-Malti"]);
+	Languages.add(["Code" => "mus", "EnglishName" => "Creek / Muskogee", "LocalName" => "Mvskoke"]);
+	Languages.add(["Code" => "mwl", "EnglishName" => "Mirandese", "LocalName" => "Mirandés"]);
+	Languages.add(["Code" => "my", "EnglishName" => "Burmese", "LocalName" => "Myanmasa"]);
+	Languages.add(["Code" => "na", "EnglishName" => "Nauruan", "LocalName" => "Dorerin Naoero"]);
+	Languages.add(["Code" => "nah", "EnglishName" => "Nahuatl", "LocalName" => "Nahuatl"]);
+	Languages.add(["Code" => "nap", "EnglishName" => "Neapolitan", "LocalName" => "Nnapulitano"]);
+	Languages.add(["Code" => "nd", "EnglishName" => "North Ndebele", "LocalName" => "Sindebele"]);
+	Languages.add(["Code" => "nds", "EnglishName" => "Low German / Low Saxon", "LocalName" => "Plattdüütsch"]);
+	Languages.add(["Code" => "nds-nl", "EnglishName" => "Dutch Low Saxon", "LocalName" => "Nedersaksisch"]);
+	Languages.add(["Code" => "ne", "EnglishName" => "Nepali", "LocalName" => "नेपाली"]);
+	Languages.add(["Code" => "new", "EnglishName" => "Newar", "LocalName" => "नेपालभाषा / Newah Bhaye"]);
+	Languages.add(["Code" => "ng", "EnglishName" => "Ndonga", "LocalName" => "Oshiwambo"]);
+	Languages.add(["Code" => "nl", "EnglishName" => "Dutch", "LocalName" => "Nederlands"]);
+	Languages.add(["Code" => "nn", "EnglishName" => "Norwegian Nynorsk", "LocalName" => "Norsk (nynorsk)"]);
+	Languages.add(["Code" => "no", "EnglishName" => "Norwegian", "LocalName" => "Norsk (bokmål / riksmål)"]);
+	Languages.add(["Code" => "nr", "EnglishName" => "South Ndebele", "LocalName" => "isiNdebele"]);
+	Languages.add(["Code" => "nso", "EnglishName" => "Northern Sotho", "LocalName" => "Sesotho sa Leboa / Sepedi"]);
+	Languages.add(["Code" => "nrm", "EnglishName" => "Norman", "LocalName" => "Nouormand / Normaund"]);
+	Languages.add(["Code" => "nv", "EnglishName" => "Navajo", "LocalName" => "Diné bizaad"]);
+	Languages.add(["Code" => "ny", "EnglishName" => "Chichewa", "LocalName" => "Chi-Chewa"]);
+	Languages.add(["Code" => "oc", "EnglishName" => "Occitan", "LocalName" => "Occitan"]);
+	Languages.add(["Code" => "oj", "EnglishName" => "Ojibwa", "LocalName" => "ᐊᓂᔑᓈᐯᒧᐎᓐ / Anishinaabemowin"]);
+	Languages.add(["Code" => "om", "EnglishName" => "Oromo", "LocalName" => "Oromoo"]);
+	Languages.add(["Code" => "or", "EnglishName" => "Oriya", "LocalName" => "ଓଡ଼ିଆ"]);
+	Languages.add(["Code" => "os", "EnglishName" => "Ossetian / Ossetic", "LocalName" => "Иронау"]);
+	Languages.add(["Code" => "pa", "EnglishName" => "Panjabi / Punjabi", "LocalName" => "پنجابي"]);
+	Languages.add(["Code" => "pag", "EnglishName" => "Pangasinan", "LocalName" => "Pangasinan"]);
+	Languages.add(["Code" => "pam", "EnglishName" => "Kapampangan", "LocalName" => "Kapampangan"]);
+	Languages.add(["Code" => "pap", "EnglishName" => "Papiamentu", "LocalName" => "Papiamentu"]);
+	Languages.add(["Code" => "pdc", "EnglishName" => "Pennsylvania German", "LocalName" => "Deitsch"]);
+	Languages.add(["Code" => "pi", "EnglishName" => "Pali", "LocalName" => "Pāli / पाऴि"]);
+	Languages.add(["Code" => "pih", "EnglishName" => "Norfolk", "LocalName" => "Norfuk"]);
+	Languages.add(["Code" => "pl", "EnglishName" => "Polish", "LocalName" => "Polski"]);
+	Languages.add(["Code" => "pms", "EnglishName" => "Piedmontese", "LocalName" => "Piemontèis"]);
+	Languages.add(["Code" => "ps", "EnglishName" => "Pashto", "LocalName" => "پښتو"]);
+	Languages.add(["Code" => "pt", "EnglishName" => "Portuguese", "LocalName" => "Português"]);
+	Languages.add(["Code" => "qu", "EnglishName" => "Quechua", "LocalName" => "Runa Simi"]);
+	Languages.add(["Code" => "rm", "EnglishName" => "Raeto Romance", "LocalName" => "Rumantsch"]);
+	Languages.add(["Code" => "rmy", "EnglishName" => "Romani", "LocalName" => "Romani / रोमानी"]);
+	Languages.add(["Code" => "rn", "EnglishName" => "Kirundi", "LocalName" => "Kirundi"]);
+	Languages.add(["Code" => "ro", "EnglishName" => "Romanian", "LocalName" => "Română"]);
+	Languages.add(["Code" => "roa-rup", "EnglishName" => "Aromanian", "LocalName" => "Armâneashti"]);
+	Languages.add(["Code" => "ru", "EnglishName" => "Russian", "LocalName" => "Русский"]);
+	Languages.add(["Code" => "rw", "EnglishName" => "Rwandi", "LocalName" => "Kinyarwandi"]);
+	Languages.add(["Code" => "sa", "EnglishName" => "Sanskrit", "LocalName" => "संस्कृतम्"]);
+	Languages.add(["Code" => "sc", "EnglishName" => "Sardinian", "LocalName" => "Sardu"]);
+	Languages.add(["Code" => "scn", "EnglishName" => "Sicilian", "LocalName" => "Sicilianu"]);
+	Languages.add(["Code" => "sco", "EnglishName" => "Scots", "LocalName" => "Scots"]);
+	Languages.add(["Code" => "sd", "EnglishName" => "Sindhi", "LocalName" => "सिनधि"]);
+	Languages.add(["Code" => "se", "EnglishName" => "Northern Sami", "LocalName" => "Davvisámegiella"]);
+	Languages.add(["Code" => "sg", "EnglishName" => "Sango", "LocalName" => "Sängö"]);
+	Languages.add(["Code" => "sh", "EnglishName" => "Serbo-Croatian", "LocalName" => "Srpskohrvatski / Српскохрватски"]);
+	Languages.add(["Code" => "si", "EnglishName" => "Sinhalese", "LocalName" => "සිංහල"]);
+	Languages.add(["Code" => "simple", "EnglishName" => "Simple English", "LocalName" => "Simple English"]);
+	Languages.add(["Code" => "sk", "EnglishName" => "Slovak", "LocalName" => "Slovenčina"]);
+	Languages.add(["Code" => "sl", "EnglishName" => "Slovenian", "LocalName" => "Slovenščina"]);
+	Languages.add(["Code" => "sm", "EnglishName" => "Samoan", "LocalName" => "Gagana Samoa"]);
+	Languages.add(["Code" => "sn", "EnglishName" => "Shona", "LocalName" => "chiShona"]);
+	Languages.add(["Code" => "so", "EnglishName" => "Somalia", "LocalName" => "Soomaaliga"]);
+	Languages.add(["Code" => "sq", "EnglishName" => "Albanian", "LocalName" => "Shqip"]);
+	Languages.add(["Code" => "sr", "EnglishName" => "Serbian", "LocalName" => "Српски"]);
+	Languages.add(["Code" => "ss", "EnglishName" => "Swati", "LocalName" => "SiSwati"]);
+	Languages.add(["Code" => "st", "EnglishName" => "Southern Sotho", "LocalName" => "Sesotho"]);
+	Languages.add(["Code" => "su", "EnglishName" => "Sundanese", "LocalName" => "Basa Sunda"]);
+	Languages.add(["Code" => "sv", "EnglishName" => "Swedish", "LocalName" => "Svenska"]);
+	Languages.add(["Code" => "sw", "EnglishName" => "Swahili", "LocalName" => "Kiswahili"]);
+	Languages.add(["Code" => "ta", "EnglishName" => "Tamil", "LocalName" => "தமிழ்"]);
+	Languages.add(["Code" => "te", "EnglishName" => "Telugu", "LocalName" => "తెలుగు"]);
+	Languages.add(["Code" => "tet", "EnglishName" => "Tetum", "LocalName" => "Tetun"]);
+	Languages.add(["Code" => "tg", "EnglishName" => "Tajik", "LocalName" => "Тоҷикӣ"]);
+	Languages.add(["Code" => "th", "EnglishName" => "Thai", "LocalName" => "ไทย / Phasa Thai"]);
+	Languages.add(["Code" => "ti", "EnglishName" => "Tigrinya", "LocalName" => "ትግርኛ"]);
+	Languages.add(["Code" => "tk", "EnglishName" => "Turkmen", "LocalName" => "تركمن"]);
+	Languages.add(["Code" => "tl", "EnglishName" => "Tagalog", "LocalName" => "Tagalog"]);
+	Languages.add(["Code" => "tlh", "EnglishName" => "Klingon", "LocalName" => "tlhIngan-Hol"]);
+	Languages.add(["Code" => "tn", "EnglishName" => "Tswana", "LocalName" => "Setswana"]);
+	Languages.add(["Code" => "to", "EnglishName" => "Tonga", "LocalName" => "Lea Faka-Tonga"]);
+	Languages.add(["Code" => "tpi", "EnglishName" => "Tok Pisin", "LocalName" => "Tok Pisin"]);
+	Languages.add(["Code" => "tr", "EnglishName" => "Turkish", "LocalName" => "Türkçe"]);
+	Languages.add(["Code" => "ts", "EnglishName" => "Tsonga", "LocalName" => "Xitsonga"]);
+	Languages.add(["Code" => "tt", "EnglishName" => "Tatar", "LocalName" => "Tatarça"]);
+	Languages.add(["Code" => "tum", "EnglishName" => "Tumbuka", "LocalName" => "chiTumbuka"]);
+	Languages.add(["Code" => "tw", "EnglishName" => "Twi", "LocalName" => "Twi"]);
+	Languages.add(["Code" => "ty", "EnglishName" => "Tahitian", "LocalName" => "Reo Mā`ohi"]);
+	Languages.add(["Code" => "udm", "EnglishName" => "Udmurt", "LocalName" => "Удмурт кыл"]);
+	Languages.add(["Code" => "ug", "EnglishName" => "Uyghur", "LocalName" => "ئۇيغۇرچە"]);
+	Languages.add(["Code" => "uk", "EnglishName" => "Ukrainian", "LocalName" => "Українська"]);
+	Languages.add(["Code" => "ur", "EnglishName" => "Urdu", "LocalName" => "اردو"]);
+	Languages.add(["Code" => "uz", "EnglishName" => "Uzbek", "LocalName" => "Ўзбек"]);
+	Languages.add(["Code" => "ve", "EnglishName" => "Venda", "LocalName" => "Tshivenḓa"]);
+	Languages.add(["Code" => "vi", "EnglishName" => "Vietnamese", "LocalName" => "Việtnam"]);
+	Languages.add(["Code" => "vec", "EnglishName" => "Venetian", "LocalName" => "Vèneto"]);
+	Languages.add(["Code" => "vls", "EnglishName" => "West Flemish", "LocalName" => "West-Vlaoms"]);
+	Languages.add(["Code" => "vo", "EnglishName" => "Volapük", "LocalName" => "Volapük"]);
+	Languages.add(["Code" => "wa", "EnglishName" => "Walloon", "LocalName" => "Walon"]);
+	Languages.add(["Code" => "war", "EnglishName" => "Waray / Samar-Leyte Visayan", "LocalName" => "Winaray / Binisaya Lineyte-Samarnon"]);
+	Languages.add(["Code" => "wo", "EnglishName" => "Wolof", "LocalName" => "Wollof"]);
+	Languages.add(["Code" => "xal", "EnglishName" => "Kalmyk", "LocalName" => "Хальмг"]);
+	Languages.add(["Code" => "xh", "EnglishName" => "Xhosa", "LocalName" => "isiXhosa"]);
+	Languages.add(["Code" => "xmf", "EnglishName" => "Megrelian", "LocalName" => "მარგალური"]);
+	Languages.add(["Code" => "yi", "EnglishName" => "Yiddish", "LocalName" => "ייִדיש"]);
+	Languages.add(["Code" => "yo", "EnglishName" => "Yoruba", "LocalName" => "Yorùbá"]);
+	Languages.add(["Code" => "za", "EnglishName" => "Zhuang", "LocalName" => "Cuengh / Tôô / 壮语"]);
+	Languages.add(["Code" => "zh", "EnglishName" => "Chinese", "LocalName" => "中文"]);
+	Languages.add(["Code" => "zh-classical", "EnglishName" => "Classical Chinese", "LocalName" => "文言"]);
+	Languages.add(["Code" => "zh-min-nan", "EnglishName" => "Minnan", "LocalName" => "Bân-lâm-gú"]);
+	Languages.add(["Code" => "zh-yue", "EnglishName" => "Cantonese", "LocalName" => "粵語 / 粤语"]);
+	Languages.add(["Code" => "zu", "EnglishName" => "Zulu", "LocalName" => "isiZulu"]);
+	Languages.add(["Code" => "closed-zh-tw", "EnglishName" => "Traditional Chinese", "LocalName" => "中文(台灣)"]);
+	Languages.add(["Code" => "nb", "EnglishName" => "Norwegian Bokmål", "LocalName" => "Norsk (bokmål)"]);
+	Languages.add(["Code" => "zh-tw", "EnglishName" => "Traditional Chinese", "LocalName" => "中文(台灣)"]);
+	Languages.add(["Code" => "tokipona", "EnglishName" => "tokipona", "LocalName" => "tokipona"]);
+	
+	declare JsonSuccess = List.fromjson(Languages.tojson());
+	
+	for(i,0,List.count-1) List[i].Exists = True;
+	
+	return List;    
+}
+
+/*
+// SLanguage FromCode(Text _Code)
+// Gets all language information from code.
+
+// Text _Code - Language code
+
+// Returns language information as SLanguage
+*/
+SLanguage FromCode(Text _Code) {
+	foreach(Lang,List())
+		if(Lang.Code == _Code)
+			return Lang;
+	
+	declare SLanguage Language;
+	return Language;
+}
+
+/*
+// SLanguage FromEnglishName(Text _EnglishName)
+// Gets all language information from english name.
+
+// Text _EnglishName - Language english name
+
+// Returns language information as SLanguage
+*/
+SLanguage FromEnglishName(Text _EnglishName) {
+	foreach(Lang,List())
+		if(Lang.EnglishName == _EnglishName)
+			return Lang;
+			
+	declare SLanguage Language;
+	return Language;
+}                
+
+/*
+// SLanguage FromLocalName(Text _LocalName)
+// Gets all language information from local name.
+
+// Text _LocalName - Language local name
+
+// Returns language information as SLanguage
+*/
+SLanguage FromLocalName(Text _LocalName) {
+	foreach(Lang,List())
+		if(Lang.LocalName == _LocalName)
+			return Lang;           
+
+	declare SLanguage Language;
+	return Language;
+}

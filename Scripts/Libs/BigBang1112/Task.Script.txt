@@ -1,0 +1,169 @@
+#Struct STaskFail {
+	Boolean Failed;
+	Text ErrorType;
+	Text ErrorCode;
+	Text ErrorDescription;
+}
+
+declare CTaskResult[Text] G_AsyncRequests;
+declare CTaskResult_BuddiesChallengeRecord[Text] G_AsyncRequests_BuddiesChallengeRecord;
+declare CTaskResult_BuddiesChallengeRecordsComparison[Text] G_AsyncRequests_BuddiesChallengeRecordsComparison;
+declare CTaskResult_BuddyChallengeRecordsComparison[Text] G_AsyncRequests_BuddyChallengeRecordsComparison;
+declare CTaskResult_FileList[Text] G_AsyncRequests_FileList;
+declare CTaskResult_GameModeList[Text] G_AsyncRequests_GameModeList;
+declare CTaskResult_Ghost[Text] G_AsyncRequests_Ghost;
+declare CTaskResult_GhostList[Text] G_AsyncRequests_GhostList;
+declare CTaskResult_MapList[Text] G_AsyncRequests_MapList;
+declare CTaskResult_MapRecordList[Text] G_AsyncRequests_MapRecordList;
+declare CTaskResult_NaturalLeaderBoardInfoList[Text] G_AsyncRequests_NaturalLeaderBoardInfoList;
+declare CTaskResult_PlayerMapRecords[Text] G_AsyncRequests_PlayerMapRecords;
+declare CTaskResult_RealLeaderBoardInfoList[Text] G_AsyncRequests_RealLeaderBoardInfoList;
+declare CTaskResult_ReplayList[Text] G_AsyncRequests_ReplayList;
+declare CTaskResult_StringIntList[Text] G_AsyncRequests_StringIntList;
+
+CTaskResult Sync(CTaskResult _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_BuddiesChallengeRecord SyncBuddiesChallengeRecord(CTaskResult_BuddiesChallengeRecord _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_BuddiesChallengeRecordsComparison SyncBuddiesChallengeRecordsComparison(CTaskResult_BuddiesChallengeRecordsComparison _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_BuddyChallengeRecordsComparison SyncBuddyChallengeRecordsComparison(CTaskResult_BuddyChallengeRecordsComparison _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_FileList SyncFileList(CTaskResult_FileList _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_GameModeList SyncGameModeList(CTaskResult_GameModeList _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_Ghost SyncGhost(CTaskResult_Ghost _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_GhostList SyncGhostList(CTaskResult_GhostList _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_MapList SyncMapList(CTaskResult_MapList _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_MapRecordList SyncMapRecordList(CTaskResult_MapRecordList _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_NaturalLeaderBoardInfoList SyncNaturalLeaderBoardInfoList(CTaskResult_NaturalLeaderBoardInfoList _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_PlayerMapRecords SyncPlayerMapRecords(CTaskResult_PlayerMapRecords _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_RealLeaderBoardInfoList SyncRealLeaderBoardInfoList(CTaskResult_RealLeaderBoardInfoList _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_ReplayList SyncReplayList(CTaskResult_ReplayList _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+CTaskResult_StringIntList SyncStringIntList(CTaskResult_StringIntList _Task) { 
+	wait(!_Task.IsProcessing); return _Task;
+}
+
+Void Async_DataFileMgr(Text _Name, CTaskResult _Task) {
+	if(G_AsyncRequests.existskey(_Name)) DataFileMgr.TaskResult_Release(G_AsyncRequests[_Name].Id);
+	G_AsyncRequests[_Name] = _Task;
+}
+
+Void Async_ScoreMgr(Text _Name, CTaskResult _Task) {
+	if(G_AsyncRequests.existskey(_Name)) ScoreMgr.TaskResult_Release(G_AsyncRequests[_Name].Id);
+	G_AsyncRequests[_Name] = _Task;
+}
+
+CTaskResult Get(Text _Name) {
+	if(!G_AsyncRequests.existskey(_Name)) return Null;
+    return G_AsyncRequests[_Name];
+}
+
+Void Destroy_DataFileMgr(Text _Name) {
+	if(!G_AsyncRequests.existskey(_Name)) return;
+	DataFileMgr.TaskResult_Release(G_AsyncRequests[_Name].Id);
+	//ScoreMgr.TaskResult_Release(G_AsyncRequests[_Name].Id);
+	declare Removed = G_AsyncRequests.removekey(_Name);
+}
+
+Void Destroy_ScoreMgr(Text _Name) {
+	if(!G_AsyncRequests.existskey(_Name)) return;
+	ScoreMgr.TaskResult_Release(G_AsyncRequests[_Name].Id);
+	declare Removed = G_AsyncRequests.removekey(_Name);
+}
+
+Boolean IsCompleted(Text _Name) {
+	if(!G_AsyncRequests.existskey(_Name)) return False;
+	return !Get(_Name).IsProcessing;
+}
+
+Boolean IsSuccessful(Text _Name) {
+	if(!G_AsyncRequests.existskey(_Name)) return False;
+	return !Get(_Name).IsProcessing
+	&& Get(_Name).HasSucceeded;
+}
+
+STaskFail IsFailed(Text _Name) {
+	declare STaskFail TaskFail;
+	if(!G_AsyncRequests.existskey(_Name)) return TaskFail;
+	if(!Get(_Name).IsProcessing && Get(_Name).HasFailed) {
+		TaskFail.Failed = True;
+		TaskFail.ErrorType = Get(_Name).ErrorType;
+		TaskFail.ErrorCode = Get(_Name).ErrorCode;
+		TaskFail.ErrorDescription = Get(_Name).ErrorDescription;
+		return TaskFail;
+	}
+	return TaskFail;
+}
+
+Boolean IsCanceled(Text _Name) {
+	if(!G_AsyncRequests.existskey(_Name)) return False;
+	return !Get(_Name).IsProcessing
+	&& Get(_Name).IsCanceled;
+}
+
+CTaskResult_BuddiesChallengeRecord ToBuddiesChallengeRecord(CTaskResult _Task) {
+	return (_Task as CTaskResult_BuddiesChallengeRecord);
+}
+CTaskResult_BuddiesChallengeRecordsComparison ToBuddiesChallengeRecordsComparison(CTaskResult _Task) {
+	return (_Task as CTaskResult_BuddiesChallengeRecordsComparison);
+}
+CTaskResult_BuddyChallengeRecordsComparison ToBuddyChallengeRecordsComparison(CTaskResult _Task) {
+	return (_Task as CTaskResult_BuddyChallengeRecordsComparison);
+}
+CTaskResult_FileList ToFileList(CTaskResult _Task) {
+	return (_Task as CTaskResult_FileList);
+}
+CTaskResult_GameModeList ToGameModeList(CTaskResult _Task) {
+	return (_Task as CTaskResult_GameModeList);
+}
+CTaskResult_Ghost ToGhost(CTaskResult _Task) {
+	return (_Task as CTaskResult_Ghost);
+}
+CTaskResult_GhostList ToGhostList(CTaskResult _Task) {
+	return (_Task as CTaskResult_GhostList);
+}
+CTaskResult_MapList ToMapList(CTaskResult _Task) {
+	return (_Task as CTaskResult_MapList);
+}
+CTaskResult_MapRecordList ToMapRecordList(CTaskResult _Task) {
+	return (_Task as CTaskResult_MapRecordList);
+}
+CTaskResult_NaturalLeaderBoardInfoList ToNaturalLeaderBoardInfoList(CTaskResult _Task) {
+	return (_Task as CTaskResult_NaturalLeaderBoardInfoList);
+}
+CTaskResult_PlayerMapRecords ToPlayerMapRecords(CTaskResult _Task) {
+	return (_Task as CTaskResult_PlayerMapRecords);
+}
+CTaskResult_RealLeaderBoardInfoList ToRealLeaderBoardInfoList(CTaskResult _Task) {
+	return (_Task as CTaskResult_RealLeaderBoardInfoList);
+}
+CTaskResult_ReplayList ToReplayList(CTaskResult _Task) {
+	return (_Task as CTaskResult_ReplayList);
+}
+CTaskResult_StringIntList ToStringIntList(CTaskResult _Task) {
+	return (_Task as CTaskResult_StringIntList);
+}

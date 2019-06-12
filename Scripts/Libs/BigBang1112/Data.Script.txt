@@ -1,0 +1,20 @@
+declare Text[Text] G_Data;
+
+Boolean Remove(Text _Name) {
+	return G_Data.removekey(_Name);
+}
+
+Void Set(Text _Name, Text _Content) {
+	G_Data[_Name] = _Content;
+}
+
+Text Get(Text _Name) {
+	if(!G_Data.existskey(_Name)) return "";
+	return G_Data[_Name];
+}
+
+Text GetAndRemove(Text _Name) {
+	declare Data = G_Data[_Name];
+	declare Removed = Remove(_Name);
+	return Data;
+}

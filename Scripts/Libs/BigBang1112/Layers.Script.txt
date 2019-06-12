@@ -1,0 +1,102 @@
+declare Ident[Text] G_Layers;
+
+Boolean Exists(Text _LayerName) {
+	if (G_Layers.existskey(_LayerName)) return True;
+	return False;
+}
+
+CUILayer Get(Text _LayerName) {
+	if (Exists(_LayerName)) return UILayers[G_Layers[_LayerName]];
+	return Null;
+}
+
+CUILayer Get(Ident _LayerId) {
+	//if (G_Layers.exists(_LayerId) return UILayers[_LayerId];
+	return Null;
+}
+
+Text GetName(Ident _LayerId) {
+	if (G_Layers.exists(_LayerId)) return G_Layers.keyof(_LayerId);
+	return "";
+}
+
+Text GetName(CUILayer _Layer) {
+	if (_Layer == Null) return "";
+	return GetName(_Layer.Id);
+}
+
+Void Destroy(Text _LayerName) {
+	if (!Exists(_LayerName)) return;
+	UILayerDestroy(UILayers[G_Layers[_LayerName]]);
+	declare Removed = G_Layers.removekey(_LayerName);
+}
+
+Void DestroyAll() {
+	foreach (LayerName => LayerId in G_Layers) {
+		Destroy(LayerName);
+	}
+}
+
+Void Create(Text _LayerName, Text _LayerManialink, Boolean IsVisible, CUILayer::EUILayerType _LayerType) {
+	if (Exists(_LayerName)) Destroy(_LayerName);
+	declare NewLayer = UILayerCreate();
+	NewLayer.ManialinkPage = _LayerManialink;
+	NewLayer.IsVisible = IsVisible;
+	NewLayer.Type = _LayerType;
+	G_Layers[_LayerName] = NewLayer.Id;
+}
+
+Void Create(Text _LayerName, Text _LayerManialink, Boolean IsVisible) {
+	Create(_LayerName, _LayerManialink, IsVisible, CUILayer::EUILayerType::Normal);
+}
+
+Void Create(Text _LayerName, Text _LayerManialink) {
+	Create(_LayerName, _LayerManialink, False);
+}
+
+Void Create(Text _LayerName) {
+	Create(_LayerName, "", False);
+}
+
+Void SetType(Text _LayerName, CUILayer::EUILayerType _LayerType) {
+	declare Layer <=> Get(_LayerName);
+	if (Layer == Null) return;
+	Layer.Type = _LayerType;
+}
+
+Void SetAnimationIn(Text _LayerName, CUILayer::EUILayerAnimation _Animation) {
+	declare Layer <=> Get(_LayerName);
+	if (Layer == Null) return;
+	Layer.InAnimation = _Animation;
+}
+
+Void SetAnimationOut(Text _LayerName, CUILayer::EUILayerAnimation _Animation) {
+	declare Layer <=> Get(_LayerName);
+	if (Layer == Null) return;
+	Layer.OutAnimation = _Animation;
+}
+
+Void SetAnimationInOut(Text _LayerName, CUILayer::EUILayerAnimation _Animation) {
+	declare Layer <=> Get(_LayerName);
+	if (Layer == Null) return;
+	Layer.InOutAnimation = _Animation;
+}
+
+Void Show(Text _LayerName) {
+	declare Layer <=> Get(_LayerName);
+	if (Layer == Null) return;
+	Layer.IsVisible = True;
+}
+
+Void ShowOnly(Text _LayerName) {
+	foreach(Layer,G_Layers) UILayers[Layer].IsVisible = False;
+	Get(_LayerName).IsVisible = True;
+}
+
+Void Hide(Text _LayerName) {
+	Get(_LayerName).IsVisible = False;
+}
+
+Void SendEvent(Text _LayerName, Text _Type, Text[] _Data) {
+	LayerCustomEvent(Get(_LayerName), _Type, _Data);
+}

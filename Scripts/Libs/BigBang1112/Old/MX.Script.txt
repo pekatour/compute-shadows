@@ -1,0 +1,91 @@
+#Include "TextLib" as TextLib
+
+#Struct SSearchFilter {
+	Integer Mode;
+	Text TrackName;
+	Text Author;
+	Text MPAuthor;
+	Text AnyAuthor;
+	Text Mod;
+	Integer AuthorID;
+	Text[] MapType;
+	Text[] TitlePack;
+	Integer ReplayType;
+	Integer Style;
+	Integer Length;
+	Integer LengthOperator;
+	Integer PrimaryOrder;
+	Integer SecondaryOrder;
+	Text[] Environments;
+	Text[] Vehicles;
+	Boolean Unlimiter;
+	Integer Page;
+	Integer Limit;
+	Boolean Unreleased;
+	Integer MapGroup;
+	Integer AuthorCommentMinLength;
+}
+
+CXmlDocument Search(SSearchFilter _Filter) {
+    return Null;
+}
+
+CXmlDocument Track_Info(Text _Site, Integer _TrackId) {
+    return Private_ProcessSyncRequest("""https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/maps/{{{_TrackId}}}""");
+}
+
+CXmlDocument TrackInfoMultiple(Text _Site, Integer[] _TrackId) {
+    return Private_ProcessSyncRequest("""https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/maps/{{{_TrackId}}}""");
+}
+
+CXmlDocument TrackWorldRecord(Text _Site, Integer _TrackId) {
+    return Private_ProcessSyncRequest("""https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/tracks/worldrecord/{{{_TrackId}}}""");
+}
+
+CXmlDocument TrackReplays(Text _Site, Integer _TrackId, Integer _Amount) {
+    return Private_ProcessSyncRequest("""https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/replays/{{{_TrackId}}}/{{{_Amount}}}""");
+}
+
+CXmlDocument TrackEmbeddedObjects(Text _Site, Integer _TrackId) {
+    return Private_ProcessSyncRequest("""https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/tracks/embeddedobjects/{{{_TrackId}}}""");
+}
+
+//Binary
+CXmlDocument TrackScreenshot(Text _Site, Integer _TrackId, Text _Type) {
+    return Private_ProcessSyncRequest("""https://{{{TextLib::ToLowerCase(_Site)}}}.mania-exchange.com/tracks/screenshot/{{{TextLib::ToLowerCase(_Type)}}}/{{{_TrackId}}}""");
+}
+
+//Binary
+CXmlDocument TrackThumbnail(Text _Site, Integer _TrackId) {
+    return Private_ProcessSyncRequest("""https://{{{TextLib::ToLowerCase(_Site)}}}.mania-exchange.com/tracks/thumbnail/{{{_TrackId}}}""");
+}
+
+Boolean TrackInfoAsync(Text _RequestName, Text _Site, Integer _TrackId) {
+    return Private_ProcessAsyncRequest(_RequestName, """https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/maps/{{{_TrackId}}}""");
+}
+
+Boolean TrackInfoMultipleAsync(Text _RequestName, Text _Site, Integer _TrackId) {
+    return Private_ProcessAsyncRequest(_RequestName, """https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/maps/{{{_TrackId}}}""");
+}
+
+Boolean TrackWorldRecordAsync(Text _RequestName, Text _Site, Integer _TrackId) {
+    return Private_ProcessAsyncRequest(_RequestName, """https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/tracks/worldrecord/{{{_TrackId}}}""");
+}
+
+Boolean TrackReplaysAsync(Text _RequestName, Text _Site, Integer _TrackId, Integer _Amount) {
+    return Private_ProcessAsyncRequest(_RequestName, """https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/replays/{{{_TrackId}}}/{{{_Amount}}}""");
+}
+
+Boolean TrackEmbeddedObjectsAsync(Text _RequestName, Text _Site, Integer _TrackId) {
+    return Private_ProcessAsyncRequest(_RequestName, """https://api.mania-exchange.com/{{{TextLib::ToLowerCase(_Site)}}}/tracks/embeddedobjects/{{{_TrackId}}}""");
+}
+
+//Binary
+Boolean TrackScreenshotAsync(Text _RequestName, Text _Site, Integer _TrackId, Text _Type) {
+    return Private_ProcessAsyncRequest(_RequestName, """https://{{{TextLib::ToLowerCase(_Site)}}}.mania-exchange.com/tracks/screenshot/{{{TextLib::ToLowerCase(_Type)}}}/{{{_TrackId}}}""");
+}
+
+//Binary
+Boolean TrackThumbnailAsync(Text _RequestName, Text _Site, Integer _TrackId) {
+    return Private_ProcessAsyncRequest(_RequestName, """https://{{{TextLib::ToLowerCase(_Site)}}}.mania-exchange.com/tracks/thumbnail/{{{_TrackId}}}""");
+}

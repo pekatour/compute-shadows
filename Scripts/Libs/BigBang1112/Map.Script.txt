@@ -1,0 +1,133 @@
+#Include "TextLib" as TextLib
+
+#Include "Libs/BigBang1112/Task.Script.txt" as Task
+
+#Struct SMapInfo {
+	Text MapUid;
+	Text Comments;
+	Integer CopperPrice;
+	Text CollectionName;
+	Text AuthorLogin;
+	Text AuthorNickName;
+	Text AuthorZonePath;
+	Text AuthorZoneFlagUrl;
+	Text AuthorCountryFlagUrl;
+	Text MapType;
+	Text MapStyle;
+	Boolean Unlocked;
+	Boolean IsPlayable;
+	Boolean CreatedWithSimpleEditor;
+	Boolean CreatedWithPartyEditor;
+	Integer TMObjective_AuthorTime;
+	Integer TMObjective_GoldTime;
+	Integer TMObjective_SilverTime;
+	Integer TMObjective_BronzeTime;
+	Integer TMObjective_NbLaps;
+	Boolean TMObjective_IsLapRace;
+	Text Name;
+	Text Path;
+	Text FileName;
+}
+
+declare CTaskResult_MapList[Text] G_AsyncMaps;
+
+SMapInfo ToSMapInfo(CMapInfo _MapInfo) {
+	declare SMapInfo Info;
+	Info.MapUid = _MapInfo.MapUid;
+	Info.Comments = _MapInfo.Comments;
+	Info.CopperPrice = _MapInfo.CopperPrice;
+	Info.CollectionName = _MapInfo.CollectionName;
+	Info.AuthorLogin = _MapInfo.AuthorLogin;
+	Info.AuthorNickName = _MapInfo.AuthorNickName;
+	Info.AuthorZonePath = _MapInfo.AuthorZonePath;
+	Info.AuthorZoneFlagUrl = _MapInfo.AuthorZoneFlagUrl;
+	Info.AuthorCountryFlagUrl = _MapInfo.AuthorCountryFlagUrl;
+	Info.MapType = _MapInfo.MapType;
+	Info.MapStyle = _MapInfo.MapStyle;
+	Info.Unlocked = _MapInfo.Unlocked;
+	Info.IsPlayable = _MapInfo.IsPlayable;
+	Info.CreatedWithSimpleEditor = _MapInfo.CreatedWithSimpleEditor;
+	Info.CreatedWithPartyEditor = _MapInfo.CreatedWithPartyEditor;
+	Info.TMObjective_AuthorTime = _MapInfo.TMObjective_AuthorTime;
+	Info.TMObjective_GoldTime = _MapInfo.TMObjective_GoldTime;
+	Info.TMObjective_SilverTime = _MapInfo.TMObjective_SilverTime;
+	Info.TMObjective_BronzeTime = _MapInfo.TMObjective_BronzeTime;
+	Info.TMObjective_NbLaps = _MapInfo.TMObjective_NbLaps;
+	Info.TMObjective_IsLapRace = _MapInfo.TMObjective_IsLapRace;
+	Info.Name = _MapInfo.Name;
+	Info.Path = _MapInfo.Path;
+	Info.FileName = _MapInfo.FileName;
+	return Info;
+}
+
+SMapInfo MapInfo(Text _Path, Integer _Scope) {
+	declare Folders = TextLib::Split("/",_Path);
+	declare Removed = Folders.removekey(Folders.count-1);
+	declare Path = TextLib::Join("/",Folders);
+	
+	declare SMapInfo Info;
+
+	declare Result = Task::SyncMapList(DataFileMgr.Map_GetFilteredGameList(_Scope, Path, False));
+	foreach(MapInfo,Result.MapInfos)
+		if(MapInfo.FileName == _Path)
+			Info = ToSMapInfo(MapInfo);
+	return Info;
+}
+
+CTaskResult_MapList Get(Text _FileName) {
+	if(!G_AsyncMaps.existskey(_FileName)) return Null;
+	return G_AsyncMaps[_FileName];
+}
+
+Void AsyncMapInfo(Text _FileName, Integer _Scope) {
+	declare Folders = TextLib::Split("/",_FileName);
+	declare Removed = Folders.removekey(Folders.count-1);
+	declare Path = TextLib::Join("/",Folders);
+	G_AsyncMaps[_FileName] = DataFileMgr.Map_GetFilteredGameList(_Scope, Path, False);
+}
+
+SMapInfo AsyncGet(Text _FileName) {
+	declare SMapInfo Info;
+	
+	if(G_AsyncMaps.existskey(_FileName))
+		foreach(MapInfo,G_AsyncMaps[_FileName].MapInfos)
+			if(MapInfo.FileName == _FileName)
+				Info = ToSMapInfo(MapInfo);
+	return Info;
+}
+
+Void AsyncDestroy(Text _FileName) {
+	if(!G_AsyncMaps.existskey(_FileName)) return;
+	DataFileMgr.TaskResult_Release(G_AsyncMaps[_FileName].Id);
+	declare Removed = G_AsyncMaps.removekey(_FileName);
+}
+
+Boolean AsyncIsCompleted(Text _FileName) {
+	if(!G_AsyncMaps.existskey(_FileName)) return False;
+	return !Get(_FileName).IsProcessing;
+}
+
+Boolean AsyncIsSuccessful(Text _FileName) {
+	if(!G_AsyncMaps.existskey(_FileName)) return False;
+	return !Get(_FileName).IsProcessing
+	&& Get(_FileName).HasSucceeded;
+}
+
+Task::STaskFail AsyncIsFailed(Text _FileName) {
+	declare Task::STaskFail TaskFail;
+	if(!G_AsyncMaps.existskey(_FileName)) return TaskFail;
+	if(!Get(_FileName).IsProcessing && Get(_FileName).HasFailed) {
+		TaskFail.Failed = True;
+		TaskFail.ErrorType = Get(_FileName).ErrorType;
+		TaskFail.ErrorCode = Get(_FileName).ErrorCode;
+		TaskFail.ErrorDescription = Get(_FileName).ErrorDescription;
+		return TaskFail;
+	}
+	return TaskFail;
+}
+
+Boolean IsCanceled(Text _FileName) {
+	if(!G_AsyncMaps.existskey(_FileName)) return False;
+	return !Get(_FileName).IsProcessing
+	&& Get(_FileName).IsCanceled;
+}

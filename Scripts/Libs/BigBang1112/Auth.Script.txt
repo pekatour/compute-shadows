@@ -1,0 +1,276 @@
+/*
+// Auth.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Authentication and authorization management for ManiaPlanet
+*/
+
+/*
+// Text GetHeader()
+// SAuthToken GetNewToken()
+// SAuthToken GetToken()
+// SAuthVerification Verify(SAuthToken _Token)
+// Boolean VerifyAsync(Text _RequestName, SAuthToken _Token)
+// SAuthVerification GetAsyncVerification(Text _RequestName)
+// Text GetState()
+// Authorize(Text _ClientId, Text _Scopes, Text _RedirectUri, CManiaApp::ELinkType _LinkType)
+// Void AuthorizeInManialink(Text _ClientId, Text _Scopes, Text _RedirectUri)
+// Void AuthorizeInExternal(Text _ClientId, Text _Scopes, Text _RedirectUri)
+// Void Start()
+// Void Loop()
+*/
+
+#Include "TextLib" as TextLib
+
+#Include "Libs/BigBang1112/Http.Script.txt" as Http
+#Include "Libs/BigBang1112/Internet.Script.txt" as Internet
+#Include "Libs/BigBang1112/Random.Script.txt" as Random
+#Include "Libs/BigBang1112/Time.Script.txt" as Time
+
+#Const C_Auth_Timeout 10000
+#Const C_Auth_Tries 20
+
+#Const C_Response_Unknown "Unknown"
+#Const C_Response_Successful "Successful"
+#Const C_Response_Offline "Offline"
+#Const C_Response_Timeout "Timeout"
+#Const C_Response_Error "Error"
+
+///////////////////////////////////////////////////
+// Struct SAuthToken
+// ------------------------------------------------
+// All needed information about authentication token
+///////////////////////////////////////////////////
+#Struct SAuthToken {
+	Text Value; // Token value
+	Integer Length;
+	Boolean Successful; // If token was received successfully
+	Boolean Verified; // If token was verified as valid
+	Integer Time; // How long the request took
+	Integer EndTime; // When request was finished
+	Text Response; // Short informational response
+}
+
+///////////////////////////////////////////////////
+// Struct SAuthVerification
+// ------------------------------------------------
+// Information about verified authentication
+///////////////////////////////////////////////////
+#Struct SAuthVerification {
+	Text Login;
+	Boolean Successful;
+	Boolean Completed;
+}
+
+declare SAuthToken Auth_Token;
+declare Text Auth_State;
+
+///////////////////////////////////////////////////
+// Text GetHeader()
+// ------------------------------------------------
+// Get headers used for authentication
+///////////////////////////////////////////////////
+Text GetHeader() {
+	if(Auth_Token.Value == "")
+		return "";
+	return """Maniaplanet-Auth: Login="{{{LocalUser.Login}}}", Token="{{{Auth_Token.Value}}}" """;
+}
+
+///////////////////////////////////////////////////
+// SAuthToken GetNewToken()
+// ------------------------------------------------
+// Returns info about the new token
+///////////////////////////////////////////////////
+SAuthToken GetNewToken() {
+	declare SAuthToken Token;
+
+	if(Internet::IsOffline()) {
+		Token.Response = C_Response_Offline;
+		return Token;
+	}
+
+	declare OldToken = Auth_Token;
+
+	declare TimeStart = Now;
+	Time::Stamp_Create("Auth_Timeout",C_Auth_Timeout);
+	Authentication_GetToken(UserMgr.MainUser.Id, "");
+
+	while(!Authentication_GetTokenResponseReceived) {
+		if(Time::Stamp_Reached("Auth_Timeout")) {
+			Token.Response = C_Response_Timeout;
+			return Token;
+		} else yield;
+	}
+
+	declare TimeEnd = Now;
+
+	if(Authentication_ErrorCode == 0) {
+		Token.Value = Authentication_Token;
+		Token.Length = 2700000;
+		Token.Successful = True;
+		Token.Response = C_Response_Successful;
+		Token.Time = TimeEnd - TimeStart;
+		Token.EndTime = TimeEnd;
+	}
+	else if(Authentication_ErrorCode == 10006) {
+		Token.Response = C_Response_Offline;
+	}
+	else {
+		Token.Response = C_Response_Error;
+	}
+	
+	Token.Time = TimeEnd - TimeStart;
+	Token.EndTime = TimeEnd;
+	
+	Auth_Token = Token;
+	return Token;
+}
+
+///////////////////////////////////////////////////
+// SAuthToken GetToken()
+// ------------------------------------------------
+// Returns info about the token
+///////////////////////////////////////////////////
+SAuthToken GetToken() {
+	return Auth_Token;
+}
+
+///////////////////////////////////////////////////
+// SAuthVerification Verify(SAuthToken _Token)
+// ------------------------------------------------
+// SAuthToken _Token - Authentication token
+// ------------------------------------------------
+// Returns verification info
+///////////////////////////////////////////////////
+SAuthVerification Verify(SAuthToken _Token) {
+	declare SAuthVerification Verification;
+
+	declare Request = Http.CreateGet("https://www.maniaplanet.com/ingame/auth", False, GetHeader());
+	wait(Request.IsCompleted);
+	
+	if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
+		Verification.Login = TextLib::SubText(Request.Result, 10, TextLib::Length(Request.Result)-12);
+		Verification.Successful = True;
+		Verification.Completed = True;
+	}
+
+	Http.Destroy(Request);
+	
+	return Verification;
+}
+
+///////////////////////////////////////////////////
+// SAuthVerification Verify(SAuthToken _Token)
+// ------------------------------------------------
+// Text _RequestName - Name of the asynchronous request
+// SAuthToken _Token - Authentication token
+// ------------------------------------------------
+// Returns True if the request was submitted without problems, otherwise false.
+///////////////////////////////////////////////////
+Boolean VerifyAsync(Text _RequestName, SAuthToken _Token) {
+	return Http::AsyncGET(_RequestName, "https://www.maniaplanet.com/ingame/auth", False, GetHeader());
+}
+
+///////////////////////////////////////////////////
+// SAuthVerification GetAsyncVerification(Text _RequestName)
+// ------------------------------------------------
+// Text _RequestName - Name of the asynchronous request
+// ------------------------------------------------
+// Returns info about the verification process, can be completed or in progress.
+///////////////////////////////////////////////////
+SAuthVerification GetAsyncVerification(Text _RequestName) {
+	declare SAuthVerification Verification;
+
+	if(Http::IsCompleted(_RequestName)) {
+		declare Request = Http::Get(_RequestName);
+		Verification.Login = TextLib::SubText(Request.Result, 10, TextLib::Length(Request.Result)-12);
+		Verification.Successful = True;
+		Verification.Completed = True;
+		Http::Destroy(_RequestName);
+	}
+	else {
+		Verification.Completed = False;
+	}
+
+	return Verification;
+}
+
+Void Private_GenerateStateIfNone() {
+	if(Auth_State == "") Auth_State = Random::String(32);
+}
+
+///////////////////////////////////////////////////
+// Text GetState()
+// ------------------------------------------------
+// Returns state value curretly associated with the user
+///////////////////////////////////////////////////
+Text GetState() {
+	return Auth_State;
+}
+
+///////////////////////////////////////////////////
+// Void Authorize(Text _ClientId, Text _Scopes, Text _RedirectUri, CManiaApp::ELinkType _LinkType)
+// ------------------------------------------------
+// Launch authorization process through ManiaLink browser or external browser.
+// ------------------------------------------------
+// Text _ClientId
+// Text _Scopes
+// Text _RedirectUri
+// CManiaApp::ELinkType _LinkType
+///////////////////////////////////////////////////
+Void Authorize(Text _ClientId, Text _Scopes, Text _RedirectUri, CManiaApp::ELinkType _LinkType) {
+	declare Uri = TextLib::URLEncode(_RedirectUri);
+	declare Scopes = TextLib::URLEncode(_Scopes);
+	Private_GenerateStateIfNone();
+	OpenLink("https://www.maniaplanet.com/login/oauth2/authorize?response_type=code&scope="^Scopes^"&state="^Auth_State^"&client_id="^_ClientId^"&redirect_uri="^Uri, _LinkType);
+}
+
+///////////////////////////////////////////////////
+// Void AuthorizeInManialink(Text _ClientId, Text _Scopes, Text _RedirectUri)
+// ------------------------------------------------
+// Launch authorization process through ManiaLink browser.
+// ------------------------------------------------
+// Text _ClientId
+// Text _Scopes
+// Text _RedirectUri
+///////////////////////////////////////////////////
+Void AuthorizeInManialink(Text _ClientId, Text _Scopes, Text _RedirectUri) {
+	Authorize(_ClientId, _Scopes, _RedirectUri, CManiaApp::ELinkType::ManialinkBrowser);
+}
+
+///////////////////////////////////////////////////
+// Void AuthorizeInExternal(Text _ClientId, Text _Scopes, Text _RedirectUri)
+// ------------------------------------------------
+// Launch authorization process through external browser.
+// ------------------------------------------------
+// Text _ClientId
+// Text _Scopes
+// Text _RedirectUri
+///////////////////////////////////////////////////
+Void AuthorizeInExternal(Text _ClientId, Text _Scopes, Text _RedirectUri) {
+	Authorize(_ClientId, _Scopes, _RedirectUri, CManiaApp::ELinkType::ExternalBrowser);
+}
+
+Void Start() {
+	  declare Token = GetNewToken();
+	if(Auth_Token.Successful) log("[Auth.Script.txt] First automatic token: "^Auth_Token.Value);
+}
+
+Void Loop() {
+	if(Auth_Token.Successful) {
+		if(Now >= Auth_Token.EndTime + Auth_Token.Length) {
+			declare Token = GetNewToken();
+			log("[Auth.Script.txt] New automatic token: "^Token.Value);
+		}
+	}
+	else {
+		if(Time::Stamp_CreateOnce("Auth_Request_Refresh",5000)) {
+			log("""[Auth.Script.txt] {{{Auth_Token.Response}}}. Token not generated. Some features have been disabled.""");
+		}
+		if(Time::Stamp_Reached("Auth_Request_Refresh")) {
+			declare Token = GetNewToken();
+			if(Auth_Token.Successful) log("[Auth.Script.txt] New automatic token: "^Token.Value);
+		}
+	}
+}

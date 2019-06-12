@@ -1,0 +1,53 @@
+#Include "TextLib" as TextLib
+#Include "Libs/BigBang1112/File.Script.txt" as File
+
+declare Text[Text][Text] G_Dictionaries;
+declare Text[] G_Definitions;
+
+Void Define(Text _Definition) {
+	G_Definitions.add(_Definition);
+}
+
+Void Define(Text[] _Definitions) {
+	foreach(Def,_Definitions)
+		G_Definitions.add(Def);
+}
+
+Text Get(Text _Definition, Text _Language) {
+	if(!G_Dictionaries.existskey(_Language)) {
+		declare Content = File::Read("Media/Translations/"^_Language^".json");
+		declare Text[Text] Phrases;
+		declare JsonSuccess = Phrases.fromjson(Content);
+		G_Dictionaries[_Language] = Phrases;
+	}
+	
+	if(G_Dictionaries[_Language].existskey(_Definition)) {
+		return G_Dictionaries[_Language][_Definition];
+	}
+	
+	if(!G_Dictionaries.existskey("en")) {
+		declare Content = File::Read("Media/Translations/en.json");
+		declare Text[Text] Phrases;
+		declare JsonSuccess = Phrases.fromjson(Content);
+		G_Dictionaries["en"] = Phrases;
+	}
+	
+	if(G_Dictionaries["en"].existskey(_Definition)) {
+		if(_Language == LocalUser.Language)
+			return TextLib::GetTranslatedText(G_Dictionaries["en"][_Definition]);
+		return G_Dictionaries["en"][_Definition];
+	}
+	
+	return _Definition;
+}
+
+Text TranslateAllPhrases(Text _Source) {
+	declare Txt = _Source;
+	declare Phrases = TextLib::RegexFind("\\{\\{\\{\\{(.*?)\\}\\}\\}\\}", Txt, "gi");
+	foreach(P,Phrases) {
+		declare Phrase = TextLib::SubText(P,4,TextLib::Length(P)-8);
+		Phrase = Get(Phrase, LocalUser.Language);
+		Txt = TextLib::Replace(Txt, P, Phrase);
+	}
+	return Txt;
+}

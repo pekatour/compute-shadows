@@ -1,0 +1,211 @@
+#Struct SPlayer {
+	Text Login;
+	Text Nickname;
+	Text Path;
+}
+
+#Struct STitle {
+	Text Uid;
+	Integer Cost;
+	Text Name;
+	Text Description;
+	Text Punchline;
+	Text CardUrl;
+	Text DownloadUrl;
+	Text BackgroundUrl;
+	Text LogoUrl;
+	Text TitleMakerUid;
+	Boolean Public;
+}
+
+#Struct SDedicatedAccount {
+	Text Login;
+	Integer LastUsedDate;
+}
+
+#Struct SMap {
+	Text Uid;
+	Text Name;
+	Text AuthorLogin;
+	Text DownloadUrl;
+	Boolean Private;
+	Text ThumbnailUrl;
+}
+
+#Struct SZone {
+	Text Path;
+}
+
+#Struct STitleScript {
+	Text FileName;
+	Text MatchSettings;
+}
+
+#Struct SOnlineServer {
+	Text Name;
+	Text Description;
+	Text Login;
+	Text Title;
+	Integer LadderLimitMin;
+	Integer LadderLimitMax;
+	Integer AverageLadderPoints;
+	Integer PlayerCount;
+	Integer PlayerMax;
+	Integer SpectatorCount;
+	Text Zone;
+	Boolean IsPrivate;
+	Boolean IsSpectatorPrivate;
+	Boolean IsLobby;
+	Integer LevelClass1;
+	Integer LevelClass2;
+	Integer LevelClass3;
+	Integer LevelClass4;
+	Integer LevelClass5;
+	Text ScriptName;
+	Integer Gamemode;
+	Text RelayOf;
+	Text Environment;
+}
+
+#Struct SFlashPost {
+	Integer Id;
+	Text Headline;
+	Text Body;
+	Text MediaUrl;
+	Text DateDiff;
+	Text PostDate;
+	Text Location;
+	Text LocationManialink;
+	Text LocationType;
+	Text LocationId;
+	Text LocationFrom;
+	Text LocationFromManialink;
+	Integer RepostCount;
+}
+
+#Struct SServerFilter {
+	Text OrderBy;
+	Integer PlayerCount;
+	Text[] TitleUids;
+	Text[] Environments;
+	Text ScriptName;
+	Text Search;
+	Text Zone;
+	Boolean OnlyPublic;
+	Boolean OnlyPrivate;
+	Boolean OnlyLobby;
+	Boolean ExcludeLobby;
+	Integer Offset;
+	Integer Length;
+}
+
+Text Private_ToCleanerJson(Text _Json) {
+	return TextLib::RegexReplace("/(^|\s)[a-z]/g",_Json,"gm","[A-Z]");
+}
+
+SPlayer Me(Text _Token) {
+	declare Result = Http::SyncGET_Result("https://maniaplanet.com/webservices/me", False, "Authorization: Bearer "^_Token);
+	declare SPlayer Player;
+	declare JsonSuccess = Player.fromjson(Private_ToCleanerJson(Result));
+	return Player;
+}
+
+STitle[] MeTitlesCreated(Text _Token) {
+	declare Result = Http::SyncGET_Result("https://maniaplanet.com/webservices/me/titles/created", False, "Authorization: Bearer "^_Token);
+	declare STitle[] Titles;
+	declare JsonSuccess = Titles.fromjson(Private_ToCleanerJson(Result));
+	return Titles;
+}
+
+SDedicatedAccount[] MeDedicated(Text _Token) {
+	declare Result = Http::SyncGET_Result("https://maniaplanet.com/webservices/me/titles/dedicated", False, "Authorization: Bearer "^_Token);
+	declare SDedicatedAccount[] Accounts;
+	declare JsonSuccess = Accounts.fromjson(Private_ToCleanerJson(Result));
+	return Accounts;
+}
+
+SMap[] MeMaps(Text _Token) {
+	declare Result = Http::SyncGET_Result("https://maniaplanet.com/webservices/me/maps", False, "Authorization: Bearer "^_Token);
+	declare SMap[] Maps;
+	declare JsonSuccess = Maps.fromjson(Private_ToCleanerJson(Result));
+	return Maps;
+}
+
+//not tested
+Text MeEmail(Text _Token) {
+	return Http::SyncGET_Result("https://maniaplanet.com/webservices/me/email", False, "Authorization: Bearer "^_Token);
+}
+
+
+SMap Map(Text _Uid) {
+	declare Result = Http::SyncGET_Result("https://maniaplanet.com/webservices/maps/"^_Uid);
+	declare SMap Map;
+	declare JsonSuccess = Map.fromjson(Private_ToCleanerJson(Result));
+	return Map;
+}
+
+SZone[] Zones() {
+	declare Result = Http::SyncGET_Result("https://maniaplanet.com/webservices/zones");
+	declare SZone[] Zones;
+	declare JsonSuccess = Zones.fromjson(Private_ToCleanerJson(Result));
+	return Zones;
+}
+
+STitle[] Titles(Text[] _Filters, Text _OrderBy, Integer _Offset, Integer Length) {
+	
+}
+
+STitle[] Titles(Text[] _Filters, Text _OrderBy, Integer _Offset) {
+	return Titles(_Filters, _OrderBy, _Offset, 10);
+}
+
+STitle[] Titles(Text[] _Filters, Text _OrderBy) {
+	return Titles(_Filters, _OrderBy, 0);
+}
+
+STitle[] Titles(Text[] _Filters) {
+	return Titles(_Filters, "onlinePlayers");
+}
+
+STitle[] Titles() {
+	return Titles([]);
+}
+
+STitle Title(Text _Uid) {
+	declare Result = Http::SyncGET_Result("https://maniaplanet.com/webservices/titles/"^_Uid);
+	declare STitle Title;
+	declare JsonSuccess = Title.fromjson(Private_ToCleanerJson(Result));
+	return Title;
+}
+
+STitleScript[] TitleScripts(Text _Uid) {
+	declare Result = Http::SyncGET_Result("https://maniaplanet.com/webservices/titles/"^_Uid^"/scripts");
+	declare STitleScript[] Scripts;
+	declare JsonSuccess = Scripts.fromjson(Private_ToCleanerJson(Result));
+	return Scripts;
+}
+
+SOnlineServer[] Servers(SServerFilter _Filter) {
+
+}
+
+SOnlineServer[] Servers() {
+	declare SServerFilter Filter;
+
+	return Servers(Filter);
+}
+
+SFlashPost[] Flashes(Text _LiveUid, Integer _Offset, Integer _Length) {
+	declare Result = Http::SyncGET_Result("""https://maniaplanet.com/webservices/flashes/post/{{{_LiveUid}}}?offset={{{_Offset}}}&length={{{_Length}}}""");
+	declare SFlashPost[] Flashes;
+	declare JsonSuccess = Flashes.fromjson(Private_ToCleanerJson(Result));
+	return Flashes;
+}
+
+SFlashPost[] Flashes(Text _LiveUid, Integer _Offset) {
+	return Flashes(Text _LiveUid, Integer _Offset, 10);
+}
+
+SFlashPost[] Flashes(Text _LiveUid) {
+	return Flashes(Text _LiveUid, 0);
+}

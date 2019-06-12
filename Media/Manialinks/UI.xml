@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<manialink version="3">
+<quad pos="0 22.5" z-index="0" size="100 25" bgcolor="FFFA" image="file://Media/Images/Logo.png" halign="center" valign="center" opacity=".9"/>
+<label pos="69 9" z-index="0" size="36 5" text="MADE BY $i$o$nBIGBANG1112" textfont="OswaldMono" textsize="1.5" valign="bottom" halign="right" textemboss="1"/>
+<label pos="-150 -76" z-index="0" size="100 5" text="SUPPORTS CONVERSION FROM OLD STADIUM $2e2WITH$z KEEPING ORIGINAL AUTHOR NAME." textfont="OswaldMono" textsize="1.5" valign="bottom" halign="left" textemboss="1" opacity=".9"/>
+<label pos="-150 -80" z-index="0" size="120 5" text="SUPPORTS CONVERSION FROM OLD PLATFORM, STUNT AND PUZZLE $2e2WITH$z KEEPING ORIGINAL AUTHOR NAME." textfont="OswaldMono" textsize="1.5" valign="bottom" halign="left" textemboss="1" opacity=".9"/>
+<frame pos="0 0">
+	<quad pos="0" z-index="0" size="140 15" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgWindow4" opacity=".9"/>
+	<quad pos="0" z-index="1" size="140 15" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" opacity=".5"/>
+	<label pos="-65 -0.3" z-index="2" size="15 10" text="Maps/" valign="center2" textfont="RajdhaniMono" textemboss="1" textcolor="222"/>
+	<label pos="63 -0.5" z-index="2" size="10 10" text="" valign="center2" textfont="RajdhaniMono" textemboss="1" textcolor="222" halign="right" scriptevents="1" style="TextButtonBig" textsize="4"/>
+	<entry pos="0 0" z-index="2" size="100 10" halign="center" valign="center" default="" textformat="Basic" selecttext="1" textfont="RajdhaniMono" id="ENTRY_MAPS" textcolor="222"/>
+</frame>
+<frame pos="0 -15">
+	<quad pos="0" z-index="0" size="140 15" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgWindow4" opacity=".9"/>
+	<quad pos="0" z-index="1" size="140 15" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" opacity=".5"/>
+	<label pos="-65 -0.3" z-index="2" size="62 10" text="Scripts/MapTypes/TrackMania/" valign="center2" textfont="RajdhaniMono" textemboss="1" textcolor="222"/>
+	<label pos="63 -0.5" z-index="2" size="10 10" text="" valign="center2" textfont="RajdhaniMono" textemboss="1" textcolor="222" halign="right" scriptevents="1" style="TextButtonBig" textsize="4"/>
+	<label pos="65 2.5" z-index="2" size="5 5" text="" textfont="RajdhaniMono" textcolor="080" scriptevents="1" style="TextButtonBig" textsize="2" id="LABEL_MAPTYPE_ENABLE" halign="center" valign="center2"/>
+	<entry pos="25 0" z-index="2" size="50 10" halign="center" valign="center" default="Race" textformat="Basic" selecttext="1" textfont="RajdhaniMono" id="ENTRY_MAPTYPE" textcolor="222"/>
+</frame>
+<label pos="0 -20" z-index="0" size="20 5" text="COMPUTE THEM ALL" halign="center" valign="center" style="CardButtonMediumXL" scale="1.5" scriptevents="1" id="LABEL_COMPUTE" hidden="1"/>
+<frame pos="0 -30" id="FRAME_BUTTON_COMPUTE">
+	<quad z-index="0" size="80 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgWindow4" opacity=".9"/>
+	<quad z-index="1" size="80.5 10.5" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgColorContour" colorize="222" opacity=".9" id="QUAD_BUTTON_BORDER"/>
+	<quad z-index="1" size="80 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" opacity=".5"/>
+	<quad pos="0 0" z-index="1" size="80 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" colorize="28C" id="QUAD_HOVER"/>
+	<label pos="0 -0.3" z-index="2" size="80 10" text="COMPUTE THEM ALL" valign="center2" textfont="RajdhaniMono" textcolor="222" halign="center" id="QUAD_BUTTON_TEXT"/>
+</frame>
+<frame pos="135 -75" id="FRAME_BUTTON_EDITORS">
+	<quad z-index="0" size="30 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgWindow4" opacity=".9"/>
+	<quad z-index="1" size="30.5 10.5" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgColorContour" colorize="222" opacity=".9" id="QUAD_BUTTON_BORDER"/>
+	<quad z-index="1" size="30 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" opacity=".5"/>
+	<quad pos="0 0" z-index="1" size="30 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" colorize="28C" action="menu_editors" id="QUAD_HOVER"/>
+	<label pos="0 -0.3" z-index="2" size="30 10" text="EDITORS" valign="center2" textfont="RajdhaniMono" textcolor="222" halign="center" id="QUAD_BUTTON_TEXT"/>
+</frame>
+<script>
+<![CDATA[
+	#Include "ColorLib" as ColorLib
+	
+	Boolean IsMapTypeEnabled() {
+		return (Page.GetFirstChild("LABEL_MAPTYPE_ENABLE") as CMlLabel).TextColor == ColorLib::HexToRgb("080");
+	}
+	
+	main() {
+		while(True) {
+			foreach(Event,PendingEvents) {
+				switch(Event.Type) {
+					case CMlScriptEvent::Type::MouseClick: {
+						switch(Event.ControlId) {
+							case "QUAD_HOVER": {
+								switch(Event.Control.Parent.ControlId) {
+									case "FRAME_BUTTON_COMPUTE": {
+										declare MapsValue = (Page.GetFirstChild("ENTRY_MAPS") as CMlEntry).Value;
+										declare Text MapTypeValue;
+										if(IsMapTypeEnabled())
+											(Page.GetFirstChild("ENTRY_MAPTYPE") as CMlEntry).Value;
+										SendCustomEvent("ComputeAll", [MapsValue,MapTypeValue]);
+									}
+								}
+							}
+							case "LABEL_MAPTYPE_ENABLE": {
+								declare Label = (Page.GetFirstChild("LABEL_MAPTYPE_ENABLE") as CMlLabel);
+								if(IsMapTypeEnabled()) {
+									Label.TextColor = ColorLib::HexToRgb("800");
+									Label.Value = "";
+								}
+								else {
+									Label.TextColor = ColorLib::HexToRgb("080");
+									Label.Value = "";
+								}
+							}
+						}
+					}
+					case CMlScriptEvent::Type::MouseOver: {
+						switch(Event.ControlId) {
+							case "QUAD_HOVER": {
+								(Event.Control.Parent.GetFirstChild("QUAD_BUTTON_BORDER") as CMlQuad).Colorize = ColorLib::HexToRgb("DDD");
+								(Event.Control.Parent.GetFirstChild("QUAD_BUTTON_TEXT") as CMlLabel).TextColor = ColorLib::HexToRgb("DDD");
+							}
+						}
+					}
+					case CMlScriptEvent::Type::MouseOut: {
+						switch(Event.ControlId) {
+							case "QUAD_HOVER": {
+								(Event.Control.Parent.GetFirstChild("QUAD_BUTTON_BORDER") as CMlQuad).Colorize = ColorLib::HexToRgb("222");
+								(Event.Control.Parent.GetFirstChild("QUAD_BUTTON_TEXT") as CMlLabel).TextColor = ColorLib::HexToRgb("222");
+							}
+						}
+					}
+				}
+			}
+			yield;
+		}
+	}
+]]>
+</script>
+</manialink>
