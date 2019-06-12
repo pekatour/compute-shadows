@@ -13,12 +13,18 @@ Text Construct(Text _Markup, Text _Script) {
 		</manialink>""";
 }
 
-Text FromFile(Text _ManialinkName) {
+Text FromFile(Text _ManialinkName, Boolean _Translate) {
 	declare Markup = File::Read(_ManialinkName^".xml");
 	declare Script = File::Read(_ManialinkName^".Script.txt");
 	
-	Markup = Dictionary::TranslateAllPhrases(Markup);
-	Script = Dictionary::TranslateAllPhrases(Script);
+	if(_Translate) {
+		Markup = Dictionary::TranslateAllPhrases(Markup);
+		Script = Dictionary::TranslateAllPhrases(Script);
+	}
 
 	return Construct(Markup, Script);
+}
+
+Text FromFile(Text _ManialinkName) {
+	return FromFile(_ManialinkName, False);
 }

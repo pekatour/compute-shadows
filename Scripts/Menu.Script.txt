@@ -4,9 +4,10 @@
 
 #Include "Libs/BigBang1112/Layers.Script.txt" as Layers
 #Include "Libs/BigBang1112/Task.Script.txt" as Task
+#Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
 
 main() {	
-	Layers::Create("UI", "file://Media/Manialinks/UI.xml", True);
+	Layers::Create("UI", Manialink::FromFile("Media/Manialinks/UI", True), True);
 	
 	declare MapType = "";
 

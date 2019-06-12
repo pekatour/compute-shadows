@@ -1,0 +1,57 @@
+#Include "ColorLib" as ColorLib
+
+Boolean IsMapTypeEnabled() {
+	return (Page.GetFirstChild("LABEL_MAPTYPE_ENABLE") as CMlLabel).TextColor == ColorLib::HexToRgb("080");
+}
+
+main() {
+	while(True) {
+		foreach(Event,PendingEvents) {
+			switch(Event.Type) {
+				case CMlScriptEvent::Type::MouseClick: {
+					switch(Event.ControlId) {
+						case "QUAD_HOVER": {
+							switch(Event.Control.Parent.ControlId) {
+								case "FRAME_BUTTON_COMPUTE": {
+									declare MapsValue = (Page.GetFirstChild("ENTRY_MAPS") as CMlEntry).Value;
+									declare Text MapTypeValue;
+									if(IsMapTypeEnabled())
+										(Page.GetFirstChild("ENTRY_MAPTYPE") as CMlEntry).Value;
+									SendCustomEvent("ComputeAll", [MapsValue,MapTypeValue]);
+								}
+							}
+						}
+						case "LABEL_MAPTYPE_ENABLE": {
+							declare Label = (Page.GetFirstChild("LABEL_MAPTYPE_ENABLE") as CMlLabel);
+							if(IsMapTypeEnabled()) {
+								Label.TextColor = ColorLib::HexToRgb("800");
+								Label.Value = "";
+							}
+							else {
+								Label.TextColor = ColorLib::HexToRgb("080");
+								Label.Value = "";
+							}
+						}
+					}
+				}
+				case CMlScriptEvent::Type::MouseOver: {
+					switch(Event.ControlId) {
+						case "QUAD_HOVER": {
+							(Event.Control.Parent.GetFirstChild("QUAD_BUTTON_BORDER") as CMlQuad).Colorize = ColorLib::HexToRgb("DDD");
+							(Event.Control.Parent.GetFirstChild("QUAD_BUTTON_TEXT") as CMlLabel).TextColor = ColorLib::HexToRgb("DDD");
+						}
+					}
+				}
+				case CMlScriptEvent::Type::MouseOut: {
+					switch(Event.ControlId) {
+						case "QUAD_HOVER": {
+							(Event.Control.Parent.GetFirstChild("QUAD_BUTTON_BORDER") as CMlQuad).Colorize = ColorLib::HexToRgb("222");
+							(Event.Control.Parent.GetFirstChild("QUAD_BUTTON_TEXT") as CMlLabel).TextColor = ColorLib::HexToRgb("222");
+						}
+					}
+				}
+			}
+		}
+		yield;
+	}
+}
