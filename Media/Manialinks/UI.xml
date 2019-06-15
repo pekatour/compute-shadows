@@ -1,8 +1,10 @@
 <frame>
 	<quad pos="0 22.5" z-index="0" size="100 25" bgcolor="FFFA" image="file://Media/Images/Logo.png" halign="center" valign="center" opacity=".9"/>
 	<label pos="69 9" z-index="0" size="36 5" text="{{{{MADE_BY}}}} $i$o$nBIGBANG1112" textfont="OswaldMono" textsize="1.5" valign="bottom" halign="right" textemboss="1" url="https://bigbang1112.eu/youtube" style="TextButtonBig"/>
-	<label pos="-150 -76" z-index="0" size="100 5" text="SUPPORTS CONVERSION FROM OLD STADIUM $2e2WITH$z KEEPING ORIGINAL AUTHOR NAME." textfont="OswaldMono" textsize="1.5" valign="bottom" halign="left" textemboss="1" opacity=".9"/>
-	<label pos="-150 -80" z-index="0" size="120 5" text="SUPPORTS CONVERSION FROM OLD PLATFORM, STUNT AND PUZZLE $2e2WITH$z KEEPING ORIGINAL AUTHOR NAME." textfont="OswaldMono" textsize="1.5" valign="bottom" halign="left" textemboss="1" opacity=".9"/>
+	<label pos="-150 -76" z-index="0" size="200 5" text="{{{{SUPPORTS_OLD_STADIUM}}}}" textfont="OswaldMono" textsize="1.5" valign="bottom" halign="left" textemboss="1" opacity=".9"/>
+	<label pos="-150 -80" z-index="0" size="200 5" text="{{{{SUPPORTS_OLD_GAMEMODES}}}}" textfont="OswaldMono" textsize="1.5" valign="bottom" halign="left" textemboss="1" opacity=".9"/>
+	<label pos="150 80" z-index="0" size="50 5" text="{{{{MUSIC}}}}:" textfont="OswaldMono" textsize="1.5" valign="bottom" halign="right" textemboss="1" opacity=".9"/>
+	<label pos="150 76" z-index="0" size="50 5" text="REALNEST - YOU CHANGED" textfont="RajdhaniMono" textsize="1.5" valign="bottom" halign="right" opacity=".9" textemboss="1" url="https://soundcloud.com/realnest/you-changed" style="TextButtonBig"/>
 	<frame pos="0 0">
 		<quad pos="0" z-index="0" size="140 15" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgWindow4" opacity=".9"/>
 		<quad pos="0" z-index="1" size="140 15" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" opacity=".5"/>
@@ -13,24 +15,30 @@
 	<frame pos="0 -15">
 		<quad pos="0" z-index="0" size="140 15" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgWindow4" opacity=".9"/>
 		<quad pos="0" z-index="1" size="140 15" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" opacity=".5"/>
-		<label pos="-65 -0.3" z-index="2" size="62 10" text="Scripts/MapTypes/TrackMania/" valign="center2" textfont="RajdhaniMono" textemboss="1" textcolor="222"/>
+		<label pos="-65 -0.3" z-index="2" size="63 10" text="Scripts/MapTypes/TrackMania/" valign="center2" textfont="RajdhaniMono" textemboss="1" textcolor="222"/>
 		<label pos="63 -0.5" z-index="2" size="10 10" text="" valign="center2" textfont="RajdhaniMono" textemboss="1" textcolor="222" halign="right" scriptevents="1" style="TextButtonBig" textsize="4"/>
 		<label pos="65 2.5" z-index="2" size="5 5" text="" textfont="RajdhaniMono" textcolor="080" scriptevents="1" style="TextButtonBig" textsize="2" id="LABEL_MAPTYPE_ENABLE" halign="center" valign="center2"/>
 		<entry pos="25 0" z-index="2" size="50 10" halign="center" valign="center" default="Race" textformat="Basic" selecttext="1" textfont="RajdhaniMono" id="ENTRY_MAPTYPE" textcolor="222"/>
 	</frame>
-	<label pos="0 -20" z-index="0" size="20 5" text="COMPUTE THEM ALL" halign="center" valign="center" style="CardButtonMediumXL" scale="1.5" scriptevents="1" id="LABEL_COMPUTE" hidden="1"/>
 	<frame pos="0 -30" id="FRAME_BUTTON_COMPUTE">
 		<quad z-index="0" size="80 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgWindow4" opacity=".9"/>
 		<quad z-index="1" size="80.5 10.5" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgColorContour" colorize="222" opacity=".9" id="QUAD_BUTTON_BORDER"/>
 		<quad z-index="1" size="80 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" opacity=".5"/>
 		<quad pos="0 0" z-index="1" size="80 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" colorize="28C" id="QUAD_HOVER"/>
-		<label pos="0 -0.3" z-index="2" size="80 10" text="COMPUTE THEM ALL" valign="center2" textfont="RajdhaniMono" textcolor="222" halign="center" id="QUAD_BUTTON_TEXT"/>
+		<label pos="0 -0.3" z-index="2" size="70 10" text="{{{{COMPUTE}}}}" valign="center2" textfont="RajdhaniMono" textcolor="222" halign="center" id="LABEL_BUTTON_TEXT"/>
 	</frame>
 	<frame pos="135 -75" id="FRAME_BUTTON_EDITORS">
 		<quad z-index="0" size="30 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgWindow4" opacity=".9"/>
 		<quad z-index="1" size="30.5 10.5" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgColorContour" colorize="222" opacity=".9" id="QUAD_BUTTON_BORDER"/>
 		<quad z-index="1" size="30 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" opacity=".5"/>
 		<quad pos="0 0" z-index="1" size="30 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" colorize="28C" action="menu_editors" id="QUAD_HOVER"/>
-		<label pos="0 -0.3" z-index="2" size="30 10" text="EDITORS" valign="center2" textfont="RajdhaniMono" textcolor="222" halign="center" id="QUAD_BUTTON_TEXT"/>
+		<label pos="0 -0.3" z-index="2" size="25 10" text="{{{{EDITORS}}}}" valign="center2" textfont="RajdhaniMono" textcolor="222" halign="center" id="LABEL_BUTTON_TEXT"/>
+	</frame>
+	<frame pos="100 -75" id="FRAME_BUTTON_QNA">
+		<quad z-index="0" size="30 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgWindow4" opacity=".9"/>
+		<quad z-index="1" size="30.5 10.5" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgColorContour" colorize="222" opacity=".9" id="QUAD_BUTTON_BORDER"/>
+		<quad z-index="1" size="30 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" opacity=".5"/>
+		<quad pos="0 0" z-index="1" size="30 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" colorize="28C" action="menu_editors" id="QUAD_HOVER"/>
+		<label pos="0 -0.3" z-index="2" size="25 10" text="Q&A" valign="center2" textfont="RajdhaniMono" textcolor="222" halign="center" id="LABEL_BUTTON_TEXT"/>
 	</frame>
 </frame>
