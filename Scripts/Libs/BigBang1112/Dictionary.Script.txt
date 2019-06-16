@@ -30,6 +30,7 @@
 
 declare Text[Text][Text] G_Dictionaries;
 declare Text G_TranslationFolder;
+declare Text G_Language;
 
 Void SetTranslationFolder(Text _Folder) {
 	G_TranslationFolder = _Folder;
@@ -37,6 +38,14 @@ Void SetTranslationFolder(Text _Folder) {
 
 Text GetTranslationFolder() {
 	return G_TranslationFolder;
+}
+
+Void SetTranslationLanguage(Text _Language) {
+	G_Language = _Language;
+}
+
+Text GetTranslationLanguage() {
+	return G_Language;
 }
 
 Text Get(Text _Definition, Text _Language) {
@@ -76,7 +85,7 @@ Text TranslateAllPhrases(Text _Source) {
 	declare Phrases = TextLib::RegexFind("\\{\\{\\{\\{(.*?)\\}\\}\\}\\}", Txt, "gi");
 	foreach(P,Phrases) {
 		declare Phrase = TextLib::SubText(P,4,TextLib::Length(P)-8);
-		Phrase = Get(Phrase, LocalUser.Language);
+		Phrase = Get(Phrase, G_Language);
 		Txt = TextLib::Replace(Txt, P, Phrase);
 	}
 	return Txt;

@@ -11,6 +11,9 @@ main() {
 				case CMlScriptEvent::Type::MouseClick: {
 					switch(Event.ControlId) {
 						case "QUAD_HOVER": {
+							(Event.Control.Parent.GetFirstChild("QUAD_BUTTON_BORDER") as CMlQuad).Colorize = ColorLib::HexToRgb("222");
+							(Event.Control.Parent.GetFirstChild("LABEL_BUTTON_TEXT") as CMlLabel).TextColor = ColorLib::HexToRgb("222");
+
 							switch(Event.Control.Parent.ControlId) {
 								case "FRAME_BUTTON_COMPUTE": {
 									declare MapsValue = (Page.GetFirstChild("ENTRY_MAPS") as CMlEntry).Value;
@@ -23,7 +26,7 @@ main() {
 									SendCustomEvent("TERMINATE", []);
 								}
 								case "FRAME_BUTTON_QNA": {
-									
+									SendCustomEvent("QNA", []);
 								}
 							}
 						}

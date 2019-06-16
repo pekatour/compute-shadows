@@ -20,7 +20,7 @@
 		<label pos="65 2.5" z-index="2" size="5 5" text="" textfont="RajdhaniMono" textcolor="080" scriptevents="1" style="TextButtonBig" textsize="2" id="LABEL_MAPTYPE_ENABLE" halign="center" valign="center2"/>
 		<entry pos="25 0" z-index="2" size="50 10" halign="center" valign="center" default="Race" textformat="Basic" selecttext="1" textfont="RajdhaniMono" id="ENTRY_MAPTYPE" textcolor="222"/>
 	</frame>
-	<frame pos="0 -30" id="FRAME_BUTTON_COMPUTE">
+	<frame pos="0 -30" id="FRAME_BUTTON_COMPUTE" hidden="0">
 		<quad z-index="0" size="80 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgWindow4" opacity=".9"/>
 		<quad z-index="1" size="80.5 10.5" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgColorContour" colorize="222" opacity=".9" id="QUAD_BUTTON_BORDER"/>
 		<quad z-index="1" size="80 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" opacity=".5"/>

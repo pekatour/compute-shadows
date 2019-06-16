@@ -1,0 +1,41 @@
+#Include "ColorLib" as ColorLib
+
+main() {
+	while(True) {
+		foreach(Event,PendingEvents) {
+			switch(Event.Type) {
+				case CMlScriptEvent::Type::MouseClick: {
+					switch(Event.ControlId) {
+						case "QUAD_HOVER": {
+							(Event.Control.Parent.GetFirstChild("QUAD_BUTTON_BORDER") as CMlQuad).Colorize = ColorLib::HexToRgb("222");
+							(Event.Control.Parent.GetFirstChild("LABEL_BUTTON_TEXT") as CMlLabel).TextColor = ColorLib::HexToRgb("222");
+
+							switch(Event.Control.Parent.ControlId) {
+								case "FRAME_BUTTON_BACK": {
+									SendCustomEvent("QNA_BACK", []);
+								}
+							}
+						}
+					}
+				}
+				case CMlScriptEvent::Type::MouseOver: {
+					switch(Event.ControlId) {
+						case "QUAD_HOVER": {
+							(Event.Control.Parent.GetFirstChild("QUAD_BUTTON_BORDER") as CMlQuad).Colorize = ColorLib::HexToRgb("DDD");
+							(Event.Control.Parent.GetFirstChild("LABEL_BUTTON_TEXT") as CMlLabel).TextColor = ColorLib::HexToRgb("DDD");
+						}
+					}
+				}
+				case CMlScriptEvent::Type::MouseOut: {
+					switch(Event.ControlId) {
+						case "QUAD_HOVER": {
+							(Event.Control.Parent.GetFirstChild("QUAD_BUTTON_BORDER") as CMlQuad).Colorize = ColorLib::HexToRgb("222");
+							(Event.Control.Parent.GetFirstChild("LABEL_BUTTON_TEXT") as CMlLabel).TextColor = ColorLib::HexToRgb("222");
+						}
+					}
+				}
+			}
+		}
+		yield;
+	}
+}

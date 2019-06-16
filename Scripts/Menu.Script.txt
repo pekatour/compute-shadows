@@ -6,6 +6,7 @@
 #Include "Libs/BigBang1112/Task.Script.txt" as Task
 #Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
 #Include "Libs/BigBang1112/Time.Script.txt" as Time
+#Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
 
 Void CalculateMap(Text _FileName, Text _MapType) {
 	TitleControl.EditMap(_FileName, "Shadow.Script.txt", """<settings>
@@ -14,8 +15,13 @@ Void CalculateMap(Text _FileName, Text _MapType) {
 	</settings>""");
 }
 
-main() {	
+main() {
+	Dictionary::SetTranslationFolder("Media/Translations");
+	Dictionary::SetTranslationLanguage(LocalUser.Language);
+	
 	Layers::Create("UI", Manialink::FromFile("Media/Manialinks/UI", True), True);
+	Layers::Create("QNA", Manialink::Construct("", ""));
+	Layers::Create("QNA_BACK", Manialink::FromFile("Media/Manialinks/QNA_Back", True));
 	
 	declare MapType = "";
 
@@ -33,6 +39,16 @@ main() {
 						}
 						else
 							Task::Async_DataFileMgr("MAPS", DataFileMgr.Map_GetFilteredGameList(2, Maps, True));
+					}
+					case "QNA": {
+						Layers::Hide("UI");
+						Layers::Show("QNA");
+						Layers::Show("QNA_BACK");
+					}
+					case "QNA_BACK": {
+						Layers::Show("UI");
+						Layers::Hide("QNA");
+						Layers::Hide("QNA_BACK");
 					}
 				}
 			}
