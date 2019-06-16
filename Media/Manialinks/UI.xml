@@ -34,6 +34,7 @@
 		<quad z-index="1" size="80 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" opacity=".5"/>
 		<quad pos="0 0" z-index="1" size="80 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" colorize="C00" id="QUAD_HOVER"/>
 		<label pos="0 -0.3" z-index="2" size="70 10" text="{{{{TERMINATE}}}}" valign="center2" textfont="RajdhaniMono" textcolor="222" halign="center" id="LABEL_BUTTON_TEXT"/>
+		<label pos="45 -0.3" z-index="2" size="7.5 10" text="3" valign="center2" textfont="RajdhaniMono" halign="center" id="LABEL_TERMINATE_TIME" textsize="1.5" textemboss="1"/>
 	</frame>
 	<frame pos="135 -75" id="FRAME_BUTTON_EDITORS">
 		<quad z-index="0" size="30 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgWindow4" opacity=".9"/>

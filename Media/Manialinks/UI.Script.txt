@@ -7,8 +7,16 @@ Boolean IsMapTypeEnabled() {
 
 main() {
 	(Page.GetFirstChild("LABEL_VERSION") as CMlLabel).SetText(TextLib::Split(" ", LoadedTitle.TitleVersion)[0]);
+	
+	declare Integer Stamp;
 
 	while(True) {
+		declare Remain = (Stamp + 2000 - Now)/1000.;
+		if(Remain > 0)
+			(Page.GetFirstChild("LABEL_TERMINATE_TIME") as CMlLabel).SetText(TextLib::FormatReal(Remain, 2, False, False));
+		else
+			(Page.GetFirstChild("LABEL_TERMINATE_TIME") as CMlLabel).SetText("0");
+	
 		foreach(Event,PendingEvents) {
 			switch(Event.Type) {
 				case CMlScriptEvent::Type::MouseClick: {
@@ -75,6 +83,9 @@ main() {
 									Page.GetFirstChild("FRAME_BUTTON_COMPUTE").Hide();
 								}
 							}
+						}
+						case "TERMINATE_STAMP": {
+							Stamp = TextLib::ToInteger(Event.CustomEventData[0]);
 						}
 					}
 				}

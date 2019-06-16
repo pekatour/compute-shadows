@@ -23,3 +23,9 @@ In the MapType step of the tool, click on the little tick button in the corner. 
 ## I converted a Stadium map from TM1, but several blocks suddently dissapeared. Why?
 I'm not exactly sure either, but I consider this as a ManiaPlanet bug, happening especially with sculptures. Same thing would happen if you convert the maps manually.
 Currently, I'm trying to find a solution for this. For now, you have no other option to place them manually.
+
+## I minimized the game, but moved nowhere in the calculation when I checked. Why it just stopped?
+When you click on the minimize button at the top, all of the scripts that do the calculation freeze. You have to Alt+Tab or switch from the game without actual minimalization.
+
+## After calculation, the map sizes are very small, nice! It that alright though?
+No, it actually is not. This usually happens when the maps were already calculated in the past. Check your cache in ProgramData/ManiaPlanet/Cache and remove the lightmap files. They should be one of the newest.

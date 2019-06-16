@@ -7,6 +7,7 @@
 
 main() {
 	if(S_Enable) {
+		HideEditorInterface = True;
 		wait(IsEditorReadyForRequest);
 
 		if(TextLib::Find(".", MapName, False, False)
@@ -16,12 +17,9 @@ main() {
 			QuickQuit();
 		}
 		else {
-			if(CurrentShadowsQuality == ::ShadowsQuality::High || CurrentShadowsQuality == ::ShadowsQuality::Ultra) {
-				Dialog_Message("Map is already calculated on High or Ultra in your cache. These qualities can't be stored in a map file. If you need them to be stored, follow the steps.\nFind and delete the lightmap file (.Bump.LightMap.zip) from ProgramData/ManiaPlanet/Cache and try this map again.\n");
-				sleep(15000);
-				QuickQuit();
-			}
-			else {
+			if(CurrentShadowsQuality == ::ShadowsQuality::NotComputed
+			|| CurrentShadowsQuality == ::ShadowsQuality::VeryFast
+			|| CurrentShadowsQuality == ::ShadowsQuality::Fast) {
 				wait(IsEditorReadyForRequest);
 				ComputeShadows(::ShadowsQuality::Default);
 				
@@ -35,6 +33,13 @@ main() {
 				SaveMap(MapName, TextLib::Join("\\",Folders)^"\\");
 	
 				wait(IsEditorReadyForRequest);
+				QuickQuit();
+			}
+			else {
+				ComputeShadows(::ShadowsQuality::Default); // This will put the lightmap file higher in date
+				wait(IsEditorReadyForRequest);
+				Dialog_Message("Map is already calculated in your cache. The lightmaps won't be possibly stored in a map after saving, so the map save will be skipped. Follow the steps to recalculate the shadows properly.\nFind and delete the lightmap file (.Bump.LightMap.zip) from ProgramData/ManiaPlanet/Cache (it will be one of the newest) and try this map again.");
+				sleep(18000);
 				QuickQuit();
 			}
 		}
