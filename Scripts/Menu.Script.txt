@@ -5,6 +5,14 @@
 #Include "Libs/BigBang1112/Layers.Script.txt" as Layers
 #Include "Libs/BigBang1112/Task.Script.txt" as Task
 #Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
+#Include "Libs/BigBang1112/Time.Script.txt" as Time
+
+Void CalculateMap(Text _FileName, Text _MapType) {
+	TitleControl.EditMap(_FileName, "Shadow.Script.txt", """<settings>
+		<setting name="S_Enable" type="boolean" value="True"/>
+		<setting name="S_MapType" type="text" value="{{{_MapType}}}"/>
+	</settings>""");
+}
 
 main() {	
 	Layers::Create("UI", Manialink::FromFile("Media/Manialinks/UI", True), True);
@@ -21,13 +29,10 @@ main() {
 					
 						if(TextLib::EndsWith(".Gbx",Maps)) {
 							if(TitleControl.IsReady)
-								TitleControl.EditMap(Event.CustomEventData[0], "Shadow.Script.txt", """<settings>
-		<setting name="S_Enable" type="boolean" value="True"/>
-		<setting name="S_MapType" type="text" value="{{{MapType}}}"/>
-	</settings>""");
+								CalculateMap(Event.CustomEventData[0], MapType);
 						}
 						else
-							Task::Async_DataFileMgr("MAPS", DataFileMgr.Map_GetFilteredGameList(4, Maps, True));
+							Task::Async_DataFileMgr("MAPS", DataFileMgr.Map_GetFilteredGameList(2, Maps, True));
 					}
 				}
 			}
@@ -36,12 +41,29 @@ main() {
 		if(Task::IsCompleted("MAPS")) {
 			declare Task = Task::ToMapList(Task::Get("MAPS"));
 			if(Task::IsSuccessful("MAPS")) {
+				Layers::SendEvent("UI","CHANGE_MODE",["RUNNING"]);
+				
+				declare Terminate = False;
 				foreach(MapInfo,Task.MapInfos) {
-					wait(TitleControl.IsReady);
-					TitleControl.EditMap(MapInfo.FileName, "Shadow.Script.txt", """<settings>
-		<setting name="S_Enable" type="boolean" value="True"/>
-	</settings>""");
+					if(!Terminate) {
+						wait(TitleControl.IsReady);
+						CalculateMap(MapInfo.FileName, MapType);
+						wait(TitleControl.IsReady);
+							
+						Time::Stamp_Create("TERMINATE",2000);
+						while(!Terminate) {
+							foreach(Event,PendingEvents)
+								if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent)
+									if(Event.CustomEventType == "TERMINATE")
+										Terminate = True;
+							if(Time::Stamp_Reached("TERMINATE")) break;
+							yield;
+						}
+						log("reached");
+					}
 				}
+				
+				Layers::SendEvent("UI","CHANGE_MODE",["NORMAL"]);
 			}
 			else {
 			
