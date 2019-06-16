@@ -1,10 +1,13 @@
 #Include "ColorLib" as ColorLib
+#Include "TextLib" as TextLib
 
 Boolean IsMapTypeEnabled() {
 	return (Page.GetFirstChild("LABEL_MAPTYPE_ENABLE") as CMlLabel).TextColor == ColorLib::HexToRgb("080");
 }
 
 main() {
+	(Page.GetFirstChild("LABEL_VERSION") as CMlLabel).SetText(TextLib::Split(" ", LoadedTitle.TitleVersion)[0]);
+
 	while(True) {
 		foreach(Event,PendingEvents) {
 			switch(Event.Type) {
