@@ -1,21 +1,47 @@
+/*
+// Dictionary.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Manage list of terms for translation.
+
+// This library does depend on more libraries from the Universe Library Set:
+// - File.Script.txt
+// You only need to use the libraries above, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin?
+*/
+
+/*
+// Void SetTranslationFolder(Text _Folder)
+// Text GetTranslationFolder()
+// Text Get(Text _Definition, Text _Language)
+// Void Set(Text _Definition, Text _Language, Text _Translation)
+// Text TranslateAllPhrases(Text _Source)
+*/
+
 #Include "TextLib" as TextLib
 #Include "Libs/BigBang1112/File.Script.txt" as File
 
 declare Text[Text][Text] G_Dictionaries;
-declare Text[] G_Definitions;
+declare Text G_TranslationFolder;
 
-Void Define(Text _Definition) {
-	G_Definitions.add(_Definition);
+Void SetTranslationFolder(Text _Folder) {
+	G_TranslationFolder = _Folder;
 }
 
-Void Define(Text[] _Definitions) {
-	foreach(Def,_Definitions)
-		G_Definitions.add(Def);
+Text GetTranslationFolder() {
+	return G_TranslationFolder;
 }
 
 Text Get(Text _Definition, Text _Language) {
 	if(!G_Dictionaries.existskey(_Language)) {
-		declare Content = File::Read("Media/Translations/"^_Language^".json");
+		declare Content = File::Read(G_TranslationFolder^"/"^_Language^".json");
 		declare Text[Text] Phrases;
 		declare JsonSuccess = Phrases.fromjson(Content);
 		G_Dictionaries[_Language] = Phrases;
@@ -26,7 +52,7 @@ Text Get(Text _Definition, Text _Language) {
 	}
 	
 	if(!G_Dictionaries.existskey("en")) {
-		declare Content = File::Read("Media/Translations/en.json");
+		declare Content = File::Read(G_TranslationFolder^"/en.json");
 		declare Text[Text] Phrases;
 		declare JsonSuccess = Phrases.fromjson(Content);
 		G_Dictionaries["en"] = Phrases;
@@ -39,6 +65,10 @@ Text Get(Text _Definition, Text _Language) {
 	}
 	
 	return _Definition;
+}
+
+Void Set(Text _Definition, Text _Language, Text _Translation) {
+	G_Dictionaries[_Language][_Definition] = _Translation;
 }
 
 Text TranslateAllPhrases(Text _Source) {

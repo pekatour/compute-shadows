@@ -1,3 +1,22 @@
+/*
+// File.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Reading title pack files through HTTP.
+
+// This library does depend on more libraries from the Universe Library Set:
+// - Http.Script.txt
+// You only need to use the libraries above, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin?
+*/
+
 #Include "Libs/BigBang1112/Http.Script.txt" as Http
 
 CParsingDocument XML(Text _FileName) {

@@ -1,3 +1,29 @@
+/*
+// Manialink.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Cleaner construction of manialinks by seperating markup and script into two files.
+
+// This library does depend on more libraries from the Universe Library Set:
+// - File.Script.txt
+// - Dictionary.Script.txt
+// You only need to use the libraries above, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin?
+*/
+
+/*
+// Text Construct(Text _Markup, Text _Script)
+// Text FromFile(Text _ManialinkName, Boolean _Translate)
+// Text FromFile(Text _ManialinkName)
+*/
+
 #Include "TextLib" as TextLib
 
 #Include "Libs/BigBang1112/File.Script.txt" as File

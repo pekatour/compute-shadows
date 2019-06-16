@@ -1,3 +1,62 @@
+/*
+// Task.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Simplified Task usage.
+
+// This library does not depend on any other library from the Universe Library Set.
+// You can use this library independently, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+*/
+
+/*
+// CTaskResult Sync(CTaskResult _Task)
+// CTaskResult_BuddiesChallengeRecord SyncBuddiesChallengeRecord(CTaskResult_BuddiesChallengeRecord _Task)
+// CTaskResult_BuddiesChallengeRecordsComparison SyncBuddiesChallengeRecordsComparison(CTaskResult_BuddiesChallengeRecordsComparison _Task)
+// CTaskResult_BuddyChallengeRecordsComparison SyncBuddyChallengeRecordsComparison(CTaskResult_BuddyChallengeRecordsComparison _Task)
+// CTaskResult_FileList SyncFileList(CTaskResult_FileList _Task)
+// CTaskResult_GameModeList SyncGameModeList(CTaskResult_GameModeList _Task)
+// CTaskResult_Ghost SyncGhost(CTaskResult_Ghost _Task)
+// CTaskResult_GhostList SyncGhostList(CTaskResult_GhostList _Task)
+// CTaskResult_MapList SyncMapList(CTaskResult_MapList _Task)
+// CTaskResult_MapRecordList SyncMapRecordList(CTaskResult_MapRecordList _Task)
+// CTaskResult_NaturalLeaderBoardInfoList SyncNaturalLeaderBoardInfoList(CTaskResult_NaturalLeaderBoardInfoList _Task)
+// CTaskResult_PlayerMapRecords SyncPlayerMapRecords(CTaskResult_PlayerMapRecords _Task)
+// CTaskResult_RealLeaderBoardInfoList SyncRealLeaderBoardInfoList(CTaskResult_RealLeaderBoardInfoList _Task)
+// CTaskResult_ReplayList SyncReplayList(CTaskResult_ReplayList _Task)
+// CTaskResult_StringIntList SyncStringIntList(CTaskResult_StringIntList _Task)
+// Void Async_DataFileMgr(Text _Name, CTaskResult _Task)
+// Void Async_ScoreMgr(Text _Name, CTaskResult _Task)
+// CTaskResult Get(Text _Name)
+// Void Destroy_DataFileMgr(Text _Name)
+// Void Destroy_ScoreMgr(Text _Name)
+// Boolean IsCompleted(Text _Name)
+// Boolean IsSuccessful(Text _Name)
+// STaskFail IsFailed(Text _Name)
+// Boolean IsCanceled(Text _Name)
+// CTaskResult_BuddiesChallengeRecord ToBuddiesChallengeRecord(CTaskResult _Task)
+// CTaskResult_BuddiesChallengeRecordsComparison ToBuddiesChallengeRecordsComparison(CTaskResult _Task)
+// CTaskResult_BuddyChallengeRecordsComparison ToBuddyChallengeRecordsComparison(CTaskResult _Task)
+// CTaskResult_FileList ToFileList(CTaskResult _Task)
+// CTaskResult_GameModeList ToGameModeList(CTaskResult _Task)
+// CTaskResult_Ghost ToGhost(CTaskResult _Task)
+// CTaskResult_GhostList ToGhostList(CTaskResult _Task)
+// CTaskResult_MapList ToMapList(CTaskResult _Task)
+// CTaskResult_MapRecordList ToMapRecordList(CTaskResult _Task)
+// CTaskResult_NaturalLeaderBoardInfoList ToNaturalLeaderBoardInfoList(CTaskResult _Task)
+// CTaskResult_PlayerMapRecords ToPlayerMapRecords(CTaskResult _Task)
+// CTaskResult_RealLeaderBoardInfoList ToRealLeaderBoardInfoList(CTaskResult _Task)
+// CTaskResult_ReplayList ToReplayList(CTaskResult _Task)
+// CTaskResult_StringIntList ToStringIntList(CTaskResult _Task)
+*/
+
+
 #Struct STaskFail {
 	Boolean Failed;
 	Text ErrorType;
@@ -85,7 +144,6 @@ CTaskResult Get(Text _Name) {
 Void Destroy_DataFileMgr(Text _Name) {
 	if(!G_AsyncRequests.existskey(_Name)) return;
 	DataFileMgr.TaskResult_Release(G_AsyncRequests[_Name].Id);
-	//ScoreMgr.TaskResult_Release(G_AsyncRequests[_Name].Id);
 	declare Removed = G_AsyncRequests.removekey(_Name);
 }
 

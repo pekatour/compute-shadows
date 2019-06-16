@@ -1,3 +1,43 @@
+/*
+// Layers.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Layers library similar to Nadeo's one that supports CManiaApp.
+
+// This library does not depend on any other library from the Universe Library Set.
+// You can use this library independently, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+*/
+
+/*
+// Boolean Exists(Text _LayerName)
+// CUILayer Get(Text _LayerName)
+// CUILayer Get(Ident _LayerId)
+// Text GetName(Ident _LayerId)
+// Text GetName(CUILayer _Layer)
+// Void Destroy(Text _LayerName)
+// Void DestroyAll()
+// Void Create(Text _LayerName, Text _LayerManialink, Boolean IsVisible, CUILayer::EUILayerType _LayerType)
+// Void Create(Text _LayerName, Text _LayerManialink, Boolean IsVisible)
+// Void Create(Text _LayerName, Text _LayerManialink)
+// Void Create(Text _LayerName)
+// Void SetType(Text _LayerName, CUILayer::EUILayerType _LayerType)
+// Void SetAnimationIn(Text _LayerName, CUILayer::EUILayerAnimation _Animation)
+// Void SetAnimationOut(Text _LayerName, CUILayer::EUILayerAnimation _Animation)
+// Void SetAnimationInOut(Text _LayerName, CUILayer::EUILayerAnimation _Animation)
+// Void Show(Text _LayerName)
+// Void ShowOnly(Text _LayerName)
+// Void Hide(Text _LayerName)
+// Void SendEvent(Text _LayerName, Text _Type, Text[] _Data)
+// Void SendEvent(Text _LayerName, Text _Type, Text _Data)
+// Void SendEvent(Text _LayerName, Text _Type)
+*/
+
 declare Ident[Text] G_Layers;
 
 Boolean Exists(Text _LayerName) {
@@ -99,4 +139,12 @@ Void Hide(Text _LayerName) {
 
 Void SendEvent(Text _LayerName, Text _Type, Text[] _Data) {
 	LayerCustomEvent(Get(_LayerName), _Type, _Data);
+}
+
+Void SendEvent(Text _LayerName, Text _Type, Text _Data) {
+	LayerCustomEvent(Get(_LayerName), _Type, [_Data]);
+}
+
+Void SendEvent(Text _LayerName, Text _Type) {
+	LayerCustomEvent(Get(_LayerName), _Type, []);
 }

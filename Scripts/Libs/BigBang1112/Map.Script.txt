@@ -1,3 +1,34 @@
+/*
+// Map.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Enhancing functions for map related stuff.
+
+// This library does depend on more libraries from the Universe Library Set:
+// - Task.Script.txt
+// You only need to use the libraries above, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode (only Solo)
+*/
+
+/*
+// SMapInfo ToSMapInfo(CMapInfo _MapInfo)
+// SMapInfo MapInfo(Text _Path, Integer _Scope)
+// CTaskResult_MapList Get(Text _FileName)
+// Void AsyncMapInfo(Text _FileName, Integer _Scope)
+// SMapInfo AsyncGet(Text _FileName)
+// Void AsyncDestroy(Text _FileName)
+// Boolean AsyncIsCompleted(Text _FileName)
+// Boolean AsyncIsSuccessful(Text _FileName)
+// Task::STaskFail AsyncIsFailed(Text _FileName)
+// Boolean IsCanceled(Text _FileName)
+*/
+
 #Include "TextLib" as TextLib
 
 #Include "Libs/BigBang1112/Task.Script.txt" as Task

@@ -50,7 +50,7 @@
 
 #Const C_StatusCode_Offline 10006
 
-declare CHttpRequest[Text] G_Requests;
+declare Ident[Text] G_Requests;
 
 /*
 // CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
@@ -282,8 +282,8 @@ Text SyncPOSTFile_Result(Text _Url, Text _FileName) {
 Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return False;
 	
-	if(G_Requests.existskey(_Name)) Http.Destroy(G_Requests[_Name]);
-	G_Requests[_Name] = Http.CreateGet(_Url, _UseCache, _AdditionalHeaders);
+	if(G_Requests.existskey(_Name)) Http.Destroy(Http.Requests[G_Requests[_Name]]);
+	G_Requests[_Name] = Http.CreateGet(_Url, _UseCache, _AdditionalHeaders).Id;
 	return True;
 }
 
@@ -328,9 +328,9 @@ Boolean AsyncGET(Text _Name, Text _Url) {
 Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return False;
 	
-	if(G_Requests.existskey(_Name)) Http.Destroy(G_Requests[_Name]);
+	if(G_Requests.existskey(_Name)) Http.Destroy(Http.Requests[G_Requests[_Name]]);
 	
-	G_Requests[_Name] = Http.CreatePost(_Url, _Resource, _AdditionalHeaders);
+	G_Requests[_Name] = Http.CreatePost(_Url, _Resource, _AdditionalHeaders).Id;
 
 	return True;
 }
@@ -363,9 +363,9 @@ Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource) {
 Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return False;
 	
-	if(G_Requests.existskey(_Name)) Http.Destroy(G_Requests[_Name]);
+	if(G_Requests.existskey(_Name)) Http.Destroy(Http.Requests[G_Requests[_Name]]);
 	
-	G_Requests[_Name] = Http.CreatePostFile(_Url, _FileName, _AdditionalHeaders);
+	G_Requests[_Name] = Http.CreatePostFile(_Url, _FileName, _AdditionalHeaders).Id;
 
 	return True;
 }
@@ -394,7 +394,7 @@ Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName) {
 */
 CHttpRequest Get(Text _Name) {
 	if(!G_Requests.existskey(_Name)) return Null;
-	return G_Requests[_Name];
+	return Http.Requests[G_Requests[_Name]];
 }
 
 /*
@@ -405,7 +405,7 @@ CHttpRequest Get(Text _Name) {
 */
 Void Destroy(Text _Name) {
 	if(!G_Requests.existskey(_Name)) return;
-	Http.Destroy(G_Requests[_Name]);
+	Http.Destroy(Http.Requests[G_Requests[_Name]]);
 	declare Removed = G_Requests.removekey(_Name);
 }
 

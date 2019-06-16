@@ -1,0 +1,7 @@
+/*
+// Spotify.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Wrapper for implicit Spotify API access.
+*/

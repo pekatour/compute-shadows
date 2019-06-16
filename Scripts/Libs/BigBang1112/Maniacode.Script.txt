@@ -1,0 +1,7 @@
+/*
+// Maniacode.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Quick ManiaCode creation to run on the client side.
+*/

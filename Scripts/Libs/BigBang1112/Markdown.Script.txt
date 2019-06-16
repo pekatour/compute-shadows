@@ -1,0 +1,7 @@
+/*
+// Markdown.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Reads .MD files nicely.
+*/

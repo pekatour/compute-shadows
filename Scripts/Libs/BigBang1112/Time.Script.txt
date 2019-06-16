@@ -1,3 +1,37 @@
+/*
+// Time.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Various time related functions.
+
+// This library does not depend on any other library from the Universe Library Set.
+// You can use this library independently, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin
+*/
+
+/*
+// Void Watch_Create(Text _WatchName)
+// Void Watch_Remove(Text _WatchName)
+// Boolean Watch_Start(Text _WatchName)
+// Integer Watch_Track(Text _WatchName)
+// Integer Watch_Stop(Text _WatchName)
+// Boolean Watch_Pause(Text _WatchName)
+// Boolean Watch_Unpause(Text _WatchName)
+// Void Stamp_Create(Text _StampName, Integer _Offset)
+// Void Stamp_Create(Text _StampName)
+// Boolean Stamp_CreateOnce(Text _StampName, Integer _Offset)
+// Boolean Stamp_CreateOnce(Text _StampName)
+// Void Stamp_Remove(Text _StampName) 
+// Boolean Stamp_Reached(Text _StampName)
+*/
+
 #Struct SPause {
 	Integer Start;
 	Integer Time;

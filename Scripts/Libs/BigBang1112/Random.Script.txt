@@ -1,10 +1,22 @@
+/*
 // Random.Script.txt
-// Library by BigBang1112
-//
-// Provides many function usable for random scenarios... nice pun right.
+// by BigBang1112
+// part of Universe Library Set
 
-// Avaliable functions:
-//
+// Provides many functions usable for random scenarios... nice pun right.
+
+// This library does not depend on any other library from the Universe Library Set.
+// You can use this library independently, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin
+*/
+
+/*
 // Real Percentage()
 // Integer Number(Boolean _IncludeNegative)
 // Integer Number()
@@ -20,6 +32,7 @@
 // Vec3 Vector3()
 // Int3 Number3(Integer _Min, Integer _Max)
 // Int3 Number3(Integer _Max)
+*/
 
 #Include "MathLib" as MathLib
 #Include "TextLib" as TextLib
@@ -30,89 +43,97 @@
 #Const C_CharLettersUppercase "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 #Const C_CharLettersLowercase "abcdefghijklmnopqrstuvwxyz"
 
-///////////////////////////////////////////////////
+/*
 // Real Percentage()
-// ------------------------------------------------
-// Returns random floating number between 0 and 1.
-///////////////////////////////////////////////////
+// 
+
+// Returns random floating number between 0 and 1
+*/
 Real Percentage() {
 	return MathLib::Rand(0.0, 1.0);
 }
 
-///////////////////////////////////////////////////
+/*
 // Integer Number(Boolean _IncludeNegative)
-// ------------------------------------------------
+// 
+
 // Boolean _IncludeNegative - Allow random numbers below zero
-// ------------------------------------------------
-// Returns random number between -2147483648 and 2147483647 range.
-///////////////////////////////////////////////////
+
+// Returns random number between -2147483648 and 2147483647 range
+*/
 Integer Number(Boolean _IncludeNegative) {
 	if(_IncludeNegative)
 		return MathLib::Rand(-2147483648, 2147483647);
 	return MathLib::Rand(0, 2147483647);
 }
 
-///////////////////////////////////////////////////
+/*
 // Integer Number()
-// ------------------------------------------------
-// Returns random number between 0 and 2147483647 range.
-///////////////////////////////////////////////////
+// 
+
+// Returns random number between 0 and 2147483647 range
+*/
 Integer Number() {
 	return Number(False);
 }
 
-///////////////////////////////////////////////////
+/*
 // Integer Number(Integer _Min, Integer _Max)
-// ------------------------------------------------
+// 
+
 // Integer _Min - Minimum random number
 // Integer _Max - Maximum random number
-// ------------------------------------------------
-// Returns random number between _Min and _Max range.
-///////////////////////////////////////////////////
+
+// Returns random number between _Min and _Max range
+*/
 Integer Number(Integer _Min, Integer _Max) {
 	return MathLib::Rand(_Min, _Max);
 }
 
-///////////////////////////////////////////////////
+/*
 // Integer Number(Integer _Max)
-// ------------------------------------------------
+// 
+
 // Integer _Max - Maximum random number
-// ------------------------------------------------
-// Returns random number between 0 and _Max range.
-///////////////////////////////////////////////////
+
+// Returns random number between 0 and _Max range
+*/
 Integer Number(Integer _Max) {
 	return MathLib::Rand(0, _Max);
 }
 
-///////////////////////////////////////////////////
+/*
 // Text Char(Text _Charset)
-// ------------------------------------------------
+// 
+
 // Text _Charset - Custom charset to generate random character from
-// ------------------------------------------------
+
 // Returns random character
-///////////////////////////////////////////////////
+*/
 Text Char(Text _Charset) {
 	return TextLib::SubText(_Charset, MathLib::Rand(0,TextLib::Length(_Charset) - 1), 1);
 }
 
-///////////////////////////////////////////////////
+/*
 // Text Char()
-// ------------------------------------------------
+// 
+
 // Returns random character from the common charset
-///////////////////////////////////////////////////
+*/
 Text Char() {
 	return Char(C_CharMixed);
 }
 
-///////////////////////////////////////////////////
+/*
 // Text String(Text _Charset, Integer _Min, Integer _Max)
-// ------------------------------------------------
+// 
+
 // Text _Charset - Custom charset to generate random text from
 // Integer _Min - Minimum random length of the text
 // Integer _Max - Maximum random length of the text
-// ------------------------------------------------
+
 // Returns random text
-///////////////////////////////////////////////////
+*/
 Text String(Text _Charset, Integer _Min, Integer _Max) {
 	declare Text RandomString;
 	
@@ -123,79 +144,82 @@ Text String(Text _Charset, Integer _Min, Integer _Max) {
 	return RandomString;
 }
 
-///////////////////////////////////////////////////
+/*
 // Text String(Integer _Min, Integer _Max)
-// ------------------------------------------------
+// 
+
 // Integer _Min - Minimum random length of the text
 // Integer _Max - Maximum random length of the text
-// ------------------------------------------------
+
 // Returns random text from the common charset
-///////////////////////////////////////////////////
+*/
 Text String(Integer _Min, Integer _Max) {
 	return String(C_CharMixed, _Min, _Max);
 }
 
-///////////////////////////////////////////////////
+/*
 // Text String(Integer _Length)
-// ------------------------------------------------
+// 
+
 // Integer _Length - Length of the random text
-// ------------------------------------------------
+
 // Returns random text from the common charset
-///////////////////////////////////////////////////
+*/
 Text String(Integer _Length) {
 	return String(C_CharMixed, _Length, _Length);
 }
 
-///////////////////////////////////////////////////
+/*
 // Boolean Bool()
-// ------------------------------------------------
-// Returns random boolean.
-///////////////////////////////////////////////////
+// 
+
+// Returns random boolean
+*/
 Boolean Bool() {
 	return (MathLib::Rand(0, 1) == 1);
 }
 
-///////////////////////////////////////////////////
+/*
 // Vec2 Vector2()
-// ------------------------------------------------
-// Returns random 2D normalized vector.
-///////////////////////////////////////////////////
+// 
+
+// Returns random 2D normalized vector
+*/
 Vec2 Vector2() {
 	return <Percentage(),Percentage()>;
 }
 
-///////////////////////////////////////////////////
+/*
 // Vec3 Vector3()
-// ------------------------------------------------
-// Returns random 3D normalized vector.
-///////////////////////////////////////////////////
+// 
+
+// Returns random 3D normalized vector
+*/
 Vec3 Vector3() {
 	return <Percentage(),Percentage(),Percentage()>;
 }
 
-///////////////////////////////////////////////////
+/*
 // Int3 Number3(Integer _Min, Integer _Max)
-// ------------------------------------------------
+// 
+
 // Integer _Min - Minimum random number
 // Integer _Max - Maximum random number
-// ------------------------------------------------
-// Returns random 3D number between _Min and _Max range.
-///////////////////////////////////////////////////
+
+// Returns random 3D number between _Min and _Max range
+*/
 Int3 Number3(Integer _Min, Integer _Max) {
 	return <Number(_Min,_Max),Number(_Min,_Max),Number(_Min,_Max)>;
 }
 
-///////////////////////////////////////////////////
-// Int3 Number3(Integer _Min, Integer _Max)
-// ------------------------------------------------
+/*
+// Int3 Number3(Integer _Max)
+// 
+
 // Integer _Max - Maximum random number
-// ------------------------------------------------
-// Returns random 3D number between 0 and _Max range.
-///////////////////////////////////////////////////
+
+// Returns random 3D number between 0 and _Max range
+*/
 Int3 Number3(Integer _Max) {
 	return Number3(0, _Max);
-}
-
-Text Insert() {
-	return """""";
 }

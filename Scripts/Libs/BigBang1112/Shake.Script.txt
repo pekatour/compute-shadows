@@ -1,0 +1,7 @@
+/*
+// Shake.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Shake algorithms for various uses.
+*/

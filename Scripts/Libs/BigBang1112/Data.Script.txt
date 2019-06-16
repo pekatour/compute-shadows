@@ -1,3 +1,28 @@
+/*
+// Data.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Quick temporary data saving to use across scripts.
+
+// This library does not depend on any other library from the Universe Library Set.
+// You can use this library independently, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin
+*/
+
+/*
+// Boolean Remove(Text _Name)
+// Void Set(Text _Name, Text _Content)
+// Text Get(Text _Name)
+// Text GetAndRemove(Text _Name)
+*/
+
 declare Text[Text] G_Data;
 
 Boolean Remove(Text _Name) {

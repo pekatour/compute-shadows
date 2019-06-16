@@ -1,3 +1,46 @@
+/*
+// Web.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Wrapper for implicit ManiaPlanet Web Services API access.
+
+// This library does depend on more libraries from the Universe Library Set:
+// - Http.Script.txt
+// You only need to use the libraries above, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin
+*/
+
+/*
+// SPlayer Me(Text _Token)
+// STitle[] MeTitlesCreated(Text _Token)
+// SDedicatedAccount[] MeDedicated(Text _Token)
+// SMap[] MeMaps(Text _Token)
+// Text MeEmail(Text _Token)
+// SMap Map(Text _Uid)
+// SZone[] Zones()
+// STitle[] Titles(Text[] _Filters, Text _OrderBy, Integer _Offset, Integer Length)
+// STitle[] Titles(Text[] _Filters, Text _OrderBy, Integer _Offset)
+// STitle[] Titles(Text[] _Filters, Text _OrderBy)
+// STitle[] Titles(Text[] _Filters)
+// STitle[] Titles()
+// STitle Title(Text _Uid)
+// STitleScript[] TitleScripts(Text _Uid)
+// SOnlineServer[] Servers(SServerFilter _Filter)
+// SOnlineServer[] Servers()
+// SFlashPost[] Flashes(Text _LiveUid, Integer _Offset, Integer _Length)
+// SFlashPost[] Flashes(Text _LiveUid, Integer _Offset)
+// SFlashPost[] Flashes(Text _LiveUid) 
+*/
+
+#Include "Libs/BigBang1112/Http.Script.txt" as Http
+
 #Struct SPlayer {
 	Text Login;
 	Text Nickname;
