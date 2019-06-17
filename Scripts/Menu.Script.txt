@@ -8,10 +8,11 @@
 #Include "Libs/BigBang1112/Time.Script.txt" as Time
 #Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
 
-Void CalculateMap(Text _FileName, Text _MapType) {
+Void CalculateMap(Text _FileName, Text _MapType, Boolean _DontSaveAlreadyCalculated) {
 	TitleControl.EditMap(_FileName, "Shadow.Script.txt", """<settings>
 		<setting name="S_Enable" type="boolean" value="True"/>
 		<setting name="S_MapType" type="text" value="{{{_MapType}}}"/>
+		<setting name="S_DontSaveAlreadyCalculated" type="boolean" value="{{{_DontSaveAlreadyCalculated}}}"/>
 	</settings>""");
 }
 
@@ -24,6 +25,7 @@ main() {
 	Layers::Create("QNA_BACK", Manialink::FromFile("Media/Manialinks/QNA_Back", True));
 	
 	declare MapType = "";
+	declare DontSaveAlreadyCalculated = True;
 
 	while(True) {
 		foreach(Event,PendingEvents) {
@@ -32,13 +34,14 @@ main() {
 					case "ComputeAll": {
 						declare Maps = Event.CustomEventData[0];
 						MapType = Event.CustomEventData[1];
+						DontSaveAlreadyCalculated = Event.CustomEventData[2] == "True";
 					
 						if(TextLib::EndsWith(".Gbx",Maps)) {
 							if(TitleControl.IsReady)
-								CalculateMap(Event.CustomEventData[0], MapType);
+								CalculateMap(Event.CustomEventData[0], MapType, DontSaveAlreadyCalculated);
 						}
 						else
-							Task::Async_DataFileMgr("MAPS", DataFileMgr.Map_GetFilteredGameList(4, Maps, True));
+							Task::Async_DataFileMgr("MAPS", DataFileMgr.Map_GetFilteredGameList(2, Maps, True));
 					}
 					case "QNA": {
 						Layers::Hide("UI");
@@ -62,12 +65,10 @@ main() {
 				declare Terminate = False;
 				foreach(MapInfo,Task.MapInfos) {
 					if(!Terminate) {
-						wait(TitleControl.IsReady);
-						CalculateMap(MapInfo.FileName, MapType);
-						wait(TitleControl.IsReady);
-						Layers::SendEvent("UI","TERMINATE_STAMP",Now^"");
-							
 						Time::Stamp_Create("TERMINATE",2000);
+						
+						Layers::SendEvent("UI","TERMINATE_STAMP",Now^"");
+						
 						while(!Terminate) {
 							foreach(Event,PendingEvents)
 								if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent)
@@ -76,7 +77,12 @@ main() {
 							if(Time::Stamp_Reached("TERMINATE")) break;
 							yield;
 						}
-						log("reached");
+						
+						if(!Terminate) {
+							wait(TitleControl.IsReady);
+							CalculateMap(MapInfo.FileName, MapType, DontSaveAlreadyCalculated);
+							wait(TitleControl.IsReady);
+						}
 					}
 				}
 				

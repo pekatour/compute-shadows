@@ -18,7 +18,7 @@
 		<quad pos="0" z-index="1" size="140 15" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" opacity=".5"/>
 		<label pos="-65 -0.3" z-index="2" size="63 10" text="Scripts/MapTypes/TrackMania/" valign="center2" textfont="RajdhaniMono" textemboss="1" textcolor="222"/>
 		<label pos="63 -0.5" z-index="2" size="10 10" text="" valign="center2" textfont="RajdhaniMono" textemboss="1" textcolor="222" halign="right" scriptevents="1" style="TextButtonBig" textsize="4"/>
-		<label pos="65 2.5" z-index="2" size="5 5" text="" textfont="RajdhaniMono" textcolor="080" scriptevents="1" style="TextButtonBig" textsize="2" id="LABEL_MAPTYPE_ENABLE" halign="center" valign="center2"/>
+		<label pos="65 2.5" z-index="2" size="5 5" text="" textfont="RajdhaniMono" textcolor="0A0" scriptevents="1" style="TextButtonBig" textsize="2" id="LABEL_MAPTYPE_ENABLE" halign="center" valign="center2"/>
 		<entry pos="25 0" z-index="2" size="50 10" halign="center" valign="center" default="Race" textformat="Basic" selecttext="1" textfont="RajdhaniMono" id="ENTRY_MAPTYPE" textcolor="222"/>
 	</frame>
 	<frame pos="0 -30" id="FRAME_BUTTON_COMPUTE" hidden="0">
@@ -36,6 +36,8 @@
 		<label pos="0 -0.3" z-index="2" size="70 10" text="{{{{TERMINATE}}}}" valign="center2" textfont="RajdhaniMono" textcolor="222" halign="center" id="LABEL_BUTTON_TEXT"/>
 		<label pos="45 -0.3" z-index="2" size="7.5 10" text="3" valign="center2" textfont="RajdhaniMono" halign="center" id="LABEL_TERMINATE_TIME" textsize="1.5" textemboss="1"/>
 	</frame>
+	<label pos="0 -40" z-index="0" size="100 5" text=" {{{{DONT_SAVE_ALREADY_COMPUTED}}}}" halign="center" textsize="2" textfont="BiryaniDemiBold" style="TextButtonBig" scriptevents="1" textcolor="0A0" textemboss="1" id="LABEL_DONTSAVEALREADYCOMPUTED_ENABLE"/>
+	<label pos="0 -45" z-index="0" size="100 5" text="({{{{DONT_SAVE_ALREADY_COMPUTED_NOTE}}}})" halign="center" textsize="1" textfont="BiryaniDemiBold" style="TextButtonBig" textcolor="AAA" textemboss="1"/>
 	<frame pos="135 -75" id="FRAME_BUTTON_EDITORS">
 		<quad z-index="0" size="30 10" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgWindow4" opacity=".9"/>
 		<quad z-index="1" size="30.5 10.5" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgColorContour" colorize="222" opacity=".9" id="QUAD_BUTTON_BORDER"/>

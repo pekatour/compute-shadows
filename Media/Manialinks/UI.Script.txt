@@ -2,7 +2,11 @@
 #Include "TextLib" as TextLib
 
 Boolean IsMapTypeEnabled() {
-	return (Page.GetFirstChild("LABEL_MAPTYPE_ENABLE") as CMlLabel).TextColor == ColorLib::HexToRgb("080");
+	return (Page.GetFirstChild("LABEL_MAPTYPE_ENABLE") as CMlLabel).TextColor == ColorLib::HexToRgb("0A0");
+}
+
+Boolean IsDontSaveAlreadyComputedEnabled() {
+	return (Page.GetFirstChild("LABEL_DONTSAVEALREADYCOMPUTED_ENABLE") as CMlLabel).TextColor == ColorLib::HexToRgb("0A0");
 }
 
 main() {
@@ -24,14 +28,14 @@ main() {
 						case "QUAD_HOVER": {
 							(Event.Control.Parent.GetFirstChild("QUAD_BUTTON_BORDER") as CMlQuad).Colorize = ColorLib::HexToRgb("222");
 							(Event.Control.Parent.GetFirstChild("LABEL_BUTTON_TEXT") as CMlLabel).TextColor = ColorLib::HexToRgb("222");
-
+							
 							switch(Event.Control.Parent.ControlId) {
 								case "FRAME_BUTTON_COMPUTE": {
 									declare MapsValue = (Page.GetFirstChild("ENTRY_MAPS") as CMlEntry).Value;
 									declare Text MapTypeValue;
 									if(IsMapTypeEnabled())
 										(Page.GetFirstChild("ENTRY_MAPTYPE") as CMlEntry).Value;
-									SendCustomEvent("ComputeAll", [MapsValue,MapTypeValue]);
+									SendCustomEvent("ComputeAll", [MapsValue,MapTypeValue,""^IsDontSaveAlreadyComputedEnabled()]);
 								}
 								case "FRAME_BUTTON_TERMINATE": {
 									SendCustomEvent("TERMINATE", []);
@@ -42,14 +46,25 @@ main() {
 							}
 						}
 						case "LABEL_MAPTYPE_ENABLE": {
-							declare Label = (Page.GetFirstChild("LABEL_MAPTYPE_ENABLE") as CMlLabel);
+							declare Label = (Event.Control as CMlLabel);
 							if(IsMapTypeEnabled()) {
-								Label.TextColor = ColorLib::HexToRgb("800");
+								Label.TextColor = ColorLib::HexToRgb("A00");
 								Label.Value = "";
 							}
 							else {
-								Label.TextColor = ColorLib::HexToRgb("080");
+								Label.TextColor = ColorLib::HexToRgb("0A0");
 								Label.Value = "";
+							}
+						}
+						case "LABEL_DONTSAVEALREADYCOMPUTED_ENABLE": {
+							declare Label = (Event.Control as CMlLabel);
+							if(IsDontSaveAlreadyComputedEnabled()) {
+								Label.TextColor = ColorLib::HexToRgb("A00");
+								Label.Value = " {{{{DONT_SAVE_ALREADY_COMPUTED}}}}";
+							}
+							else {
+								Label.TextColor = ColorLib::HexToRgb("0A0");
+								Label.Value = " {{{{DONT_SAVE_ALREADY_COMPUTED}}}}";
 							}
 						}
 					}

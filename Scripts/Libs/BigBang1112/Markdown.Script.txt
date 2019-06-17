@@ -5,3 +5,111 @@
 
 // Reads .MD files nicely.
 */
+
+#Include "TextLib" as TextLib
+
+#Include "Libs/BigBang1112/File.Script.txt" as File
+
+#Const C_ElementType_Paragraph "Paragraph"
+
+#Struct SElement {
+	Text Type;
+	Text Content;
+	Boolean Blockquote;
+	Boolean List;
+}
+
+#Struct SMarkdown {
+	Text FileName;
+	SElement[] Elements;
+}
+
+#Struct SManialinkSettings {
+	Vec2 Size;
+}
+
+SMarkdown Parse(Text _Content) {
+	declare SMarkdown Markdown;
+
+	declare Lines = TextLib::Split("\n",_Content);
+	foreach(Line,Lines) {
+		declare SElement Element;
+
+		if(TextLib::StartsWith("######", Line)) {
+			declare SubLength = TextLib::Length("######");
+			Element.Type = "Heading6";
+			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
+		}
+		else if(TextLib::StartsWith("#####", Line)) {
+			declare SubLength = TextLib::Length("#####");
+			Element.Type = "Heading5";
+			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
+		}
+		else if(TextLib::StartsWith("####", Line)) {
+			declare SubLength = TextLib::Length("####");
+			Element.Type = "Heading4";
+			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
+		}
+		else if(TextLib::StartsWith("###", Line)) {
+			declare SubLength = TextLib::Length("###");
+			Element.Type = "Heading3";
+			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
+		}
+		else if(TextLib::StartsWith("##", Line)) {
+			declare SubLength = TextLib::Length("##");
+			Element.Type = "Heading2";
+			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
+		}
+		else if(TextLib::StartsWith("#", Line)) {
+			declare SubLength = TextLib::Length("#");
+			Element.Type = "Heading1";
+			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
+		}
+		else {
+			Element.Type = "Paragraph";
+			Element.Content = Line;
+		}
+	}
+
+	return Markdown;
+}
+
+SMarkdown FromFile(Text _FileName) {
+	declare Content = File::Read(_FileName);
+	declare Markdown = Parse(Content);
+	Markdown.FileName = _FileName;
+	return Markdown;
+}
+
+SMarkdown FromInternet(Text _Url) {
+	declare Content = Http::SyncGET_Result(_Url);
+	declare Markdown = Parse(Content);
+	Markdown.FileName = _Url;
+	return Markdown;
+}
+
+Text ToManialink(SMarkdown _Markdown, SManialinkSettings _Settings) {
+	declare Text Manialink;
+	Manialink ^= "<frame>";
+
+	declare Offset = 0;
+	for(i,0,_Markdown.Elements.count-1) {
+		declare Element = _Markdown.Elements[i];
+		switch(Element.Type) {
+			case "Paragraph": {
+				Manialink ^= """\n<label pos="0 {{{Offset}}}" size="{{{_Settings.Size.X}}} 5" class="Paragraph" text="{{{Element.Content}}}" autoline="1"/>""";
+				Offset += 5;
+			}
+			case "Heading1": {
+				Manialink ^= """\n<label pos="0 {{{Offset}}}" size="{{{_Settings.Size.X}}} 15" class="Heading1" textsize="6" text="$o{{{Element.Content}}}"/>""";
+				Offset += 15;
+			}
+			case "Heading2": {
+				Manialink ^= """\n<label pos="0 {{{Offset}}}" size="{{{_Settings.Size.X}}} 10" class="Heading2" textsize="4" text="$o{{{Element.Content}}}"/>""";
+				Offset += 10;
+			}
+		}
+	}
+
+	Manialink ^= "</frame>";
+}

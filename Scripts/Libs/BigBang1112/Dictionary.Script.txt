@@ -76,17 +76,25 @@ Text Get(Text _Definition, Text _Language) {
 	return _Definition;
 }
 
+Text Get(Text _Definition) {
+	return Get(_Definition, G_Language);
+}
+
 Void Set(Text _Definition, Text _Language, Text _Translation) {
 	G_Dictionaries[_Language][_Definition] = _Translation;
 }
 
-Text TranslateAllPhrases(Text _Source) {
+Text TranslateAllPhrases(Text _Source, Text _Language) {
 	declare Txt = _Source;
 	declare Phrases = TextLib::RegexFind("\\{\\{\\{\\{(.*?)\\}\\}\\}\\}", Txt, "gi");
 	foreach(P,Phrases) {
 		declare Phrase = TextLib::SubText(P,4,TextLib::Length(P)-8);
-		Phrase = Get(Phrase, G_Language);
+		Phrase = Get(Phrase, _Language);
 		Txt = TextLib::Replace(Txt, P, Phrase);
 	}
 	return Txt;
+}
+
+Text TranslateAllPhrases(Text _Source) {
+	return TranslateAllPhrases(_Source, G_Language);
 }
