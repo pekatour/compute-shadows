@@ -7,6 +7,8 @@
 #Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
 #Include "Libs/BigBang1112/Time.Script.txt" as Time
 #Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
+#Include "Libs/BigBang1112/Markdown.Script.txt" as Markdown
+#Include "Libs/BigBang1112/File.Script.txt" as File
 
 Void CalculateMap(Text _FileName, Text _MapType, Boolean _DontSaveAlreadyCalculated) {
 	TitleControl.EditMap(_FileName, "Shadow.Script.txt", """<settings>
@@ -17,12 +19,19 @@ Void CalculateMap(Text _FileName, Text _MapType, Boolean _DontSaveAlreadyCalcula
 }
 
 main() {
+	declare Language = LocalUser.Language;
+
 	Dictionary::SetTranslationFolder("Media/Translations");
-	Dictionary::SetTranslationLanguage(LocalUser.Language);
+	Dictionary::SetTranslationLanguage(Language);
 	
 	Layers::Create("UI", Manialink::FromFile("Media/Manialinks/UI", True), True);
-	Layers::Create("QNA", Manialink::Construct("", ""));
+	
 	Layers::Create("QNA_BACK", Manialink::FromFile("Media/Manialinks/QNA_Back", True));
+	
+	declare MD = Markdown::FromFile("Media/Translations/QnA/"^Language^".md");
+	declare Markdown::SManialinkSettings Settings;
+	Settings.Size = <250.,150.>;
+	Layers::Create("QNA", Manialink::Construct(Markdown::ToManialink(MD, Settings), File::Read("Media/Manialinks/QNA.Script.txt")));
 	
 	declare MapType = "";
 	declare DontSaveAlreadyCalculated = True;

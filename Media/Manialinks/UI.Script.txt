@@ -10,7 +10,7 @@ Boolean IsDontSaveAlreadyComputedEnabled() {
 }
 
 main() {
-	(Page.GetFirstChild("LABEL_VERSION") as CMlLabel).SetText(TextLib::Split(" ", LoadedTitle.TitleVersion)[0]);
+	(Page.GetFirstChild("LABEL_VERSION") as CMlLabel).SetText(TextLib::Split(" ", LoadedTitle.TitleVersion)[0]^" Beta");
 	
 	declare Integer Stamp;
 

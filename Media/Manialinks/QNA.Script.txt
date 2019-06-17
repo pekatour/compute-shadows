@@ -1,0 +1,29 @@
+main() {
+	Page.GetClassChildren("MainFrame", Page.MainFrame, True);
+	declare Frame = (Page.GetClassChildren_Result[0] as CMlFrame);
+	Frame.RelativePosition_V3 = <-145.,75.>;
+	Frame.ScrollActive = True;
+	Frame.ScrollGrid.Y = 10.;
+
+	declare OldOffset = 0.; // Unused
+	declare NewOffset = 0.;
+	foreach(Control, Frame.Controls) {
+		switchtype(Control) {
+			case CMlLabel: {
+				declare Label = (Control as CMlLabel);
+				if(Label.HasClass("Paragraph")) Label.TextFont = "BiryaniDemiBold";
+				else if(Label.HasClass("Heading2")) Label.TextFont = "RajdhaniMono";
+				Label.Value = "$s"^Label.Value;
+
+				OldOffset = -Label.RelativePosition_V3.Y;
+				Label.RelativePosition_V3.Y = -NewOffset;
+				NewOffset += Label.ComputeHeight(Label.Value);
+			}
+		}
+	}
+
+	Page.GetClassChildren("Scroll", Page.MainFrame, True);
+	Page.GetClassChildren_Result[0].Size.Y = NewOffset;
+
+	Frame.ScrollMax.Y = NewOffset - Frame.Size.Y;
+}

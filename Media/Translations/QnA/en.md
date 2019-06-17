@@ -12,21 +12,22 @@ First things first, you need to specify the folder where your maps are, relative
 To terminate the tool, click on the Terminate button in the menu. You have 2 seconds to click on it before another calculation starts. If you're in a calculation process, you can simply click the Back button here (nothing will break by that) and you will be returned to menu to click Terminate. **Note: Shadows will be uncalculated but MapType will still change.**
 
 ## What are the exact problems of turning off the saving of already computed maps?
-Previous map file containing calculated shadows can sometimes be replaced with one having no shadows, which could make things even longer than manual work for the user. However, turning this off makes the tool usable for mass MapType changing or things like these. For 100% safety though, keep this turned on, backup of maps is recommended.
+Previous map file containing calculated shadows can sometimes be replaced with one having no shadows, which could make things even longer than manual work for the user. However, turning this off makes the tool usable for mass MapType changing or things like these. Still, I recommend doing a map backup in this case.
+For 100% safety, keep this turned on.
 
 ## How is this better than /calculateallshadows?
 You're right, /calculateallshadows does a thing, but you have no control or idea what's being calcualted.
 Before, you also could replicate the same functionality of this title pack with few more commands, but since MP4.1, most of these commands broke.
 
 ## I've noticed that the map shadows aren't calculated on High, but Default. Why is that?
-This was done due to technical things.
+This was done due to technical reasons.
 If you calculate shadows on higher than Default, the lightmaps aren't saved to the map file, but only to your cache, meaning other people won't see the shadows calculated.
 If you want to calculate shadows to highest, I recommend doing it seperately only to maps where you really need them.
 
 ## My maps use different MapType than Race. What should I do to keep the original MapType for all the maps?
 In the MapType step of the tool, click on the little tick button in the top corner. This will turn off the feature. Clicking again will turn the feature on.
 
-## I converted a Stadium map from TM1, but several blocks suddently dissapeared. Why?
+## I converted a Stadium map from TM1, but several blocks suddenly dissapeared. Why?
 I'm not exactly sure either, but I consider this as a ManiaPlanet engine bug, happening especially with sculptures. Same thing would happen if you convert the map manually.
 Currently, I'm trying to find a solution for this. For now, you have no other option than to place them manually.
 

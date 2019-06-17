@@ -12,13 +12,14 @@ Prvně je potřeba specifikovat složku, kde jsou tvé mapy, relativně k složc
 K přerušení nástroje, v menu klikni na tlačítko Přerušit. Máš 2 sekundy na kliknutí než začně další výpočet. Pokud jsi uprostřed výpočtu, můžeš jednoduše kliknout na tlačítko Zpět (nic se tím nerozbije) a budeš přesunut zpět do menu k tlačítku Přerušit. **Poznámka: Stíny nebudou vypočítány, ale MapType se přesto změní.**
 
 ## Jaké jsou přesné problémy vypnutí ukládání již vypočítaných map?
-Předchozí soubor mapy obsahující vypočítané stíny může občas být nahrazen souborem bez uložených stínů, což může věci naopak pro uživatele prodloužit v porovnání s manuální prácí. Nicméně vypnutí této možnosti udělá nástroj použitelný pro masivní změny MapTypů a podobné věcí. Každopádně pro bezpečnost nech zapnuto, zálohování map doporučuji.
+Předchozí soubor mapy obsahující vypočítané stíny může občas být nahrazen souborem bez uložených stínů, což může věci naopak pro uživatele prodloužit v porovnání s manuální prácí. Nicméně vypnutí této možnosti udělá nástroj použitelný pro masivní změny MapTypů a podobné věcí. V tomhle případě doporučuju udělat zálohu map.
+Každopádně pro bezpečnost nech zapnuto.
 
 ## Jak je to lepší než /calculateallshadows?
-Máš pravdu, /calcualteallshadows něco umí, ale nemáš žádnou kontrolu nebo ponětí, co se právě vypočítává. Dříve jsi funkci tohodle title packu mohl replikovat tímto způsobem s pár dalšími příkazy, ale od MP4.1, většinu těchto příkazů přestalo fungovat.
+Máš pravdu, /calcualteallshadows něco umí, ale nemáš žádnou kontrolu nebo ponětí, co se právě vypočítává. Dříve jsi funkci tohodle title packu mohl replikovat tímto způsobem s pár dalšími příkazy, ale od MP4.1, většina těchto příkazů přestalo fungovat.
 
 ## Všiml jsem si, že stíny mapy nejsou vypočítaný na Vysoké, ale Základní. Proč tomu tak je?
-Tohle se provedlo z technických důvodů.
+Z technických důvodů.
 Pokud vypočítáš stíny na vyšší než Základní, lightmapy nejsou uloženy do souboru mapy, ale jen do tvé mezipaměti, což znamená, že ostatní lidé neuvidí vypočítané stíny.
 Pokud chceš vypočítat stíny na nejvyšší, doporučuju to udělat odděleně jen pro mapy, kde to opravdu potřebuješ.
 
@@ -26,7 +27,7 @@ Pokud chceš vypočítat stíny na nejvyšší, doporučuju to udělat oddělen�
 V nástroji v kroku MapType klikni na malou fajfku v horním rohu. Tímhle se vypne tato vlastnost. Lze ji znovu zapnout dalším klikem.
 
 ## Převedl jsem Stadium mapu z TM1, ale několik bloků z ničeho nic zmizelo. Proč?
-Taky si nejsem úplně jistý, ale považuji to za bug ManiaPlanet enginu, stávající se hlavně se skulptury. Stejná věc by se stala pokud by jsi převedl tu mapu manuálně.
+Taky si nejsem úplně jistý, ale považuji to za bug ManiaPlanet enginu, stávající se hlavně se skulpturami. Stejná věc by se stala pokud by jsi převedl tu mapu manuálně.
 Aktuálně se pro to snažím najít řešení. Zatím nemáš jinou možnost než zmizlý bloky položit manuálně.
 
 ## Minimalizoval jsem hru, ale výpočet se nikam neposunul když jsem se podíval. Proč se to prostě zastavilo?

@@ -8,6 +8,7 @@
 
 #Include "TextLib" as TextLib
 
+#Include "Libs/BigBang1112/Http.Script.txt" as Http
 #Include "Libs/BigBang1112/File.Script.txt" as File
 
 #Const C_ElementType_Paragraph "Paragraph"
@@ -30,45 +31,55 @@
 
 SMarkdown Parse(Text _Content) {
 	declare SMarkdown Markdown;
-
-	declare Lines = TextLib::Split("\n",_Content);
+	
+	declare ModifiedContent = TextLib::Replace(_Content, "\n\n", "\n \n");
+	declare Lines = TextLib::Split("\n",ModifiedContent);
 	foreach(Line,Lines) {
 		declare SElement Element;
 
 		if(TextLib::StartsWith("######", Line)) {
-			declare SubLength = TextLib::Length("######");
+			declare SubLength = TextLib::Length("######")+1;
 			Element.Type = "Heading6";
 			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
 		}
 		else if(TextLib::StartsWith("#####", Line)) {
-			declare SubLength = TextLib::Length("#####");
+			declare SubLength = TextLib::Length("#####")+1;
 			Element.Type = "Heading5";
 			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
 		}
 		else if(TextLib::StartsWith("####", Line)) {
-			declare SubLength = TextLib::Length("####");
+			declare SubLength = TextLib::Length("####")+1;
 			Element.Type = "Heading4";
 			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
 		}
 		else if(TextLib::StartsWith("###", Line)) {
-			declare SubLength = TextLib::Length("###");
+			declare SubLength = TextLib::Length("###")+1;
 			Element.Type = "Heading3";
 			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
 		}
 		else if(TextLib::StartsWith("##", Line)) {
-			declare SubLength = TextLib::Length("##");
+			declare SubLength = TextLib::Length("##")+1;
 			Element.Type = "Heading2";
 			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
 		}
 		else if(TextLib::StartsWith("#", Line)) {
-			declare SubLength = TextLib::Length("#");
+			declare SubLength = TextLib::Length("#")+1;
 			Element.Type = "Heading1";
 			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
+		}
+		else if(TextLib::StartsWith(" ", Line)) {
+			Element.Type = "Empty";
 		}
 		else {
 			Element.Type = "Paragraph";
 			Element.Content = Line;
 		}
+		
+		//Element.Content = TextLib::RegexReplace("""\*\*\*(.*)\*\*\*""", Element.Content, "g", """\$o\$i$1\$z"""); // Bold and Italic
+		//Element.Content = TextLib::RegexReplace("""\*\*(.*)\*\*""", Element.Content, "g", """\$o$1\$z"""); // Bold
+		//Element.Content = TextLib::RegexReplace("""\*(.*)\*""", Element.Content, "g", """\$i$1\$z"""); // Italic
+		
+		Markdown.Elements.add(Element);
 	}
 
 	return Markdown;
@@ -90,26 +101,32 @@ SMarkdown FromInternet(Text _Url) {
 
 Text ToManialink(SMarkdown _Markdown, SManialinkSettings _Settings) {
 	declare Text Manialink;
-	Manialink ^= "<frame>";
+	Manialink ^= """<frame class="MainFrame" size="{{{_Settings.Size.X}}} {{{_Settings.Size.Y}}}">""";
+	Manialink ^= """<quad class="Scroll" size="{{{_Settings.Size.X}}} {{{_Settings.Size.Y}}}" scriptevents="1"/>""";
 
-	declare Offset = 0;
+	declare Offset = 0.;
 	for(i,0,_Markdown.Elements.count-1) {
 		declare Element = _Markdown.Elements[i];
 		switch(Element.Type) {
 			case "Paragraph": {
-				Manialink ^= """\n<label pos="0 {{{Offset}}}" size="{{{_Settings.Size.X}}} 5" class="Paragraph" text="{{{Element.Content}}}" autoline="1"/>""";
+				Manialink ^= "\n" ^ """<label pos="0 {{{-Offset}}}" size="{{{_Settings.Size.X}}} 5" class="Paragraph" text="{{{Element.Content}}}" autonewline="1"/>""";
 				Offset += 5;
 			}
 			case "Heading1": {
-				Manialink ^= """\n<label pos="0 {{{Offset}}}" size="{{{_Settings.Size.X}}} 15" class="Heading1" textsize="6" text="$o{{{Element.Content}}}"/>""";
+				Manialink ^= "\n" ^ """<label pos="0 {{{-Offset}}}" size="{{{_Settings.Size.X}}} 15" class="Heading1" textsize="6" text="{{{Element.Content}}}" autonewline="1"/>""";
 				Offset += 15;
 			}
 			case "Heading2": {
-				Manialink ^= """\n<label pos="0 {{{Offset}}}" size="{{{_Settings.Size.X}}} 10" class="Heading2" textsize="4" text="$o{{{Element.Content}}}"/>""";
+				Manialink ^= "\n" ^ """<label pos="0 {{{-Offset}}}" size="{{{_Settings.Size.X}}} 10" class="Heading2" textsize="4" text="{{{Element.Content}}}" autonewline="1"/>""";
 				Offset += 10;
+			}
+			case "Empty": {
+				Manialink ^= "\n" ^ """<label pos="0 {{{-Offset}}}" size="{{{_Settings.Size.X}}} 2" class="Empty"/>""";
+				Offset += 2;
 			}
 		}
 	}
 
 	Manialink ^= "</frame>";
+	return Manialink;
 }
