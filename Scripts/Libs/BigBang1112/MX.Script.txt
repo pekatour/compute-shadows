@@ -37,17 +37,7 @@
 // Text MappackThumbnailUrl(Text _Site, Integer _TrackId)
 // Text TrackDownloadUrl(Text _Site, Integer _TrackId)
 // Text MappackDownloadUrl(Text _Site, Integer _TrackId, Text _Secret)
-// Async::SAsyncHttpRequest GetAsyncMXRequest(Text _Name)
-// Void DestroyAsyncMXRequest(Text _Name)
-// Void IsAsyncRequestCompleted(Text _Name)
-// Boolean SearchAsync(SMXSearchFilter _Filter, Boolean _UseCache)
-// Boolean TrackAsync(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
-// Boolean TrackMultipleAsync(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
-// Boolean TrackWorldRecordAsync(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
-// Boolean TrackReplaysAsync(Text _Name, Text _Site, Integer _TrackId, Integer _Amount, Boolean _UseCache)
-// Boolean TrackEmbeddedObjectsAsync(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
-// Boolean TrackScreenshotAsync(Text _Name, Text _Site, Integer _TrackId, Text _Type, Boolean _UseCache)
-// Boolean TrackThumbnailAsync(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
+// Boolean SearchAsync(Text _Name, Text _Site, SMXSearchFilter _Filter, Boolean _UseCache)
 // SMXTrack[] GetAsyncSearchResult(Text _Name)
 // Boolean AsyncSearchMappack(Text _Name, Text _Site, SMXSearchMappackFilter _Filter, Boolean _UseCache)
 // SMXMappack[] GetAsyncSearchMappackResult(Text _Name)
@@ -64,14 +54,15 @@
 // Boolean AsyncTrackWorldRecord(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
 // SMXReplay GetAsyncTrackWorldRecordResult(Text _Name)
 // Boolean AsyncTrackReplays(Text _Name, Text _Site, Integer _TrackId, Integer _Amount, Boolean _UseCache)
+// Boolean AsyncTrackReplays(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
 // SMXReplay[] GetAsyncTrackReplaysResult(Text _Name)
 // Boolean AsyncTrackEmbeddedObjects(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
 // SMXEmbeddedObject[] GetAsyncTrackEmbeddedObjectsResult(Text _Name)
-// CHttpRequest GetAsyncRequest(Text _Name)
-// Void DestroyAsyncRequest(Text _Name)
-// Boolean IsAsyncRequestCompleted(Text _Name)
-// Boolean IsAsyncRequestSuccessful(Text _Name)
-// Integer GetAsyncRequestStatusCode(Text _Name)
+// CHttpRequest Get(Text _Name)
+// Void Destroy(Text _Name)
+// Boolean IsCompleted(Text _Name)
+// Boolean IsSuccessful(Text _Name)
+// Integer GetStatusCode(Text _Name)
 */
 
 #Include "TextLib" as TextLib
@@ -394,6 +385,16 @@ Text Private_BuildSearchMappackParams(SMXSearchMappackFilter _Filter) {
 	return Builder;
 }
 
+/*
+// SMXTrack[] Search(Text _Site, SMXSearchFilter _Filter, Boolean _UseCache)
+// Searches for all filtered maps synchronously.
+
+// Text _Site - "tm" or "sm" exchange
+// SMXSearchFilter _Filter - Search filter applied
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns list of tracks found
+*/
 SMXTrack[] Search(Text _Site, SMXSearchFilter _Filter, Boolean _UseCache) {
 	declare SMXTrack[] Tracks;
 	
@@ -407,6 +408,16 @@ SMXTrack[] Search(Text _Site, SMXSearchFilter _Filter, Boolean _UseCache) {
 	return Tracks;
 }
 
+/*
+// SMXMappack[] SearchMappack(Text _Site, SMXSearchMappackFilter _Filter, Boolean _UseCache)
+// Searches for all filtered mappacks synchronously.
+
+// Text _Site - "tm" or "sm" exchange
+// SMXSearchMappackFilter _Filter - Search filter applied
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns list of mappacks found
+*/
 SMXMappack[] SearchMappack(Text _Site, SMXSearchMappackFilter _Filter, Boolean _UseCache) {
 	declare SMXMappack[] Mappacks;
 	declare Result = Http::SyncGET_Result("""https://{{{_Site}}}.mania-exchange.com/mappack/search?api=on{{{Private_BuildSearchMappackParams(_Filter)}}}""", _UseCache);
@@ -414,6 +425,16 @@ SMXMappack[] SearchMappack(Text _Site, SMXSearchMappackFilter _Filter, Boolean _
 	return Mappacks;
 }
 
+/*
+// SMXTrack[] TrackMultiple(Text _Site, Integer[] _TrackIds, Boolean _UseCache)
+// Finds track information from track IDs synchronously.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer[] _TrackIds - Array of track IDs
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns list of tracks found using the same indexes _TrackIds have. If track ID not found, default SMXTrack is used
+*/
 SMXTrack[] TrackMultiple(Text _Site, Integer[] _TrackIds, Boolean _UseCache) {
 	declare SMXTrack[] Tracks;
 	
@@ -428,6 +449,16 @@ SMXTrack[] TrackMultiple(Text _Site, Integer[] _TrackIds, Boolean _UseCache) {
 	return Tracks;
 }
 
+/*
+// SMXTrack Track(Text _Site, Integer _TrackId, Boolean _UseCache)
+// Finds track information from track ID synchronously.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer _TrackId - Track ID
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns SMXTrack with non-default data if track found
+*/
 SMXTrack Track(Text _Site, Integer _TrackId, Boolean _UseCache) {
 	declare SMXTrack Info;
 	declare Tracks = TrackMultiple(_Site, [_TrackId], _UseCache);
@@ -435,7 +466,17 @@ SMXTrack Track(Text _Site, Integer _TrackId, Boolean _UseCache) {
 	return Info;
 }
 
-// Doesn't work currently
+/*
+// SMXMappack[] MappackMultiple(Text _Site, Integer[] _MappackIds, Text _Secret, Boolean _UseCache)
+// Finds mappack information from mappack IDs synchronously.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer[] _MappackIds - Array of Mappack IDs
+// Text _Secret - Mappack secret
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns list of mappacks found using the same indexes _MappackIds have. If mappack ID not found, default SMXMappack is used
+*/
 SMXMappack[] MappackMultiple(Text _Site, Integer[] _MappackIds, Text _Secret, Boolean _UseCache) {
 	declare SMXMappack[] Mappacks;
 	
@@ -450,6 +491,17 @@ SMXMappack[] MappackMultiple(Text _Site, Integer[] _MappackIds, Text _Secret, Bo
 	return Mappacks;
 }
 
+/*
+// SMXMappack Mappack(Text _Site, Integer _MappackId, Text _Secret, Boolean _UseCache)
+// Finds mappack information from mappack ID synchronously.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer _MappackId - Mappack ID
+// Text _Secret - Mappack secret
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns SMXMappack with non-default data if track found
+*/
 SMXMappack Mappack(Text _Site, Integer _MappackId, Text _Secret, Boolean _UseCache) {
 	declare SMXMappack Info;
 	declare Mappacks = MappackMultiple(_Site, [_MappackId], _Secret, _UseCache);
@@ -457,6 +509,17 @@ SMXMappack Mappack(Text _Site, Integer _MappackId, Text _Secret, Boolean _UseCac
 	return Info;
 }
 
+/*
+// SMXTrack[] MappackTracks(Text _Site, Integer _MappackId, Text _Secret, Boolean _UseCache)
+// Finds mappack tracks from mappack ID synchronously.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer _MappackId - Mappack ID
+// Text _Secret - Mappack secret
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns tracks in the mappack
+*/
 SMXTrack[] MappackTracks(Text _Site, Integer _MappackId, Text _Secret, Boolean _UseCache) {
 	declare SMXTrack[] Tracks;
 	declare Result = Http::SyncGET_Result("""https://api.mania-exchange.com/tm/mappack/{{{_MappackId}}}/tracks/?={{{_Secret}}}""", _UseCache);
@@ -464,58 +527,162 @@ SMXTrack[] MappackTracks(Text _Site, Integer _MappackId, Text _Secret, Boolean _
 	return Tracks;
 }
 
+/*
+// SMXReplay TrackWorldRecord(Text _Site, Integer _TrackId, Boolean _UseCache)
+// Gets world record of a specific track synchronously.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer _TrackId - Track ID
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns replay information about the world record
+*/
 SMXReplay TrackWorldRecord(Text _Site, Integer _TrackId, Boolean _UseCache) {
 	declare SMXReplay Replay;
-	declare JsonSuccess = Replay.fromjson(Http::SyncGET_Result("""https://api.mania-exchange.com/{{{_Site}}}/tracks/worldrecord/{{{_TrackId}}}""", _UseCache));
+	declare Result = Http::SyncGET_Result("""https://api.mania-exchange.com/{{{_Site}}}/tracks/worldrecord/{{{_TrackId}}}""", _UseCache);
+	declare JsonSuccess = Replay.fromjson(Result);
 	return Replay;
 }
 
+/*
+// SMXReplay[] TrackReplays(Text _Site, Integer _TrackId, Integer _Amount, Boolean _UseCache)
+// Gets specific amount of replays from a specific track synchronously.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer _TrackId - Track ID
+// Integer _Amount - Amount of replays to get, max 25
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns track replays
+*/
 SMXReplay[] TrackReplays(Text _Site, Integer _TrackId, Integer _Amount, Boolean _UseCache) {
 	declare SMXReplay[] Replays;
-	
 	declare Result = Http::SyncGET_Result("""https://api.mania-exchange.com/{{{_Site}}}/replays/{{{_TrackId}}}/{{{_Amount}}}""", _UseCache);
-	
 	declare JsonSuccess = Replays.fromjson(Result);
 	return Replays;
 }
 
+/*
+// SMXReplay[] TrackReplays(Text _Site, Integer _TrackId, Boolean _UseCache)
+// Gets 25 replays from a specific track synchronously.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer _TrackId - Track ID
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns track replays
+*/
 SMXReplay[] TrackReplays(Text _Site, Integer _TrackId, Boolean _UseCache) {
 	return TrackReplays(_Site, _TrackId, 25, _UseCache);
 }
 
+/*
+// SMXEmbeddedObject[] TrackEmbeddedObjects(Text _Site, Integer _TrackId, Boolean _UseCache)
+// Gets embedded objects synchronously.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer _TrackId - Track ID
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns list of embedded objects
+*/
 SMXEmbeddedObject[] TrackEmbeddedObjects(Text _Site, Integer _TrackId, Boolean _UseCache) {
 	declare SMXEmbeddedObject[] Objects;
-	
 	declare Result = Http::SyncGET_Result("""https://api.mania-exchange.com/{{{_Site}}}/tracks/embeddedobjects/{{{_TrackId}}}""", _UseCache);
-	
 	declare JsonSuccess = Objects.fromjson(Result);
 	return Objects;
 }
 
+/*
+// Text TrackScreenshotUrl(Text _Site, Integer _TrackId, Text _Type)
+// Constructs track screenshot URL compatible with ManiaPlanet quads.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer _TrackId - Track ID
+// Text _Type
+
+// Returns constructed URL
+*/
 Text TrackScreenshotUrl(Text _Site, Integer _TrackId, Text _Type) {
 	return """https://{{{_Site}}}.mania-exchange.com/tracks/screenshot/{{{_Type}}}/{{{_TrackId}}}?.jpg""";
 }
 
+/*
+// Text TrackThumbnailUrl(Text _Site, Integer _TrackId)
+// Constructs track thumbnail URL compatible with ManiaPlanet quads.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer _TrackId - Track ID
+
+// Returns constructed URL
+*/
 Text TrackThumbnailUrl(Text _Site, Integer _TrackId) {
 	return """https://{{{_Site}}}.mania-exchange.com/tracks/thumbnail/{{{_TrackId}}}?.jpg""";
 }
 
-Text MappackThumbnailUrl(Text _Site, Integer _TrackId) {
-	return """https://{{{_Site}}}.mania-exchange.com/mappacks/thumbnail/{{{_TrackId}}}?.jpg""";
+/*
+// Text MappackThumbnailUrl(Text _Site, Integer _MappackId)
+// Constructs mappack thumbnail URL compatible with ManiaPlanet quads.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer _MappackId - Mappack ID
+
+// Returns constructed URL
+*/
+Text MappackThumbnailUrl(Text _Site, Integer _MappackId) {
+	return """https://{{{_Site}}}.mania-exchange.com/mappacks/thumbnail/{{{_MappackId}}}?.jpg""";
 }
 
+/*
+// Text TrackDownloadUrl(Text _Site, Integer _TrackId)
+// Constructs track download URL.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer _TrackId - Track ID
+
+// Returns constructed URL
+*/
 Text TrackDownloadUrl(Text _Site, Integer _TrackId) {
 	return """https://{{{_Site}}}.mania-exchange.com/tracks/download/{{{_TrackId}}}""";
 }
 
+/*
+// Text MappackDownloadUrl(Text _Site, Integer _TrackId, Text _Secret)
+// Constructs mappack download URL.
+
+// Text _Site - "tm" or "sm" exchange
+// Integer _TrackId - Track ID
+// Text _Secret - Mappack secret
+
+// Returns constructed URL
+*/
 Text MappackDownloadUrl(Text _Site, Integer _TrackId, Text _Secret) {
 	return """https://{{{_Site}}}.mania-exchange.com/mappacks/download/{{{_TrackId}}}?secret={{{_Secret}}}""";
 }
 
+/*
+// Boolean AsyncSearch(Text _Name, Text _Site, SMXSearchFilter _Filter, Boolean _UseCache)
+// Searches for all filtered maps asynchronously.
+
+// Text _Name - Custom request name
+// Text _Site - "tm" or "sm" exchange
+// SMXSearchFilter _Filter - Search filter applied
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns True if request is possible
+*/
 Boolean AsyncSearch(Text _Name, Text _Site, SMXSearchFilter _Filter, Boolean _UseCache) {
 	return Http::AsyncGET(_Name, """https://{{{_Site}}}.mania-exchange.com/tracksearch2/search?api=on{{{Private_BuildSearchParams(_Filter)}}}""", _UseCache);
 }
 
+/*
+// SMXTrack[] GetAsyncSearchResult(Text _Name)
+// Gets result from AsyncSearch request.
+
+// Text _Name - Custom request name
+
+// Returns list of tracks found
+*/
 SMXTrack[] GetAsyncSearchResult(Text _Name) {
 	declare SMXTrack[] SearchResult;
 	
@@ -533,10 +700,29 @@ SMXTrack[] GetAsyncSearchResult(Text _Name) {
 	return SearchResult;
 }
 
+/*
+// Boolean AsyncSearchMappack(Text _Name, Text _Site, SMXSearchMappackFilter _Filter, Boolean _UseCache)
+// Searches for all filtered mappacks asynchronously.
+
+// Text _Name - Custom request name
+// Text _Site - "tm" or "sm" exchange
+// SMXSearchMappackFilter _Filter - Search filter applied
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns True if request is possible
+*/
 Boolean AsyncSearchMappack(Text _Name, Text _Site, SMXSearchMappackFilter _Filter, Boolean _UseCache) {
 	return Http::AsyncGET(_Name, """https://{{{_Site}}}.mania-exchange.com/mappack/search?api=on{{{Private_BuildSearchMappackParams(_Filter)}}}""", _UseCache);
 }
 
+/*
+// SMXMappack[] GetAsyncSearchMappackResult(Text _Name)
+// Gets result from AsyncSearchMappack request.
+
+// Text _Name - Custom request name
+
+// Returns list of mappacks found
+*/
 SMXMappack[] GetAsyncSearchMappackResult(Text _Name) {
 	declare SMXMappack[] SearchResult;
 	
@@ -550,6 +736,17 @@ SMXMappack[] GetAsyncSearchMappackResult(Text _Name) {
 	return SearchResult;
 }
 
+/*
+// Boolean AsyncTrackMultiple(Text _Name, Text _Site, Integer[] _TrackIds, Boolean _UseCache)
+// Finds track information from track IDs asynchronously.
+
+// Text _Name - Custom request name
+// Text _Site - "tm" or "sm" exchange
+// Integer[] _TrackIds - Array of track IDs
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns True if request is possible
+*/
 Boolean AsyncTrackMultiple(Text _Name, Text _Site, Integer[] _TrackIds, Boolean _UseCache) {
 	declare Text TrackIdText;
 	if(_TrackIds.count > 0) {
@@ -559,6 +756,14 @@ Boolean AsyncTrackMultiple(Text _Name, Text _Site, Integer[] _TrackIds, Boolean 
 	return Http::AsyncGET(_Name,"""https://api.mania-exchange.com/{{{_Site}}}/maps/{{{TrackIdText}}}""", _UseCache);
 }
 
+/*
+// SMXTrack[] GetAsyncTrackMultipleResult(Text _Name)
+// Gets result from AsyncTrackMultiple request.
+
+// Text _Name - Custom request name
+
+// Returns list of tracks found using the same indexes _TrackIds have. If track ID not found, default SMXTrack is used
+*/
 SMXTrack[] GetAsyncTrackMultipleResult(Text _Name) {
 	declare SMXTrack[] TrackMultipleResult;
 	
@@ -572,10 +777,29 @@ SMXTrack[] GetAsyncTrackMultipleResult(Text _Name) {
 	return TrackMultipleResult;
 }
 
+/*
+// Boolean AsyncTrack(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
+// Finds track information from track ID asynchronously.
+
+// Text _Name - Custom request name
+// Text _Site - "tm" or "sm" exchange
+// Integer[] _TrackId - Track ID
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns True if request is possible
+*/
 Boolean AsyncTrack(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache) {
 	return AsyncTrackMultiple(_Name, _Site, [_TrackId], _UseCache);
 }
 
+/*
+// SMXTrack GetAsyncTrackResult(Text _Name)
+// Gets result from AsyncTrack request.
+
+// Text _Name - Custom request name
+
+// Returns SMXTrack with non-default data if track found
+*/
 SMXTrack GetAsyncTrackResult(Text _Name) {
 	declare SMXTrack Info;
 	declare Tracks = GetAsyncTrackMultipleResult(_Name);
@@ -583,6 +807,18 @@ SMXTrack GetAsyncTrackResult(Text _Name) {
 	return Info;
 }
 
+/*
+// Boolean AsyncMappackMultiple(Text _Name, Text _Site, Integer[] _MappackIds, Text _Secret, Boolean _UseCache)
+// Finds mappack information from mappack IDs asynchronously.
+
+// Text _Name - Custom request name
+// Text _Site - "tm" or "sm" exchange
+// Integer[] _MappackIds - Array of mappack IDs
+// Text _Secret - Mappack secret
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns True if request is possible
+*/
 Boolean AsyncMappackMultiple(Text _Name, Text _Site, Integer[] _MappackIds, Text _Secret, Boolean _UseCache) {
 	declare Text MappackIdText;
 	if(_MappackIds.count > 0) {
@@ -592,6 +828,14 @@ Boolean AsyncMappackMultiple(Text _Name, Text _Site, Integer[] _MappackIds, Text
 	return Http::AsyncGET(_Name,"""https://api.mania-exchange.com/{{{_Site}}}/mappacks/{{{MappackIdText}}}/?={{{_Secret}}}""", _UseCache);
 }
 
+/*
+// SMXMappack[] GetAsyncMappackMultipleResult(Text _Name)
+// Gets result from AsyncMappackMultiple request.
+
+// Text _Name - Custom request name
+
+// Returns list of mappacks found using the same indexes _MappackIds have. If mappack ID not found, default SMXMappack is used
+*/
 SMXMappack[] GetAsyncMappackMultipleResult(Text _Name) {
 	declare SMXMappack[] MappackMultipleResult;
 	
@@ -605,10 +849,30 @@ SMXMappack[] GetAsyncMappackMultipleResult(Text _Name) {
 	return MappackMultipleResult;
 }
 
+/*
+// Boolean AsyncMappack(Text _Name, Text _Site, Integer _MappackId, Text _Secret, Boolean _UseCache)
+// Finds mappack information from mappack ID asynchronously.
+
+// Text _Name - Custom request name
+// Text _Site - "tm" or "sm" exchange
+// Integer _MappackId - Mappack ID
+// Text _Secret - Mappack secret
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns True if request is possible
+*/
 Boolean AsyncMappack(Text _Name, Text _Site, Integer _MappackId, Text _Secret, Boolean _UseCache) {
 	return AsyncMappackMultiple(_Name, _Site, [_MappackId], _Secret, _UseCache);
 }
 
+/*
+// SMXMappack GetAsyncMappackResult(Text _Name)
+// Gets result from AsyncMappack request.
+
+// Text _Name - Custom request name
+
+// Returns SMXMappack with non-default data if mappack found
+*/
 SMXMappack GetAsyncMappackResult(Text _Name) {
 	declare SMXMappack Info;
 	declare Mappacks = GetAsyncMappackMultipleResult(_Name);
@@ -616,10 +880,30 @@ SMXMappack GetAsyncMappackResult(Text _Name) {
 	return Info;
 }
 
+/*
+// Boolean AsyncMappackTracks(Text _Name, Text _Site, Integer _MappackId, Text _Secret, Boolean _UseCache)
+// Finds mappack tracks from mappack ID asynchronously.
+
+// Text _Name - Custom request name
+// Text _Site - "tm" or "sm" exchange
+// Integer _MappackId - Mappack ID
+// Text _Secret - Mappack secret
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns True if request is possible
+*/
 Boolean AsyncMappackTracks(Text _Name, Text _Site, Integer _MappackId, Text _Secret, Boolean _UseCache) {
 	return Http::AsyncGET(_Name,"""https://api.mania-exchange.com/{{{_Site}}}/mappacks/{{{_MappackId}}}/tracks/?={{{_Secret}}}""", _UseCache);
 }
 
+/*
+// SMXTrack[] GetAsyncMappackTracksResult(Text _Name)
+// Gets result from AsyncMappackTracks request.
+
+// Text _Name - Custom request name
+
+// Returns tracks in the mappack
+*/
 SMXTrack[] GetAsyncMappackTracksResult(Text _Name) {
 	declare SMXTrack[] MappackTracksResult;
 	
@@ -633,10 +917,29 @@ SMXTrack[] GetAsyncMappackTracksResult(Text _Name) {
 	return MappackTracksResult;
 }
 
+/*
+// Boolean AsyncTrackWorldRecord(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
+// Gets world record of a specific track asynchronously.
+
+// Text _Name - Custom request name
+// Text _Site - "tm" or "sm" exchange
+// Integer _TrackId - Track ID
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns True if request is possible
+*/
 Boolean AsyncTrackWorldRecord(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache) {
 	return Http::AsyncGET(_Name,"""https://api.mania-exchange.com/{{{_Site}}}/tracks/worldrecord/{{{_TrackId}}}""", _UseCache);
 }
 
+/*
+// SMXReplay GetAsyncTrackWorldRecordResult(Text _Name)
+// Gets result from AsyncTrackWorldRecord request.
+
+// Text _Name - Custom request name
+
+// Returns replay information about the world record
+*/
 SMXReplay GetAsyncTrackWorldRecordResult(Text _Name) {
 	declare SMXReplay WorldRecord;
 	if(Http::IsCompleted(_Name)) {
@@ -647,10 +950,45 @@ SMXReplay GetAsyncTrackWorldRecordResult(Text _Name) {
 	return WorldRecord;
 }
 
+/*
+// Boolean AsyncTrackReplays(Text _Name, Text _Site, Integer _TrackId, Integer _Amount, Boolean _UseCache)
+// Gets specific amount of replays from a specific track asynchronously.
+
+// Text _Name - Custom request name
+// Text _Site - "tm" or "sm" exchange
+// Integer _TrackId - Track ID
+// Integer _Amount - Amount of replays to get, max 25
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns True if request is possible
+*/
 Boolean AsyncTrackReplays(Text _Name, Text _Site, Integer _TrackId, Integer _Amount, Boolean _UseCache) {
 	return Http::AsyncGET(_Name,"""https://api.mania-exchange.com/{{{_Site}}}/replays/{{{_TrackId}}}/{{{_Amount}}}""", _UseCache);
 }
 
+/*
+// Boolean AsyncTrackReplays(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
+// Gets 25 replays from a specific track asynchronously.
+
+// Text _Name - Custom request name
+// Text _Site - "tm" or "sm" exchange
+// Integer _TrackId - Track ID
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns True if request is possible
+*/
+Boolean AsyncTrackReplays(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache) {
+	return AsyncTrackReplays(_Name, _Site, _TrackkId, 25, _UseCache);
+}
+
+/*
+// SMXReplay[] GetAsyncTrackReplaysResult(Text _Name)
+// Gets result from AsyncTrackReplays request.
+
+// Text _Name - Custom request name
+
+// Returns track replays
+*/
 SMXReplay[] GetAsyncTrackReplaysResult(Text _Name) {
 	declare SMXReplay[] TrackReplaysResult;
 	
@@ -663,10 +1001,29 @@ SMXReplay[] GetAsyncTrackReplaysResult(Text _Name) {
 	return TrackReplaysResult;
 }
 
+/*
+// Boolean AsyncTrackEmbeddedObjects(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
+// Gets embedded objects asynchronously.
+
+// Text _Name - Custom request name
+// Text _Site - "tm" or "sm" exchange
+// Integer _TrackId - Track ID
+// Boolean _UseCache - If to cache the result, True recommended
+
+// Returns True if request is possible
+*/
 Boolean AsyncTrackEmbeddedObjects(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache) {
 	return Http::AsyncGET(_Name,"""https://api.mania-exchange.com/{{{_Site}}}/tracks/embeddedobjects/{{{_TrackId}}}""", _UseCache);
 }
 
+/*
+// SMXEmbeddedObject[] GetAsyncTrackEmbeddedObjectsResult(Text _Name)
+// Gets result from AsyncTrackEmbeddedObjects request.
+
+// Text _Name - Custom request name
+
+// Returns list of embedded objects
+*/
 SMXEmbeddedObject[] GetAsyncTrackEmbeddedObjectsResult(Text _Name) {
 	declare SMXEmbeddedObject[] TrackEmbeddedObjectsResult;
 	
@@ -679,22 +1036,60 @@ SMXEmbeddedObject[] GetAsyncTrackEmbeddedObjectsResult(Text _Name) {
 	return TrackEmbeddedObjectsResult;
 }
 
-CHttpRequest GetAsyncRequest(Text _Name) {
+/*
+// CHttpRequest Get(Text _Name)
+// Gets asynchonous request, completed or pending.
+
+// Text _Name - Identification name
+
+// Returns request that can or cannot be in the progress
+*/
+CHttpRequest Get(Text _Name) {
 	return Http::Get(_Name);
 }
 
-Void DestroyAsyncRequest(Text _Name) {
+/*
+// Void Destroy(Text _Name)
+// Destroys an aynchonous request.
+
+// Text _Name - Identification name
+*/
+Void Destroy(Text _Name) {
 	Http::Destroy(_Name);
 }
 
-Boolean IsAsyncRequestCompleted(Text _Name) {
+/*
+// Boolean IsCompleted(Text _Name)
+// Checks if the asynchronous request was completed.
+
+// Text _Name - Identification name
+
+// Returns True if the request is completed but not destroyed.
+*/
+Boolean IsCompleted(Text _Name) {
 	return Http::IsCompleted(_Name);
 }
 
-Boolean IsAsyncRequestSuccessful(Text _Name) {
+/*
+// Boolean IsSuccessful(Text _Name)
+// Checks if the asynchonous request was completed successfully.
+
+// Text _Name - Identification name
+
+// Returns True if the request is completed with a positive response (between 200 inclusively and 300 exclusively HTTP code).
+*/
+Boolean IsSuccessful(Text _Name) {
 	return Http::IsSuccessful(_Name);
 }
 
-Integer GetAsyncRequestStatusCode(Text _Name) {
+/*
+// Integer GetStatusCode(Text _Name)
+// Gets status code of the asynchronous request.
+
+// Text _Name - Identification name
+
+// Returns status code number of a completed request, or 0 if the request is not completed or does not exist.
+*/
+Integer GetStatusCode(Text _Name) {
 	return Http::GetStatusCode(_Name);
 }

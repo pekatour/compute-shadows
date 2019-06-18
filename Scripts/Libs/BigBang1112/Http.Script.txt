@@ -148,7 +148,7 @@ Text SyncGET_Result(Text _Url) {
 // Text _Resource - Text to provide for the request
 // Text _AdditionalHeaders - More info to the request
 
-// Returns finished/completed request, should be destroyed manually after being used
+// Returns finished/completed request, should be destroyed manually after being used.
 */
 CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return Null;
@@ -165,7 +165,7 @@ CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders) {
 // Text _Url - Url to request
 // Text _Resource - Text to provide for the request
 
-// Returns finished/completed request, should be destroyed manually after being used
+// Returns finished/completed request, should be destroyed manually after being used.
 */
 CHttpRequest SyncPOST(Text _Url, Text _Resource) {
 	return SyncPOST(_Url, _Resource, "");
@@ -179,7 +179,7 @@ CHttpRequest SyncPOST(Text _Url, Text _Resource) {
 // Text _Resource - Text to provide for the request
 // Text _AdditionalHeaders - More info to the request
 
-// Returns request result, or empty string if unsuccessful
+// Returns request result, or empty string if unsuccessful.
 */
 Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders) {
 	declare Request = SyncPOST(_Url, _Resource, _AdditionalHeaders);
@@ -198,7 +198,7 @@ Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders) {
 // Text _Url - Url to request
 // Text _Resource - Text to provide for the request
 
-// Returns request result, or empty string if unsuccessful
+// Returns request result, or empty string if unsuccessful.
 */
 Text SyncPOST_Result(Text _Url, Text _Resource) {
 	return SyncPOST_Result(_Url, _Resource, "");
@@ -212,7 +212,7 @@ Text SyncPOST_Result(Text _Url, Text _Resource) {
 // Text _FileName - File name relative to Maniaplanet folder
 // Text _AdditionalHeaders - More info to the request
 
-// Returns finished/completed request, should be destroyed manually after being used
+// Returns finished/completed request, should be destroyed manually after being used.
 */
 CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return Null;
@@ -229,7 +229,7 @@ CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders) {
 // Text _Url - Url to request
 // Text _FileName - File name relative to Maniaplanet folder
 
-// Returns finished/completed request, should be destroyed manually after being used
+// Returns finished/completed request, should be destroyed manually after being used.
 */
 CHttpRequest SyncPOSTFile(Text _Url, Text _FileName) {
 	return SyncPOSTFile(_Url, _FileName, "");
@@ -243,7 +243,7 @@ CHttpRequest SyncPOSTFile(Text _Url, Text _FileName) {
 // Text _FileName - File name relative to Maniaplanet folder
 // Text _AdditionalHeaders - More info to the request
 
-// Returns request result, or empty string if unsuccessful
+// Returns request result, or empty string if unsuccessful.
 */
 Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders) {
 	declare Request = SyncPOSTFile(_Url, _FileName, _AdditionalHeaders);
@@ -262,7 +262,7 @@ Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders) {
 // Text _Url - Url to request
 // Text _FileName - File name relative to Maniaplanet folder
 
-// Returns request result, or empty string if unsuccessful
+// Returns request result, or empty string if unsuccessful.
 */
 Text SyncPOSTFile_Result(Text _Url, Text _FileName) {
 	return SyncPOSTFile_Result(_Url, _FileName, "");
@@ -277,7 +277,7 @@ Text SyncPOSTFile_Result(Text _Url, Text _FileName) {
 // Boolean _UseCache - If to cache the result, True recommended for expensive requests
 // Text _AdditionalHeaders - More info to the request
 
-// Returns False if the request isn't possible to create, otherwise True
+// Returns True if the request is possible to create, otherwise False.
 */
 Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return False;
@@ -295,7 +295,7 @@ Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeade
 // Text _Url - Url to request
 // Boolean _UseCache - If to cache the result, True recommended for expensive requests
 
-// Returns False if the request isn't possible to create, otherwise True
+// Returns True if the request is possible to create, otherwise False.
 */
 Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache) {
 	return AsyncGET(_Name, _Url, _UseCache, "");
@@ -308,7 +308,7 @@ Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache) {
 // Text _Name - Identification name
 // Text _Url - Url to request
 
-// Returns False if the request isn't possible to create, otherwise True
+// Returns True if the request is possible to create, otherwise False.
 */
 Boolean AsyncGET(Text _Name, Text _Url) {
 	return AsyncGET(_Name, _Url, False, "");
@@ -323,7 +323,7 @@ Boolean AsyncGET(Text _Name, Text _Url) {
 // Text _Resource - Text to provide for the request
 // Text _AdditionalHeaders - More info to the request
 
-// Returns False if the request isn't possible to create, otherwise True
+// Returns True if the request is possible to create, otherwise False.
 */
 Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return False;
@@ -343,7 +343,7 @@ Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders
 // Text _Url - Url to request
 // Text _Resource - Text to provide for the request
 
-// Returns False if the request isn't possible to create, otherwise True
+// Returns True if the request is possible to create, otherwise False.
 */
 Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource) {
 	return AsyncPOST(_Name, _Url, _Resource, "");
@@ -358,7 +358,7 @@ Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource) {
 // Text _FileName - File name relative to Maniaplanet folder
 // Text _AdditionalHeaders - More info to the request
 
-// Returns False if the request isn't possible to create, otherwise True
+// Returns True if the request is possible to create, otherwise False.
 */
 Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return False;
@@ -378,7 +378,7 @@ Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHea
 // Text _Url - Url to request
 // Text _FileName - File name relative to Maniaplanet folder
 
-// Returns False if the request isn't possible to create, otherwise True
+// Returns True if the request is possible to create, otherwise False.
 */
 Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName) {
 	return AsyncPOST(_Name, _Url, _FileName, "");
@@ -390,7 +390,7 @@ Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName) {
 
 // Text _Name - Identification name
 
-// Returns request that can or cannot be in the progress
+// Returns request that can or cannot be in the progress.
 */
 CHttpRequest Get(Text _Name) {
 	if(!G_Requests.existskey(_Name)) return Null;
@@ -470,5 +470,5 @@ Integer GetStatusCode(Text _Name) {
 */
 Boolean IsSuccessful(Text _Name) {
 	if(!G_Requests.existskey(_Name)) return False;
-	return Get(_Name).IsCompleted && IsSuccessfulStatusCode(GetStatusCode(_Name));
+	return IsCompleted(_Name) && IsSuccessfulStatusCode(GetStatusCode(_Name));
 }

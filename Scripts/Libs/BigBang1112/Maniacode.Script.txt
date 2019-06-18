@@ -3,5 +3,140 @@
 // by BigBang1112
 // part of Universe Library Set
 
-// Quick ManiaCode creation to run on the client side.
+// Quick ManiaCode creation to construct on client or server.
+
+// This library does not depend on any other library from the Universe Library Set.
+// You can use this library independently, although it's recommended to use the whole set.
 */
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin
+*/
+
+#Include "TextLib" as TextLib
+
+#Struct SManiaCode {
+	Boolean NoConfirmation;
+	Text[] Functions;
+}
+
+SManiaCode Create(Boolean _NoConfirmation) {
+	declare SManiaCode ManiaCode;
+	ManiaCode.NoConfirmation = _NoConfirmation;
+	return ManiaCode;
+}
+
+Void Add_ShowMessage(SManiaCode _ManiaCode, Text _Message) {
+	_ManiaCode.Functions.add("""<show_message>
+	<message>{{{_Message}}}</message>
+</show_message>""");
+}
+
+// Possibly doesn't work unless maniacode runs under manialink code
+Void Add_InstallMap(SManiaCode _ManiaCode, Text _Name, Text _Url) {
+	_ManiaCode.Functions.add("""<install_map>
+	<name>{{{_Name}}}</name>
+	<url>{{{_Url}}}</url>
+</install_map>""");
+}
+
+Void Add_PlayMap(SManiaCode _ManiaCode, Text _Name, Text _Url) {
+	_ManiaCode.Functions.add("""<play_map>
+	<name>{{{_Name}}}</name>
+	<url>{{{_Url}}}</url>
+</play_map>""");
+}
+
+Void Add_InstallReplay(SManiaCode _ManiaCode, Text _Name, Text _Url) {
+	_ManiaCode.Functions.add("""<install_replay>
+	<name>{{{_Name}}}</name>
+	<url>{{{_Url}}}</url>
+</install_replay>""");
+}
+
+Void Add_ViewReplay(SManiaCode _ManiaCode, Text _Name, Text _Url) {
+	_ManiaCode.Functions.add("""<view_replay>
+	<name>{{{_Name}}}</name>
+	<url>{{{_Url}}}</url>
+</view_replay>""");
+}
+
+Void Add_PlayReplay(SManiaCode _ManiaCode, Text _Name, Text _Url) {
+	_ManiaCode.Functions.add("""<play_replay>
+	<name>{{{_Name}}}</name>
+	<url>{{{_Url}}}</url>
+</play_replay>""");
+}
+
+Void Add_InstallSkin(SManiaCode _ManiaCode, Text _Name, Text _File, Text _Url) {
+	_ManiaCode.Functions.add("""<install_skin>
+	<name>{{{_Name}}}</name>
+	<file>{{{_File}}}</file>
+	<url>{{{_Url}}}</url>
+</install_skin>""");
+}
+
+Void Add_GetSkin(SManiaCode _ManiaCode, Text _Name, Text _File, Text _Url) {
+	_ManiaCode.Functions.add("""<get_skin>
+	<name>{{{_Name}}}</name>
+	<file>{{{_File}}}</file>
+	<url>{{{_Url}}}</url>
+</get_skin>""");
+}
+
+Void Add_AddBuddy(SManiaCode _ManiaCode, Text _Login) {
+	_ManiaCode.Functions.add("""<add_buddy>
+	<login>{{{_Login}}}</login>
+</add_buddy>""");
+}
+
+Void Add_Goto(SManiaCode _ManiaCode, Text _Manialink) {
+	_ManiaCode.Functions.add("""<goto>
+	<link>{{{_Manialink}}}</link>
+</goto>""");
+}
+
+Void Add_JoinServer(SManiaCode _ManiaCode, Text _Manialink) {
+	_ManiaCode.Functions.add("""<join_server>
+	<login>{{{_Login}}}</login>
+</join_server>""");
+}
+
+Void Add_AddFavorite(SManiaCode _ManiaCode, Text _Login) {
+	_ManiaCode.Functions.add("""<add_favorite>
+	<login>{{{_Login}}}</login>
+</add_favorite>""");
+}
+
+Void Add_AddFavorite(SManiaCode _ManiaCode, Text _Ip, Text _Port) {
+	_ManiaCode.Functions.add("""<add_favorite>
+	<ip>{{{_Login}}}:{{{_Port}}}</ip>
+</add_favorite>""");
+}
+
+Void Add_InstallScript(SManiaCode _ManiaCode, Text _Name, Text _File, Text _Url) {
+	_ManiaCode.Functions.add("""<install_script>
+	<name>{{{_Name}}}</name>
+	<file>{{{_File}}}</file>
+	<url>{{{_Url}}}</url>
+</install_script>""");
+}
+
+Void Add_InstallPack(SManiaCode _ManiaCode, Text _Name, Text _File, Text _Url) {
+	_ManiaCode.Functions.add("""<install_pack>
+	<name>{{{_Name}}}</name>
+	<file>{{{_File}}}</file>
+	<url>{{{_Url}}}</url>
+</install_pack>""");
+}
+
+Text ToCode(SManiaCode _ManiaCode) {
+	declare Text NoConfirmation;
+	if(_ManiaCode.NoConfirmation) NoConfirmation = """noconfirmation="1"""";
+	declare Final = """"<maniacode {{{NoConfirmation}}}>""";
+	Final ^= TextLib::Join("", _ManiaCode.Functions);
+	Final ^= "</maniacode>";
+}

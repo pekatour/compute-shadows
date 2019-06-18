@@ -1,0 +1,45 @@
+/*
+// RegexFix.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Fixes RegexReplace.
+
+// This library does not depend on any other library from the Universe Library Set.
+// You can use this library independently, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin
+*/
+
+#Include "TextLib" as TextLib
+
+/*
+// Text RegexReplace(Text _Pattern, Text _Text, Text _Flags, Text _Replacement)
+// Regex replace with _Replacement supporting match insert. Define match group in replacement by \[number] with backslash properly escaped.
+
+// Text _Pattern
+// Text _Text
+// Text _Flags
+// Text _Replacement
+
+// Returns _Text with replacements.
+*/
+Text RegexReplace(Text _Pattern, Text _Text, Text _Flags, Text _Replacement) {
+	declare Final = _Text;
+
+	declare Finds = TextLib::RegexFind(_Pattern, _Text, _Flags);
+	for(i,0,Finds.count-1) {
+		declare Matches = TextLib::RegexMatch(_Pattern, Finds[i], _Flags);
+		declare Replacement = _Replacement;
+		for(j,0,Matches.count-1)
+			Replacement = TextLib::Replace(Replacement, "\\"^j, Matches[j]);
+		Final = TextLib::Replace(Final, Finds[i], Replacement);
+	}
+
+	return Final;
+}

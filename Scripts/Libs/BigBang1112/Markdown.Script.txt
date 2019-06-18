@@ -4,12 +4,33 @@
 // part of Universe Library Set
 
 // Reads .MD files nicely.
+
+// This library does depend on more libraries from the Universe Library Set:
+// - Http.Script.txt
+// - File.Script.txt
+// - RegexFix.Script.txt
+// You only need to use the libraries above, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin?
+*/
+
+/*
+// SMarkdown Parse(Text _Content)
+// SMarkdown FromFile(Text _FileName)
+// SMarkdown FromInternet(Text _Url)
+// Text ToManialink(SMarkdown _Markdown, SManialinkSettings _Settings)
 */
 
 #Include "TextLib" as TextLib
 
 #Include "Libs/BigBang1112/Http.Script.txt" as Http
 #Include "Libs/BigBang1112/File.Script.txt" as File
+#Include "Libs/BigBang1112/RegexFix.Script.txt" as RegexFix
 
 #Const C_ElementType_Paragraph "Paragraph"
 
@@ -75,9 +96,9 @@ SMarkdown Parse(Text _Content) {
 			Element.Content = Line;
 		}
 		
-		//Element.Content = TextLib::RegexReplace("""\*\*\*(.*)\*\*\*""", Element.Content, "g", """\$o\$i$1\$z"""); // Bold and Italic
-		//Element.Content = TextLib::RegexReplace("""\*\*(.*)\*\*""", Element.Content, "g", """\$o$1\$z"""); // Bold
-		//Element.Content = TextLib::RegexReplace("""\*(.*)\*""", Element.Content, "g", """\$i$1\$z"""); // Italic
+		Element.Content = RegexFix::RegexReplace("""\*\*\*(.*?)\*\*\*""", Element.Content, "g", """$o\$i\1$z"""); // Bold and Italic
+		Element.Content = RegexFix::RegexReplace("""\*\*(.*?)\*\*""", Element.Content, "g", """$o\1$z"""); // Bold
+		Element.Content = RegexFix::RegexReplace("""\*(.*?)\*""", Element.Content, "g", """$i\1$z"""); // Italic
 		
 		Markdown.Elements.add(Element);
 	}

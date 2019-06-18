@@ -50,7 +50,7 @@ main() {
 								CalculateMap(Event.CustomEventData[0], MapType, DontSaveAlreadyCalculated);
 						}
 						else
-							Task::Async_DataFileMgr("MAPS", DataFileMgr.Map_GetFilteredGameList(2, Maps, True));
+							Task::Async_DataFileMgr("MAPS", DataFileMgr.Map_GetFilteredGameList(4, Maps, True));
 					}
 					case "QNA": {
 						Layers::Hide("UI");

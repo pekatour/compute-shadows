@@ -51,7 +51,7 @@ CUILayer Get(Text _LayerName) {
 }
 
 CUILayer Get(Ident _LayerId) {
-	//if (G_Layers.exists(_LayerId) return UILayers[_LayerId];
+	if (G_Layers.exists(_LayerId)) return UILayers[_LayerId];
 	return Null;
 }
 

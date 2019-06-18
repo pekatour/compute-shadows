@@ -1,0 +1,22 @@
+/*
+// Maniacode2.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Copy of Maniacode.Script.txt additionally containing Execute function.
+
+// This library does depend on more libraries from the Universe Library Set:
+// - Maniacode.Script.txt
+// You only need to use the libraries above, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaAppTitle
+*/
+
+#Extends "Libs/BigBang1112/Maniacode.Script.txt"
+
+Void Execute(SManiaCode _ManiaCode) {
+	TitleFlow.ProcessManiaCodeXml(ToCode(_ManiaCode));
+}
