@@ -16,18 +16,18 @@ Previous map file containing calculated shadows can sometimes be replaced with o
 For 100% safety, keep this turned on.
 
 ## How is this better than /calculateallshadows?
-You're right, /calculateallshadows does a thing, but you have no control or idea what's being calcualted.
+You're right, /calculateallshadows does a thing, but you have no control or idea what's being calculated.
 Before, you also could replicate the same functionality of this title pack with few more commands, but since MP4.1, most of these commands broke.
 
 ## I've noticed that the map shadows aren't calculated on High, but Default. Why is that?
 This was done due to technical reasons.
 If you calculate shadows on higher than Default, the lightmaps aren't saved to the map file, but only to your cache, meaning other people won't see the shadows calculated.
-If you want to calculate shadows to highest, I recommend doing it seperately only to maps where you really need them.
+If you want to calculate shadows to highest, I recommend doing it separately only to maps where you really need them.
 
 ## My maps use different MapType than Race. What should I do to keep the original MapType for all the maps?
 In the MapType step of the tool, click on the little tick button in the top corner. This will turn off the feature. Clicking again will turn the feature on.
 
-## I converted a Stadium map from TM1, but several blocks suddenly dissapeared. Why?
+## I converted a Stadium map from TM1, but several blocks suddenly disappeared. Why?
 I'm not exactly sure either, but I consider this as a ManiaPlanet engine bug, happening especially with sculptures. Same thing would happen if you convert the map manually.
 Currently, I'm trying to find a solution for this. For now, you have no other option than to place them manually.
 
