@@ -29,6 +29,7 @@ main() {
 	Layers::Create("QNA_BACK", Manialink::FromFile("Media/Manialinks/QNA_Back", True));
 	
 	declare MD = Markdown::FromFile("Media/Translations/QnA/"^Language^".md");
+	if(MD.Elements.count == 0) MD = Markdown::FromFile("Media/Translations/QnA/en.md");
 	declare Markdown::SManialinkSettings Settings;
 	Settings.Size = <250.,150.>;
 	Layers::Create("QNA", Manialink::Construct(Markdown::ToManialink(MD, Settings), File::Read("Media/Manialinks/QNA.Script.txt")));
@@ -72,6 +73,7 @@ main() {
 				Layers::SendEvent("UI","CHANGE_MODE",["RUNNING"]);
 				
 				declare Terminate = False;
+				declare Skip = False;
 				foreach(MapInfo,Task.MapInfos) {
 					if(!Terminate) {
 						Time::Stamp_Create("TERMINATE",2000);
@@ -84,12 +86,24 @@ main() {
 									if(Event.CustomEventType == "TERMINATE")
 										Terminate = True;
 							if(Time::Stamp_Reached("TERMINATE")) break;
+							if(Skip) break;
 							yield;
 						}
+						Skip = False;
 						
 						if(!Terminate) {
 							wait(TitleControl.IsReady);
-							CalculateMap(MapInfo.FileName, MapType, DontSaveAlreadyCalculated);
+							
+							if(LoadedTitle.BaseTitleId == "TMStadium") {
+								if(MapInfo.CollectionName == "Stadium")
+									CalculateMap(MapInfo.FileName, MapType, DontSaveAlreadyCalculated);
+								else
+									Skip = True;
+							}
+							else {
+								CalculateMap(MapInfo.FileName, MapType, DontSaveAlreadyCalculated);
+							}
+							
 							wait(TitleControl.IsReady);
 						}
 					}
