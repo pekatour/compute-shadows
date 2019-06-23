@@ -28,5 +28,5 @@ Moi non plus, je ne suis pas sûr, mais je considère cela comme un bug de Mania
 ## J'ai minimisé mon jeu, mais le calcul d'ombres n'a pas avancé après avoir checké. Pourquoi ça s'est juste arrêté?
 Quand vous cliquez sur le bouton pour minimiser en haut a droite de votre écran, tous les scripts qui font le calcul d'ombres freezent. Vous devez Alt+Tab ou switcher d'application autrement depuis le jeu pour garder le processus de calcul d'ombres actif.
 
-## Après le calcul d'ombres, la taille des maps est très petite, super! Etait-ce prévu?
+## Après le calcul d'ombres, la taille des maps est très petite, super! Était-ce prévu?
 En réalité, non. Les ombres n'étaient pas enregistrées dans le fichier de la carte. Cela arrive habituellement quand les cartes ont déjà eu leurs ombres calculées auparavant. Vous pouvez checker votre dossier de Cache dans C:/ProgramData/ManiaPlanet/Cache et enlever les fichiers .Bump.LightMap.zip. Ils devraient être les plus récents. Si vous n'êtes pas sûrs, vous pouvez aussi videz le cache entièrement dans les paramètres de Maniaplanet, ce qui marchera tout aussi bien.
