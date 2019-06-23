@@ -1,4 +1,4 @@
-## Quel est l'interêt du titlepack ?
+## Quel est l'interêt du titlepack?
 N'importe quand vous voulez recalculer les ombres d'anciennes versions de Maniaplanet, ou convertir des cartes d'anciens jeux Trackmania, ce titlepack peut facilement le faire en masse.
 
 ## Qu'est-ce qu'un MapType?
