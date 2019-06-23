@@ -41,22 +41,22 @@
 declare Ident[Text] G_Layers;
 
 Boolean Exists(Text _LayerName) {
-	if (G_Layers.existskey(_LayerName)) return True;
+	if(G_Layers.existskey(_LayerName)) return True;
 	return False;
 }
 
 CUILayer Get(Text _LayerName) {
-	if (Exists(_LayerName)) return UILayers[G_Layers[_LayerName]];
+	if(Exists(_LayerName)) return UILayers[G_Layers[_LayerName]];
 	return Null;
 }
 
 CUILayer Get(Ident _LayerId) {
-	if (G_Layers.exists(_LayerId)) return UILayers[_LayerId];
+	if(G_Layers.exists(_LayerId)) return UILayers[_LayerId];
 	return Null;
 }
 
 Text GetName(Ident _LayerId) {
-	if (G_Layers.exists(_LayerId)) return G_Layers.keyof(_LayerId);
+	if(G_Layers.exists(_LayerId)) return G_Layers.keyof(_LayerId);
 	return "";
 }
 
@@ -66,19 +66,19 @@ Text GetName(CUILayer _Layer) {
 }
 
 Void Destroy(Text _LayerName) {
-	if (!Exists(_LayerName)) return;
+	if(!Exists(_LayerName)) return;
 	UILayerDestroy(UILayers[G_Layers[_LayerName]]);
 	declare Removed = G_Layers.removekey(_LayerName);
 }
 
 Void DestroyAll() {
-	foreach (LayerName => LayerId in G_Layers) {
+	foreach(LayerName => LayerId in G_Layers) {
 		Destroy(LayerName);
 	}
 }
 
 Void Create(Text _LayerName, Text _LayerManialink, Boolean IsVisible, CUILayer::EUILayerType _LayerType) {
-	if (Exists(_LayerName)) Destroy(_LayerName);
+	if(Exists(_LayerName)) Destroy(_LayerName);
 	declare NewLayer = UILayerCreate();
 	NewLayer.ManialinkPage = _LayerManialink;
 	NewLayer.IsVisible = IsVisible;
@@ -100,19 +100,19 @@ Void Create(Text _LayerName) {
 
 Void SetType(Text _LayerName, CUILayer::EUILayerType _LayerType) {
 	declare Layer <=> Get(_LayerName);
-	if (Layer == Null) return;
+	if(Layer == Null) return;
 	Layer.Type = _LayerType;
 }
 
 Void SetAnimationIn(Text _LayerName, CUILayer::EUILayerAnimation _Animation) {
 	declare Layer <=> Get(_LayerName);
-	if (Layer == Null) return;
+	if(Layer == Null) return;
 	Layer.InAnimation = _Animation;
 }
 
 Void SetAnimationOut(Text _LayerName, CUILayer::EUILayerAnimation _Animation) {
 	declare Layer <=> Get(_LayerName);
-	if (Layer == Null) return;
+	if(Layer == Null) return;
 	Layer.OutAnimation = _Animation;
 }
 
@@ -124,7 +124,7 @@ Void SetAnimationInOut(Text _LayerName, CUILayer::EUILayerAnimation _Animation) 
 
 Void Show(Text _LayerName) {
 	declare Layer <=> Get(_LayerName);
-	if (Layer == Null) return;
+	if(Layer == Null) return;
 	Layer.IsVisible = True;
 }
 

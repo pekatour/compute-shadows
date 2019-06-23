@@ -978,7 +978,7 @@ Boolean AsyncTrackReplays(Text _Name, Text _Site, Integer _TrackId, Integer _Amo
 // Returns True if request is possible
 */
 Boolean AsyncTrackReplays(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache) {
-	return AsyncTrackReplays(_Name, _Site, _TrackkId, 25, _UseCache);
+	return AsyncTrackReplays(_Name, _Site, _TrackId, 25, _UseCache);
 }
 
 /*
